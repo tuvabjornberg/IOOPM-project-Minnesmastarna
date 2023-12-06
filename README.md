@@ -26,14 +26,12 @@ $ make clean
 
    #### Run refmem-tests with f-sanitize:
    ```
-   $ make test_sanitize
+   $ make refmem_test_sanitize
    ```
 
    #### Coverage tests:
    ```
-   $ make cov1      
-   OR       
-   $ make cov2
+   $ make cov
    ```
    _Coverage tests done with gcov_\
    `refmem.c`:\
