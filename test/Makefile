@@ -7,6 +7,9 @@ C_PROF          = -pg
 C_GCOV          = -fprofile-arcs -ftest-coverage
 VPATH           = ../src 
 
+%.o:  %.c 
+	$(C_COMPILER) $(C_OPTIONS) $^ -c
+
 refmem_test.out: refmem_test.o refmem.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
