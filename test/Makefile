@@ -10,7 +10,7 @@ VPATH           = ../src
 %.o:  %.c 
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-refmem_test.out: refmem_test.o refmem.o
+refmem_test.out: refmem_test.o refmem.o queue.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
 test: refmem_test.out
@@ -20,12 +20,11 @@ memtest: refmem_test.out
 	valgrind --leak-check=full ./refmem_test.out
 
 # f-sanitize, mem tool like valgrind
-refmem_test_san.out: refmem_test.c refmem.c
+refmem_test_san.out: refmem_test.c refmem.c queue.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 refmem_test_sanitize: refmem_test_san.out
 	./refmem_test_san.out
-
 
 refmem_test_coverage.out: refmem_test.o refmem.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
