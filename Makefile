@@ -20,8 +20,8 @@ test: src
 memtest: 
 	$(MAKE) -C $(TEST) memtest
 
-refmem_test_sanitize: 
-	$(MAKE) -C $(TEST) memtest
+test_sanitize: 
+	$(MAKE) -C $(TEST) test_sanitize
 
 cov: 
 	$(MAKE) -C $(TEST) cov
