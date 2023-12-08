@@ -4,15 +4,18 @@
 
 #define COUNTERSIZE sizeof(int)
 //#define getCounter(obj_ptr) ((obj *)(((int *)obj_ptr) - 1))
+
 static size_t cascade_limit = 5;
 static Queue *to_be_freed = NULL;
 
 // TODO: gör om till macro
-obj *getCounter(obj *obj_ptr) {
+obj *getCounter(obj *obj_ptr) 
+{
     return ((int *)obj_ptr) - 1;
 }
 
-obj *allocate(size_t bytes, function1_t destructor) {
+obj *allocate(size_t bytes, function1_t destructor) 
+{
     int *allocation = calloc(1, (COUNTERSIZE + bytes));
     (*allocation) = 0;
 
@@ -40,61 +43,75 @@ void free_from_queue()
     }
 }
 
-void deallocate(obj *obj_ptr) {
+void deallocate(obj *obj_ptr) 
+{
     int *counterPointer = getCounter(obj_ptr);
     free(counterPointer);
 }
 
-void retain(obj *obj_ptr) {
+void retain(obj *obj_ptr) 
+{
     int *counterPointer = getCounter(obj_ptr);
     (*counterPointer)++;
 }
 
-void add_to_free_queue(obj *obj_to_free) {
-    if(to_be_freed == NULL) {
+void add_to_free_queue(obj *obj_to_free) 
+{
+    if (to_be_freed == NULL) 
+    {
         to_be_freed = create_queue();
-    } else {
+    } 
+    else 
+    {
         enqueue(to_be_freed, obj_to_free);
     }
 }
 
-void release(obj *obj_ptr) {
+void release(obj *obj_ptr) 
+{
     int *counterPointer = getCounter(obj_ptr);
     (*counterPointer)--;
 
-    if((*counterPointer) <= 0) {
+    if ((*counterPointer) <= 0) 
+    {
         add_to_free_queue(obj_ptr);
     }
 }
 
-size_t rc(obj *obj_ptr) {
+size_t rc(obj *obj_ptr) 
+{
     int *counterPointer = getCounter(obj_ptr);
     return *counterPointer;
 }
 
-obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor) {
+obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor) 
+{
     int *allocation = calloc(1, (COUNTERSIZE + (elements * elem_size)));
     (*allocation) = 0;
     return &(allocation[1]);
 }
 
-void set_cascade_limit(size_t new) {
+void set_cascade_limit(size_t new) 
+{
     cascade_limit = new;
 }
 
-size_t get_cascade_limit() {
+size_t get_cascade_limit() 
+{
     return cascade_limit;
 }
 
-void cleanup() {
+void cleanup() 
+{
     if (to_be_freed == NULL)
     {
         return;
-    } else {
-        while(!is_empty(to_be_freed)) {
+    } 
+    else 
+    {
+        while (!is_empty(to_be_freed)) 
+        {
             deallocate(dequeue(to_be_freed));
         }
     }
-    
 }
-

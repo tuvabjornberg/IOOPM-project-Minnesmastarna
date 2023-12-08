@@ -16,13 +16,15 @@ int clean_suite(void)
     return 0;
 }
 
-void test_allocate_deallocate() {
+void test_allocate_deallocate() 
+{
     obj* obj1 = allocate(sizeof(int), NULL);
     CU_ASSERT_EQUAL(rc(obj1), 0); 
     deallocate(obj1);
 }
 
-void test_retain() {
+void test_retain() 
+{
     obj* obj1 = allocate(sizeof(int), NULL);
     
     retain(obj1);
@@ -36,7 +38,8 @@ void test_retain() {
     deallocate(obj1);
 }
 
-void test_release() {
+void test_release() 
+{
     obj* obj1 = allocate(sizeof(int), NULL);
     
     retain(obj1);
@@ -59,7 +62,8 @@ void test_release() {
     deallocate(obj1);
 }
 
-void test_release_deallocate() {
+void test_release_deallocate() 
+{
     obj* obj1 = allocate(sizeof(int), NULL);   
     
     retain(obj1);
@@ -70,7 +74,8 @@ void test_release_deallocate() {
     release(obj2); 
 }
 
-void test_allocate_deallocate_array() {
+void test_allocate_deallocate_array() 
+{
     obj* obj_arr1 = allocate_array(5, sizeof(int), NULL);
     CU_ASSERT_EQUAL(rc(obj_arr1), 0); 
     deallocate(obj_arr1);
@@ -80,7 +85,8 @@ void test_allocate_deallocate_array() {
     deallocate(obj_arr2); 
 }
 
-void test_retain_array() {
+void test_retain_array() 
+{
     obj* obj_arr = allocate_array(5, sizeof(int), NULL);
     
     retain(obj_arr);
@@ -94,7 +100,8 @@ void test_retain_array() {
     deallocate(obj_arr);
 }
 
-void test_release_array() { 
+void test_release_array() 
+{ 
     obj* obj_arr = allocate_array(5, sizeof(int), NULL);
     
     retain(obj_arr);
@@ -117,7 +124,8 @@ void test_release_array() {
     deallocate(obj_arr);
 }
 
-void test_release_deallocate_array() { 
+void test_release_deallocate_array() 
+{ 
     obj* obj_arr1 = allocate_array(5, sizeof(int), NULL);  
     
     retain(obj_arr1);

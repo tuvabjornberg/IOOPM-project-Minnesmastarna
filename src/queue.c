@@ -4,39 +4,53 @@
 #include "refmem.h"
 #include "queue.h"
 
-Queue* create_queue() {
+Queue* create_queue() 
+{
     Queue* newQueue = (Queue*)malloc(sizeof(Queue));
-    if (newQueue == NULL) {
+
+    if (newQueue == NULL) 
+    {
         fprintf(stderr, "Error: Unable to allocate memory for the queue.\n");
         exit(EXIT_FAILURE);
     }
     newQueue->front = newQueue->rear = NULL;
+
     return newQueue;
 }
 
-bool is_empty(Queue* queue) {
+bool is_empty(Queue* queue) 
+{
     return queue->front == NULL;
 }
 
-void enqueue(Queue* queue, obj *data) {
+void enqueue(Queue* queue, obj *data) 
+{
     Node* newNode = (Node*)malloc(sizeof(Node));
-    if (newNode == NULL) {
+
+    if (newNode == NULL) 
+    {
         fprintf(stderr, "Error: Unable to allocate memory for the new node.\n");
         exit(EXIT_FAILURE);
     }
+
     newNode->data = data;
     newNode->next = NULL;
 
-    if (is_empty(queue)) {
+    if (is_empty(queue)) 
+    {
         queue->front = queue->rear = newNode;
-    } else {
+    } 
+    else 
+    {
         queue->rear->next = newNode;
         queue->rear = newNode;
     }
 }
 
-obj *dequeue(Queue* queue) {
-    if (is_empty(queue)) {
+obj *dequeue(Queue* queue) 
+{
+    if (is_empty(queue)) 
+    {
         fprintf(stderr, "Error: Cannot dequeue from an empty queue.\n");
         exit(EXIT_FAILURE);
     }
@@ -44,9 +58,12 @@ obj *dequeue(Queue* queue) {
     Node* temp = queue->front;
     obj *data = temp->data;
 
-    if (queue->front == queue->rear) {
+    if (queue->front == queue->rear) 
+    {
         queue->front = queue->rear = NULL;
-    } else {
+    } 
+    else
+    {
         queue->front = temp->next;
     }
 
@@ -54,9 +71,12 @@ obj *dequeue(Queue* queue) {
     return data;
 }
 
-void destroy_queue(Queue* queue) {
-    while (!is_empty(queue)) {
+void destroy_queue(Queue* queue) 
+{
+    while (!is_empty(queue)) 
+    {
         dequeue(queue);
     }
+    
     free(queue);
 }
