@@ -1,6 +1,8 @@
 #pragma once
 #include <stdbool.h>
 
+typedef void obj;
+
 typedef struct Node 
 {
     obj *data;

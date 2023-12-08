@@ -14,19 +14,19 @@ $ make clean
    ```
    $ make demo
    ```
-   #### Run refmem-tests:
+   #### Run tests:
    ```
    $ make test
    ```
 
-   #### Run refmem-tests with valgrind:
+   #### Run tests with valgrind:
    ```
    $ make memtest
    ```
 
-   #### Run refmem-tests with f-sanitize:
+   #### Run tests with f-sanitize:
    ```
-   $ make refmem_test_sanitize
+   $ make test_sanitize
    ```
 
    #### Coverage tests:
