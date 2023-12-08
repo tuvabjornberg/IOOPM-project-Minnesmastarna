@@ -1,6 +1,7 @@
 #include "refmem.h"
 
 #define COUNTERSIZE sizeof(int)
+//#define getCounter(obj_ptr) ((obj *)(((int *)obj_ptr) - 1))
 
 // TODO: gör om till macro
 obj *getCounter(obj *obj_ptr){
