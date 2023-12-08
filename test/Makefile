@@ -35,7 +35,7 @@ test_sanitize: refmem_test_san.out queue_test_san.out
 	./refmem_test_san.out
 	./queue_test_san.out
 
-refmem_test_coverage.out: refmem_test.o refmem.c
+refmem_test_coverage.out: refmem_test.o refmem.c queue.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
 
 queue_test_coverage.out: queue_test.o queue.c

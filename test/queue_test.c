@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "../src/queue.h" 
+#include "../src/refmem.h"
 
 int init_suite(void)
 {
@@ -15,9 +16,42 @@ int clean_suite(void)
     return 0;
 }
 
-void test_stub() 
+
+void create_destroy_test() 
 {
-    CU_ASSERT_EQUAL(1, 0); 
+    Queue *q = create_queue(); 
+    CU_ASSERT_PTR_NOT_NULL(q); 
+    destroy_queue(q); 
+}
+
+void enqueue_test() 
+{
+    Queue *q = create_queue(); 
+    CU_ASSERT_TRUE(is_empty(q)); 
+
+    obj* obj = NULL; 
+    enqueue(q, obj); 
+    CU_ASSERT_FALSE(is_empty(q)); 
+
+    enqueue(q, obj); 
+    CU_ASSERT_FALSE(is_empty(q)); 
+
+    destroy_queue(q); 
+}
+
+void dequeue_test() 
+{
+    Queue *q = create_queue(); 
+    //dequeue(q); 
+
+    obj* obj = NULL; 
+    enqueue(q, obj); 
+
+    CU_ASSERT_FALSE(is_empty(q)); 
+    CU_ASSERT_PTR_NULL(dequeue(q)); 
+    CU_ASSERT_TRUE(is_empty(q)); 
+    
+    destroy_queue(q); 
 }
 
 
@@ -34,12 +68,9 @@ int main()
     }
 
     if (
-        (CU_add_test(my_test_suite, "a stub test", test_stub) == NULL 
-
-
-
-
-
+        (CU_add_test(my_test_suite, "a simpe create destroy test", create_destroy_test) == NULL ||
+        CU_add_test(my_test_suite, "enqueue", enqueue_test) == NULL ||
+        CU_add_test(my_test_suite, "dequeue test", dequeue_test) == NULL
         )
     )
 
