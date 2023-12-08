@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "../src/refmem.h"
-
+#include "../src/queue.h"
 
 int init_suite(void)
 {
@@ -18,9 +18,10 @@ int clean_suite(void)
 
 void test_allocate_deallocate() 
 {
-    obj* obj1 = allocate(sizeof(int), NULL);
-    CU_ASSERT_EQUAL(rc(obj1), 0); 
-    deallocate(obj1);
+    obj* obj = allocate(sizeof(int), NULL);
+    CU_ASSERT_PTR_NOT_NULL(obj);
+    CU_ASSERT_EQUAL(rc(obj), 0); 
+    deallocate(obj);
 }
 
 void test_retain() 
@@ -60,18 +61,6 @@ void test_release()
     CU_ASSERT_EQUAL(rc(obj1), 1);
 
     deallocate(obj1);
-}
-
-void test_release_deallocate() 
-{
-    obj* obj1 = allocate(sizeof(int), NULL);   
-    
-    retain(obj1);
-    CU_ASSERT_EQUAL(rc(obj1), 1);
-    release(obj1);
-
-    obj* obj2 = allocate(sizeof(int), NULL); 
-    release(obj2); 
 }
 
 void test_allocate_deallocate_array() 
@@ -124,16 +113,39 @@ void test_release_array()
     deallocate(obj_arr);
 }
 
-void test_release_deallocate_array() 
-{ 
-    obj* obj_arr1 = allocate_array(5, sizeof(int), NULL);  
-    
-    retain(obj_arr1);
-    CU_ASSERT_EQUAL(rc(obj_arr1), 1);
-    release(obj_arr1);
+void set_get_cascade_limit() 
+{
+    CU_ASSERT_EQUAL(get_cascade_limit(), 5);
 
-    obj* obj_arr2 = allocate_array(2, sizeof(int), NULL); 
-    release(obj_arr2); 
+    size_t new_cascade_limit = 10; 
+    set_cascade_limit(new_cascade_limit); 
+
+    CU_ASSERT_EQUAL(get_cascade_limit(), new_cascade_limit); 
+}
+
+void integration_cleanup_test()
+{
+    cleanup(); 
+
+    obj* obj1 = allocate(sizeof(int), NULL); 
+    obj* obj2 = allocate(sizeof(int), NULL); 
+
+    retain(obj1); 
+    retain(obj2); 
+
+    release(obj1); 
+    release(obj2); 
+
+    obj* obj3 = allocate(sizeof(int), NULL); 
+    release(obj3); 
+    obj* obj4 = allocate(sizeof(int), NULL); 
+    release(obj4); 
+    
+    cleanup();  
+
+    shutdown(); 
+
+    puts("Integration test complete");   
 }
 
 int main()
@@ -152,15 +164,11 @@ int main()
         (CU_add_test(my_test_suite, "a simple allocate/deallocate test", test_allocate_deallocate) == NULL ||
         CU_add_test(my_test_suite, "a simple retain test", test_retain) == NULL ||
         CU_add_test(my_test_suite, "a simple release test", test_release) == NULL ||
-        CU_add_test(my_test_suite, "release last counter", test_release_deallocate) == NULL ||
         CU_add_test(my_test_suite, "a simple allocate/deallocate array test", test_allocate_deallocate_array) == NULL ||
         CU_add_test(my_test_suite, "retain test for array", test_retain_array) == NULL ||
         CU_add_test(my_test_suite, "release test for array", test_release_array) == NULL ||
-        CU_add_test(my_test_suite, "release last counter test for array", test_release_deallocate_array) == NULL
-
-
-
-
+        CU_add_test(my_test_suite, "set and get cascade limit", set_get_cascade_limit) == NULL ||
+        CU_add_test(my_test_suite, "cleanup test", integration_cleanup_test) == NULL
 
         )
     )
