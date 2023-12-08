@@ -6,13 +6,8 @@
 
 Queue* create_queue() 
 {
-    Queue* newQueue = (Queue*)malloc(sizeof(Queue));
+    Queue* newQueue = (Queue*)calloc(1, sizeof(Queue));
 
-    if (newQueue == NULL) 
-    {
-        fprintf(stderr, "Error: Unable to allocate memory for the queue.\n");
-        exit(EXIT_FAILURE);
-    }
     newQueue->front = newQueue->rear = NULL;
 
     return newQueue;
@@ -25,13 +20,7 @@ bool is_empty(Queue* queue)
 
 void enqueue(Queue* queue, obj *data) 
 {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-
-    if (newNode == NULL) 
-    {
-        fprintf(stderr, "Error: Unable to allocate memory for the new node.\n");
-        exit(EXIT_FAILURE);
-    }
+    Node* newNode = (Node*)calloc(1, sizeof(Node));
 
     newNode->data = data;
     newNode->next = NULL;
@@ -77,6 +66,6 @@ void destroy_queue(Queue* queue)
     {
         dequeue(queue);
     }
-    
+
     free(queue);
 }
