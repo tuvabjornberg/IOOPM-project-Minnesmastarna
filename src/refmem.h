@@ -13,8 +13,6 @@ size_t rc(obj *);
 
 obj *allocate(size_t bytes, function1_t destructor);
 
-void free_from_queue();
-
 obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor);
 
 void deallocate(obj *);

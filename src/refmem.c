@@ -14,17 +14,7 @@ obj *getCounter(obj *obj_ptr)
     return ((int *)obj_ptr) - 1;
 }
 
-obj *allocate(size_t bytes, function1_t destructor) 
-{
-    int *allocation = calloc(1, (COUNTERSIZE + bytes));
-    (*allocation) = 0;
-
-    free_from_queue();
-
-    return &(allocation[1]);
-}
-
-void free_from_queue()
+static void free_from_queue()
 {
     for (size_t i = 0; i < cascade_limit; i++)
     {
@@ -43,6 +33,16 @@ void free_from_queue()
     }
 }
 
+obj *allocate(size_t bytes, function1_t destructor) 
+{
+    int *allocation = calloc(1, (COUNTERSIZE + bytes));
+    (*allocation) = 0;
+
+    free_from_queue();
+
+    return &(allocation[1]);
+}
+
 void deallocate(obj *obj_ptr) 
 {
     int *counterPointer = getCounter(obj_ptr);
@@ -55,16 +55,13 @@ void retain(obj *obj_ptr)
     (*counterPointer)++;
 }
 
-void add_to_free_queue(obj *obj_to_free) 
+static void add_to_free_queue(obj *obj_to_free) 
 {
     if (to_be_freed == NULL) 
     {
         to_be_freed = create_queue();
     } 
-    else 
-    {
-        enqueue(to_be_freed, obj_to_free);
-    }
+    enqueue(to_be_freed, obj_to_free);
 }
 
 void release(obj *obj_ptr) 
@@ -114,4 +111,9 @@ void cleanup()
             deallocate(dequeue(to_be_freed));
         }
     }
+}
+
+void shutdown() 
+{
+    free(to_be_freed); 
 }
