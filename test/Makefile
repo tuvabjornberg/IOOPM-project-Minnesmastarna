@@ -10,27 +10,40 @@ VPATH           = ../src
 %.o:  %.c 
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-refmem_test.out: refmem_test.o refmem.o
+refmem_test.out: refmem_test.o refmem.o queue.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
-test: refmem_test.out
+queue_test.out: queue_test.o queue.o
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
+
+test: refmem_test.out queue_test.out
+	./queue_test.out
 	./refmem_test.out
 
-memtest: refmem_test.out
+memtest: refmem_test.out queue_test.out
+	valgrind --leak-check=full ./queue_test.out
 	valgrind --leak-check=full ./refmem_test.out
 
 # f-sanitize, mem tool like valgrind
-refmem_test_san.out: refmem_test.c refmem.c
+refmem_test_san.out: refmem_test.c refmem.c queue.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
-refmem_test_sanitize: refmem_test_san.out
+queue_test_san.out: queue_test.c queue.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
+
+test_sanitize: refmem_test_san.out queue_test_san.out
 	./refmem_test_san.out
+	./queue_test_san.out
 
-
-refmem_test_coverage.out: refmem_test.o refmem.c
+refmem_test_coverage.out: refmem_test.o refmem.c queue.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
 
-cov: refmem_test_coverage.out
+queue_test_coverage.out: queue_test.o queue.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
+
+cov: refmem_test_coverage.out queue_test_coverage.out
+	./queue_test_coverage.out
+	gcov -b -c queue_test_coverage.out-queue.c
 	./refmem_test_coverage.out
 	gcov -b -c refmem_test_coverage.out-refmem.c
 
@@ -44,4 +57,4 @@ prof: refmem_prof.out
 clean: 
 	rm -f *.o *.out *.gcda *.gcno *.gcov *.profiling
 
-.PHONY: test memtest refmem_test_sanitize cov
+.PHONY: test memtest test_sanitize cov prof

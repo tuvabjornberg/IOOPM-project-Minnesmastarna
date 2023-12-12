@@ -5,7 +5,7 @@
 ### Participant list
 |Name               |Email                                  |Active Dates|
 |----               |-----                                  |------------|
-|Liam Anderberg     |     |28/11-2023   --                  |    
+|Liam Anderberg     |liam.anderberg.7761@student.uu.se      |28/11-2023   --             |    
 |Tuva Björnberg     |tuva.bjornberg.5452@student.uu.se      |28/11-2023   --             |
 |Hektor Einarsson   |     |28/11-2023   --                  |
 |Martin Ek          |     |28/11-2023   --                  |

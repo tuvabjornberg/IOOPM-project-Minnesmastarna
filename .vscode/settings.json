@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "refmem.h": "c",
+        "stdlib.h": "c"
+    }
+}
