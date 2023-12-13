@@ -38,4 +38,4 @@ clean:
 	$(MAKE) -C $(TEST) clean
 	$(MAKE) -C $(DEMO) clean
 
-.PHONY: $(SRC)
+.PHONY: all src test memtest test_sanitize cov prof demo clean
