@@ -15,10 +15,10 @@
 /**
  * @file hash_table.h
  * @author Tuva Björnberg & Gustav Fridén
- * @date 29/09-2023
+ * @date 29/09-2023, edited by Tuva Björnberg 13/12-2023
  * @brief Simple hash table that maps integer keys to string values.
  *
- * The hash table is implemented using a fixed number of buckets (No_Buckets) 
+ * The hash table is implemented using dynamically allocated buckets
  * and separate chaining to handle collisions. The program includes functions 
  * to create and destroy a hash table, insert and lookup key-value pairs, remove 
  * entries, retrieve the size, check if empty, and more. 
@@ -45,6 +45,9 @@ struct option
   elem_t value;
 };
 
+/// @brief retrieves the hashtables current capacity
+/// @param ht hash table operated upon
+/// @return a capacity size
 size_t ioopm_get_ht_capacity(ioopm_hash_table_t *ht); 
 
 /// @brief create a new hash table, with a hash-function

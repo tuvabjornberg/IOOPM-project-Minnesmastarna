@@ -406,7 +406,7 @@ void boundary_cases_test()
     }
     CU_ASSERT_EQUAL(store->merch_count, 0);    
 
-    ioopm_store_destroy(store); //TODO: leaks mem when NO_ITEMS is 19 (after resize)
+    ioopm_store_destroy(store); 
 }
 
 int main()

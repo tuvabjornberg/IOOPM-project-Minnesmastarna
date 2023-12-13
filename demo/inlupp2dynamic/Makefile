@@ -30,6 +30,12 @@ tests: merch_storage_tests.out shop_cart_tests.out
 	./merch_storage_tests.out 
 	./shop_cart_tests.out
 
+merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
+
+merchsan: merchsan.out
+	./merchsan.out
+
 ui_tests: ui.out
 	./ui.out < tests/ui_tests.txt
 

@@ -116,8 +116,11 @@ static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity)
       size_t new_index = ht->hash_fun(current->key) % new_ht_capacity;
       entry_t *new_entry = entry_create(current->key, current->value, new_buckets[new_index].next);
       
+      entry_t *old_next = current->next; 
+      free(current); 
+      
       new_buckets[new_index].next = new_entry;
-      current = current->next; 
+      current = old_next; 
     }
   }
 
@@ -128,7 +131,7 @@ static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity)
 
 void ioopm_hash_table_insert(ioopm_hash_table_t *ht, elem_t key, elem_t value) 
 {
-  if ((double)ht->size / ht->ht_capacity > BUCKET_THRESHOLD) // || ht->ht_capacity == 0) 
+  if ((double)ht->size / ht->ht_capacity > BUCKET_THRESHOLD) 
   {
     size_t new_ht_capacity = ht->ht_capacity * 2;
     resize(ht, new_ht_capacity);
