@@ -6,11 +6,13 @@
 #include "../src/refmem.h"
 
 void destructor(obj *obj){
-
+    return NULL;
+    //TODO
 }
 
 void default_destructor(obj *obj){
-
+    return NULL;
+    //TODO
 }
 
 

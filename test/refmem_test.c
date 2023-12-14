@@ -148,6 +148,13 @@ void integration_cleanup_test()
     puts("Integration test complete");   
 }
 
+void shutdown_test() {
+    obj* obj1 = allocate(sizeof(int), NULL); 
+    obj* obj2 = allocate(sizeof(int), NULL);
+
+    
+}
+
 int main()
 {
     if (CU_initialize_registry() != CUE_SUCCESS)
