@@ -1,7 +1,6 @@
 #pragma once
 #include <stdbool.h>
-
-typedef void obj;
+#include "refmem.h" 
 
 typedef struct Node 
 {

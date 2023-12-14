@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "../src/refmem.h"
 #include "../src/queue.h"
+#include "../src/hash_table.h"
 
 int init_suite(void)
 {
