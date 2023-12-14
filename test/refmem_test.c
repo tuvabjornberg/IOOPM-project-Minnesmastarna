@@ -16,136 +16,145 @@ int clean_suite(void)
     return 0;
 }
 
-void test_allocate_deallocate() 
+void test_allocate_deallocate()
 {
     obj* obj = allocate(sizeof(int), NULL);
     CU_ASSERT_PTR_NOT_NULL(obj);
-    CU_ASSERT_EQUAL(rc(obj), 0); 
+    CU_ASSERT_EQUAL(rc(obj), 0);
     deallocate(obj);
 }
 
-void test_retain() 
+void test_retain()
 {
     obj* obj1 = allocate(sizeof(int), NULL);
-    
+
     retain(obj1);
     CU_ASSERT_EQUAL(rc(obj1), 1);
-    
+
     for (int i = 0; i < 100; i++) {
         retain(obj1);
     }
-    CU_ASSERT_EQUAL(rc(obj1), 101); 
-    
+    CU_ASSERT_EQUAL(rc(obj1), 101);
+
     deallocate(obj1);
 }
 
-void test_release() 
+void test_release()
 {
     obj* obj1 = allocate(sizeof(int), NULL);
-    
+
     retain(obj1);
     retain(obj1);
     CU_ASSERT_EQUAL(rc(obj1), 2);
 
     release(obj1);
-    CU_ASSERT_EQUAL(rc(obj1), 1); 
+    CU_ASSERT_EQUAL(rc(obj1), 1);
 
     for (int i = 0; i < 100; i++) {
-        retain(obj1); 
+        retain(obj1);
     }
     CU_ASSERT_EQUAL(rc(obj1), 101);
 
     for (int i = 0; i < 100; i++) {
-        release(obj1); 
+        release(obj1);
     }
     CU_ASSERT_EQUAL(rc(obj1), 1);
 
     deallocate(obj1);
 }
 
-void test_allocate_deallocate_array() 
+void test_allocate_deallocate_array()
 {
     obj* obj_arr1 = allocate_array(5, sizeof(int), NULL);
-    CU_ASSERT_EQUAL(rc(obj_arr1), 0); 
+    CU_ASSERT_EQUAL(rc(obj_arr1), 0);
     deallocate(obj_arr1);
 
-    obj* obj_arr2 = allocate_array(0, sizeof(int), NULL); 
-    CU_ASSERT_EQUAL(rc(obj_arr2), 0); 
-    deallocate(obj_arr2); 
+    obj* obj_arr2 = allocate_array(0, sizeof(int), NULL);
+    CU_ASSERT_EQUAL(rc(obj_arr2), 0);
+    deallocate(obj_arr2);
 }
 
-void test_retain_array() 
+void test_retain_array()
 {
     obj* obj_arr = allocate_array(5, sizeof(int), NULL);
-    
+
     retain(obj_arr);
     CU_ASSERT_EQUAL(rc(obj_arr), 1);
-    
+
     for (int i = 0; i < 100; i++) {
         retain(obj_arr);
     }
-    CU_ASSERT_EQUAL(rc(obj_arr), 101); 
-    
+    CU_ASSERT_EQUAL(rc(obj_arr), 101);
+
     deallocate(obj_arr);
 }
 
-void test_release_array() 
-{ 
+void test_release_array()
+{
     obj* obj_arr = allocate_array(5, sizeof(int), NULL);
-    
+
     retain(obj_arr);
     retain(obj_arr);
     CU_ASSERT_EQUAL(rc(obj_arr), 2);
 
     release(obj_arr);
-    CU_ASSERT_EQUAL(rc(obj_arr), 1); 
+    CU_ASSERT_EQUAL(rc(obj_arr), 1);
 
     for (int i = 0; i < 100; i++) {
-        retain(obj_arr); 
+        retain(obj_arr);
     }
     CU_ASSERT_EQUAL(rc(obj_arr), 101);
 
     for (int i = 0; i < 100; i++) {
-        release(obj_arr); 
+        release(obj_arr);
     }
     CU_ASSERT_EQUAL(rc(obj_arr), 1);
 
     deallocate(obj_arr);
 }
 
-void set_get_cascade_limit() 
+void set_get_cascade_limit()
 {
     CU_ASSERT_EQUAL(get_cascade_limit(), 5);
 
-    size_t new_cascade_limit = 10; 
-    set_cascade_limit(new_cascade_limit); 
+    size_t new_cascade_limit = 10;
+    set_cascade_limit(new_cascade_limit);
 
-    CU_ASSERT_EQUAL(get_cascade_limit(), new_cascade_limit); 
+    CU_ASSERT_EQUAL(get_cascade_limit(), new_cascade_limit);
 }
 
 void integration_cleanup_test()
 {
-    cleanup(); 
+    cleanup();
 
-    obj* obj1 = allocate(sizeof(int), NULL); 
-    obj* obj2 = allocate(sizeof(int), NULL); 
+    obj* obj1 = allocate(sizeof(int), NULL);
+    obj* obj2 = allocate(sizeof(int), NULL);
 
-    retain(obj1); 
-    retain(obj2); 
+    retain(obj1);
+    retain(obj2);
 
-    release(obj1); 
-    release(obj2); 
+    release(obj1);
+    release(obj2);
 
-    obj* obj3 = allocate(sizeof(int), NULL); 
-    release(obj3); 
-    obj* obj4 = allocate(sizeof(int), NULL); 
-    release(obj4); 
-    
-    cleanup();  
+    obj* obj3 = allocate(sizeof(int), NULL);
+    release(obj3);
+    obj* obj4 = allocate(sizeof(int), NULL);
+    release(obj4);
 
-    shutdown(); 
+    cleanup();
 
-    puts("Integration test complete");   
+    shutdown();
+
+    puts("Integration test complete");
+}
+
+void test_rc_overflow()
+{
+    obj* obj = allocate(sizeof(int), NULL);
+    for (int i = 0; i <= 65540; i++) { // 65540 > 65535, which leads to reference count overflow
+        retain(obj);
+    }
+    CU_ASSERT_PTR_NULL(obj); // Reference count overflow should lead to the object being destroyed
 }
 
 int main()
@@ -168,8 +177,8 @@ int main()
         CU_add_test(my_test_suite, "retain test for array", test_retain_array) == NULL ||
         CU_add_test(my_test_suite, "release test for array", test_release_array) == NULL ||
         CU_add_test(my_test_suite, "set and get cascade limit", set_get_cascade_limit) == NULL ||
-        CU_add_test(my_test_suite, "cleanup test", integration_cleanup_test) == NULL
-
+        CU_add_test(my_test_suite, "cleanup test", integration_cleanup_test) == NULL ||
+        CU_add_test(my_test_suite, "reference count overflow test", test_rc_overflow) == NULL
         )
     )
 
