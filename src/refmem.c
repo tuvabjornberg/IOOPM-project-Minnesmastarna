@@ -90,11 +90,13 @@ void deallocate(obj *obj_ptr)
     } 
     else 
     {
-        printf("ERROR: pointer %d not in destructor hash table", (int)obj_ptr);
+        printf("\nERROR: pointer %d not in destructor hash table", (int)obj_ptr);
     }
 
     int *counterPointer = getCounter(obj_ptr);
-    free(counterPointer);
+    printf("hej");
+    //free(counterPointer);
+    printf("hej");
 }
 
 void retain(obj *obj_ptr) 

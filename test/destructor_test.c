@@ -6,6 +6,12 @@
 #include "../src/queue.h" 
 #include "../src/refmem.h"
 
+// **** TEST DESTRUCTORS ****
+void string_destructor(obj *o) {
+    char *string = o;
+    printf("%s SUCCESS", string);
+}
+
 int init_suite(void)
 {
     return 0;
@@ -14,12 +20,6 @@ int init_suite(void)
 int clean_suite(void)
 {
     return 0;
-}
-
-// **** TEST DESTRUCTOR ****
-void string_destructor(obj *o) {
-    char *string = o;
-    printf("%s SUCCESS", string);
 }
 
 void test_default_destructor(void) {
@@ -37,6 +37,12 @@ void test_default_destructor(void) {
     deallocate(test_obj->internal_obj);
 }
 
+void test_string_destructor() {
+    char *my_string = allocate(sizeof(char*), string_destructor);
+    my_string = "testingtesting123";
+    deallocate(my_string);    
+}
+
 int main()
 {
     if (CU_initialize_registry() != CUE_SUCCESS)
@@ -50,7 +56,8 @@ int main()
     }
 
     if (
-        (CU_add_test(my_test_suite, "Test default destructor", test_default_destructor) == NULL)
+        (CU_add_test(my_test_suite, "Test default destructor", test_default_destructor) == NULL ||
+        CU_add_test(my_test_suite, "Test for string destructor", test_string_destructor) == NULL)
     )
 
     {
