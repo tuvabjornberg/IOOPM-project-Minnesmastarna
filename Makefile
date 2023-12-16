@@ -32,6 +32,12 @@ prof:
 demo: 
 	$(MAKE) -C $@
 
+example: 
+	$(MAKE) -C $(DEMO) memexample
+
+sanexample: 
+	$(MAKE) -C $(DEMO) sanexample	
+
 clean: 
 	rm -f *.o
 	$(MAKE) -C $(SRC) clean
