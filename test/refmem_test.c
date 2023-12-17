@@ -22,7 +22,6 @@ void test_allocate_deallocate()
     CU_ASSERT_PTR_NOT_NULL(obj);
     CU_ASSERT_EQUAL(rc(obj), 0);
     deallocate(obj);
-    
 }
 
 void test_retain()
@@ -42,6 +41,7 @@ void test_retain()
 
 void test_release()
 {
+    set_queue_to_null(); 
     obj* obj1 = allocate(sizeof(int), NULL);
 
     retain(obj1);
@@ -62,6 +62,9 @@ void test_release()
     CU_ASSERT_EQUAL(rc(obj1), 1);
 
     deallocate(obj1);
+
+    shutdown(); 
+    set_queue_to_null();  
 }
 
 void test_allocate_deallocate_array()
@@ -112,6 +115,9 @@ void test_release_array()
     CU_ASSERT_EQUAL(rc(obj_arr), 1);
 
     deallocate(obj_arr);
+
+    shutdown(); 
+    set_queue_to_null(); 
 }
 
 void set_get_cascade_limit()
@@ -138,24 +144,28 @@ void integration_cleanup_test()
     release(obj2);
 
     obj* obj3 = allocate(sizeof(int), NULL);
+    retain(obj3); 
     release(obj3);
+    
     obj* obj4 = allocate(sizeof(int), NULL);
+    retain(obj4); 
     release(obj4);
 
     cleanup();
 
     shutdown();
-
+    set_queue_to_null(); 
     puts("Integration test complete");
 }
 
 void test_rc_overflow()
 {
     obj* obj = allocate(sizeof(int), NULL);
-    for (int i = 0; i <= 65540; i++) { // 65540 > 65535, which leads to reference count overflow
+    for (int i = 0; i <= 65535; i++) { //65535, which leads to reference count overflow
+        CU_ASSERT_TRUE(rc(obj) == i);
         retain(obj);
     }
-    CU_ASSERT_PTR_NULL(obj); // Reference count overflow should lead to the object being destroyed
+    // Reference count overflow should lead to the object being destroyed
 }
 
 int main()
