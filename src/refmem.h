@@ -5,6 +5,8 @@
 typedef void obj;
 typedef void(*function1_t)(obj *);
 
+void set_queue_to_null(); 
+
 void retain(obj *);
 
 void release(obj *);

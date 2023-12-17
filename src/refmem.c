@@ -14,6 +14,11 @@ obj *getCounter(obj *obj_ptr)
     return ((unsigned short *)obj_ptr) - 1;
 }
 
+void set_queue_to_null()
+{
+    to_be_freed = NULL; 
+}
+
 static void free_from_queue()
 {
     for (size_t i = 0; i < cascade_limit; i++)
@@ -35,7 +40,7 @@ static void free_from_queue()
 
 obj *allocate(size_t bytes, function1_t destructor)
 {
-    int *allocation = calloc(1, (COUNTERSIZE + bytes));
+    unsigned short *allocation = calloc(1, (COUNTERSIZE + bytes));
     (*allocation) = 0;
 
     free_from_queue();
@@ -56,8 +61,11 @@ void retain(obj *obj_ptr)
     {
         counterPointer = 0;
         deallocate(obj_ptr);
+    } 
+    else 
+    {
+        (*counterPointer)++;
     }
-    (*counterPointer)++;
 }
 
 static void add_to_free_queue(obj *obj_to_free)
@@ -74,7 +82,7 @@ void release(obj *obj_ptr)
     unsigned short *counterPointer = getCounter(obj_ptr);
     (*counterPointer)--;
 
-    if ((*counterPointer) <= 0)
+    if ((*counterPointer) <= 1)
     {
         add_to_free_queue(obj_ptr);
     }
@@ -88,7 +96,7 @@ unsigned short rc(obj *obj_ptr)
 
 obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
 {
-    int *allocation = calloc(1, (COUNTERSIZE + (elements * elem_size)));
+    unsigned short *allocation = calloc(1, (COUNTERSIZE + (elements * elem_size)));
     (*allocation) = 0;
     return &(allocation[1]);
 }
@@ -120,5 +128,5 @@ void cleanup()
 
 void shutdown()
 {
-    free(to_be_freed);
+    destroy_queue(to_be_freed); 
 }
