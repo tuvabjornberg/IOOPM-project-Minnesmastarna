@@ -47,7 +47,7 @@ cov: refmem_test_coverage.out queue_test_coverage.out
 	./refmem_test_coverage.out
 	gcov -b -c refmem_test_coverage.out-refmem.c
 
-refmem_prof.out: refmem_test.c refmem.c
+refmem_prof.out: refmem_test.c refmem.c queue.c
 	$(C_COMPILER) $(C_OPTIONS) $^ -o $@ $(C_PROF) $(CUNIT_LINK) 
 
 prof: refmem_prof.out 
