@@ -35,7 +35,7 @@ static void free_from_queue()
 
 obj *allocate(size_t bytes, function1_t destructor)
 {
-    int *allocation = calloc(1, (COUNTERSIZE + bytes));
+    unsigned short *allocation = calloc(1, (COUNTERSIZE + bytes));
     (*allocation) = 0;
 
     free_from_queue();
@@ -88,7 +88,7 @@ unsigned short rc(obj *obj_ptr)
 
 obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
 {
-    int *allocation = calloc(1, (COUNTERSIZE + (elements * elem_size)));
+    unsigned short *allocation = calloc(1, (COUNTERSIZE + (elements * elem_size)));
     (*allocation) = 0;
     return &(allocation[1]);
 }

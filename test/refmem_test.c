@@ -22,6 +22,7 @@ void test_allocate_deallocate()
     CU_ASSERT_PTR_NOT_NULL(obj);
     CU_ASSERT_EQUAL(rc(obj), 0);
     deallocate(obj);
+    
 }
 
 void test_retain()
