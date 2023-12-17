@@ -62,9 +62,12 @@ obj *dequeue(Queue* queue)
 
 void destroy_queue(Queue* queue) 
 {
-    while (!is_empty(queue)) 
+    if (queue != NULL)
     {
-        dequeue(queue);
+        while (!is_empty(queue)) 
+        {
+            dequeue(queue);
+        }
     }
 
     free(queue);
