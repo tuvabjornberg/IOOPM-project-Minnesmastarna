@@ -9,7 +9,7 @@ void retain(obj *);
 
 void release(obj *);
 
-size_t rc(obj *);
+unsigned short rc(obj *);
 
 obj *allocate(size_t bytes, function1_t destructor);
 
