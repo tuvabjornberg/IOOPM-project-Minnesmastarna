@@ -203,8 +203,7 @@ void cleanup()
 
 void shutdown() 
 {
-    //free(to_be_freed); 
-    //to_be_freed = NULL;
-    //ioopm_hash_table_destroy(object_destructors);
-    //ioopm_hash_table_destroy(object_sizes);
+    destroy_queue(to_be_freed);
+    ioopm_linked_list_destroy(allocated_pointers);
+    to_be_freed = NULL;
 }
