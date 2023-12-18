@@ -99,7 +99,7 @@ static char *merch_in_cart_check(ioopm_hash_table_t *cart_items)
     char *input_name = ioopm_ask_question_string("\nWrite the merch to remove items from: ");     
     while (!ioopm_has_merch_in_cart(cart_items, input_name)) 
     {
-       char *new_alt = ioopm_ask_question_string("\nYour cart doesn't have that merch, do you want another try (y/n)? "); 
+        char *new_alt = ioopm_ask_question_string("\nYour cart doesn't have that merch, do you want another try (y/n)? "); 
 
         if (toupper(*new_alt) == 'Y'  && strlen(new_alt) == 1)
         {
@@ -469,57 +469,63 @@ void event_loop(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     {
         print_menu(); 
         char *menu_choice = ioopm_ask_question_string(" "); 
-        switch (toupper(*menu_choice))
-        {
-            case 'A': 
-                merch_add(store); 
-                break; 
-            case 'L': 
-                merch_list(store); 
-                break; 
-            case 'D':
-                merch_remove(store, storage_carts); 
-                break;
-            case 'E':
-                merch_edit(store, storage_carts); 
-                break;
-            case 'S': 
-                stock_list(store); 
-                break;
-            case 'P': 
-                stock_replenish(store); 
-                break;
-            case 'C': 
-                cart_create(storage_carts); 
-                break; 
-            case 'R':
-                cart_destroy(store, storage_carts); 
-                break; 
-            case '+':
-                cart_add(store, storage_carts); 
-                break; 
-            case '-': 
-	            cart_remove(store, storage_carts); 
-                break; 
-            case '=': 
-	            cart_cost_calculate(store, storage_carts); 
-                break; 
-            case 'O': 
-	      cart_checkout(store, storage_carts); 
-                break; 
-            case 'Q':
-                quit_confirmation = ioopm_ask_question_string("Press 'Y' if you really want to quit");
+        if (strlen(menu_choice) == 1) {
+            switch (toupper(*menu_choice))
+            {
+                case 'A': 
+                    merch_add(store); 
+                    break; 
+                case 'L': 
+                    merch_list(store); 
+                    break; 
+                case 'D':
+                    merch_remove(store, storage_carts); 
+                    break;
+                case 'E':
+                    merch_edit(store, storage_carts); 
+                    break;
+                case 'S': 
+                    stock_list(store); 
+                    break;
+                case 'P': 
+                    stock_replenish(store); 
+                    break;
+                case 'C': 
+                    cart_create(storage_carts); 
+                    break; 
+                case 'R':
+                    cart_destroy(store, storage_carts); 
+                    break; 
+                case '+':
+                    cart_add(store, storage_carts); 
+                    break; 
+                case '-': 
+	                cart_remove(store, storage_carts); 
+                    break; 
+                case '=': 
+	                cart_cost_calculate(store, storage_carts); 
+                    break; 
+                case 'O': 
+	                cart_checkout(store, storage_carts); 
+                    break; 
+                case 'Q':
+                    quit_confirmation = ioopm_ask_question_string("Press 'Y' if you really want to quit");
 
-                if (toupper(*quit_confirmation) == 'Y' && strlen(quit_confirmation) == 1)
-                {
-                    running = false; 
-                    ioopm_cart_storage_destroy(storage_carts);  
-                    ioopm_store_destroy(store);
-                } 
-                free(quit_confirmation); 
-                break; 
-            default:
-                puts("\nTry again with a valid input"); 
+                    if (toupper(*quit_confirmation) == 'Y' && strlen(quit_confirmation) == 1)
+                    {
+                        running = false; 
+                        ioopm_cart_storage_destroy(storage_carts);  
+                        ioopm_store_destroy(store);
+                    } 
+                    free(quit_confirmation); 
+                    break; 
+                default:
+                    puts("\nTry again with a valid input"); 
+            }
+        } 
+        else 
+        {
+            puts("\nTry again with a valid input"); 
         }
         free(menu_choice); 
     } while (running); 
