@@ -105,6 +105,7 @@ int ioopm_cost_calculate(ioopm_store_t *store, ioopm_carts_t *storage_carts, int
     {
         elem_t key = ioopm_linked_list_get(keys, i);
         option_t *value = ioopm_hash_table_lookup(cart_items, key);
+        
         if (value->success)
         {
 	        total_cost += value->value.integer * ioopm_price_get(ioopm_merch_get(store, key.string));
