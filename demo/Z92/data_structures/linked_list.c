@@ -14,6 +14,7 @@ struct link
     elem_t value;
     struct link *next;
 };
+
 struct list
 {
     link_t *first;
