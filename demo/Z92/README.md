@@ -18,8 +18,11 @@ $ make clean
    ```
    #### Run tests:
    ```
+   for hash_table and linked_list: 
+   $ make ds_tests
+
    for merch_storage and shop_cart:
-   $ make tests
+   $ make logic_tests
 
    for ui:
    $ make ui_tests
@@ -27,14 +30,17 @@ $ make clean
 
    #### Memory tests:
    ```
+   for hash_table.c and linked_list.c
+   $ make ds_memtests
+   
    for merch_storage and shop_cart:
-   $ make mem_tests
+   $ make logic_memtests
    
    for ui without input file:
-   $ make mem_ui
+   $ make ui_memtests
 
    for ui with input file:
-   $ make mem_ui_arg
+   $ make ui_arg_memtests
    or
    $ make ui_sanitize
    ```

@@ -14,30 +14,42 @@ ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
 
 
-ui_san.out: ui.c hash_table.c linked_list.c utils.c merch_storage.c shop_cart.c hash_fun.c
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ 
-
-ui_sanitize: ui_san.out
-	./ui_san.out < tests/ui_tests.txt
-
 merch_storage_tests.out: merch_storage_tests.o merch_storage.o shop_cart.o hash_table.o linked_list.o hash_fun.o	
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
 shop_cart_tests.out: shop_cart_tests.o shop_cart.o hash_table.o linked_list.o merch_storage.o hash_fun.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
 
-tests: merch_storage_tests.out shop_cart_tests.out 
+logic_tests: merch_storage_tests.out shop_cart_tests.out 
 	./merch_storage_tests.out 
 	./shop_cart_tests.out
 
-merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
-
-merchsan: merchsan.out
-	./merchsan.out
+logic_memtests: merch_storage_tests.out shop_cart_tests.out 
+	valgrind --leak-check=full ./shop_cart_tests.out
+	valgrind --leak-check=full ./merch_storage_tests.out	
 
 ui_tests: ui.out
 	./ui.out < tests/ui_tests.txt
+
+ui_memtests: ui.out
+	valgrind --leak-check=full ./ui.out  
+
+ui_arg_memtests: ui.out
+	valgrind --leak-check=full ./ui.out < tests/ui_tests.txt
+
+hash_test.out: hash_table_tests.o hash_table.o linked_list.o 
+	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
+
+list_test.out: linked_list.o linked_list_tests.o
+	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
+
+ds_tests: hash_test.out list_test.out
+	./hash_test.out 
+	./list_test.out	
+
+ds_memtests: hash_test.out list_test.out
+	valgrind --leak-check=full ./hash_test.out
+	valgrind --leak-check=full ./list_test.out
 
 merch_test_coverage.out: merch_storage_tests.o merch_storage.c shop_cart.o hash_table.o linked_list.o hash_fun.o	
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
@@ -80,19 +92,19 @@ prof: ui_prof.out merch_storage_prof.out shop_cart_prof.out shop_cart_prof.out
 	gprof shop_cart_prof.out gmon.out > shop_cart_prof.profiling
 
 
+ui_san.out: ui.c hash_table.c linked_list.c utils.c merch_storage.c shop_cart.c hash_fun.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ 
+
+ui_sanitize: ui_san.out
+	./ui_san.out < tests/ui_tests.txt
+
+merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
+
+merchsan: merchsan.out
+	./merchsan.out
+
 clean:
 	rm -f *.o *.out *.profiling *.gcno *gcda *.gcov ui merch_storage_tests shop_cart_tests ui_sanitize
 
-
-mem_tests: merch_storage_tests.out shop_cart_tests.out 
-	valgrind --leak-check=full ./shop_cart_tests.out
-	valgrind --leak-check=full ./merch_storage_tests.out	
-
-mem_ui: ui.out
-	valgrind --leak-check=full ./ui.out  
-
-mem_ui_arg: ui.out
-	valgrind --leak-check=full ./ui.out < tests/ui_tests.txt
-
-
-.PHONY: ui_sanitize tests ui_tests cov prof clean mem_tests mem_ui mem_ui_arg merchsan
+.PHONY: ui_sanitize tests ui_tests cov prof clean mem_tests mem_ui mem_ui_arg merchsan ds_memtests ds_tests

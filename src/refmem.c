@@ -82,7 +82,7 @@ void release(obj *obj_ptr)
     unsigned short *counterPointer = getCounter(obj_ptr);
     (*counterPointer)--;
 
-    if ((*counterPointer) <= 1)
+    if ((*counterPointer) <= 0)
     {
         add_to_free_queue(obj_ptr);
     }
