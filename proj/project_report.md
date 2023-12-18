@@ -10,7 +10,7 @@
 |Hektor Einarsson   |     |28/11-2023   --                  |
 |Martin Ek          |     |28/11-2023   --                  |
 |Tove Frænell       |     |28/11-2023   --                  |
-|Theo Karlsson      |     |28/11-2023   --                  |    
+|Theo Karlsson      |theocarlsson@gmail.com                 |28/11-2023   --             |    
 
 
 ## Quantification
