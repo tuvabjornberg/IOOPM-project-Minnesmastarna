@@ -50,21 +50,21 @@ obj *allocate(size_t bytes, function1_t destructor)
 
 void deallocate(obj *obj_ptr)
 {
-    unsigned short *counterPointer = get_counter(obj_ptr);
-    free(counterPointer);
+    unsigned short *counter_pointer = get_counter(obj_ptr);
+    free(counter_pointer);
 }
 
 void retain(obj *obj_ptr)
 {
-    unsigned short *counterPointer = get_counter(obj_ptr);
-    if (*counterPointer == 65535) // Reference count max size
+    unsigned short *counter_pointer = get_counter(obj_ptr);
+    if (*counter_pointer == 65535) // Reference count max size
     {
-        counterPointer = 0;
+        counter_pointer = 0;
         deallocate(obj_ptr);
     } 
     else 
     {
-        (*counterPointer)++;
+        (*counter_pointer)++;
     }
 }
 
@@ -79,10 +79,10 @@ static void add_to_free_queue(obj *obj_to_free)
 
 void release(obj *obj_ptr)
 {
-    unsigned short *counterPointer = get_counter(obj_ptr);
-    (*counterPointer)--;
+    unsigned short *counter_pointer = get_counter(obj_ptr);
+    (*counter_pointer)--;
 
-    if ((*counterPointer) <= 0)
+    if ((*counter_pointer) <= 0)
     {
         add_to_free_queue(obj_ptr);
     }
@@ -90,8 +90,8 @@ void release(obj *obj_ptr)
 
 unsigned short rc(obj *obj_ptr)
 {
-    unsigned short *counterPointer = get_counter(obj_ptr);
-    return *counterPointer;
+    unsigned short *counter_pointer = get_counter(obj_ptr);
+    return *counter_pointer;
 }
 
 obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
