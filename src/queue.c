@@ -6,11 +6,11 @@
 
 Queue* create_queue() 
 {
-    Queue* newQueue = (Queue*)calloc(1, sizeof(Queue));
+    Queue* new_queue = (Queue*)calloc(1, sizeof(Queue));
 
-    newQueue->front = newQueue->rear = NULL;
+    new_queue->front = new_queue->rear = NULL;
 
-    return newQueue;
+    return new_queue;
 }
 
 bool is_empty(Queue* queue) 
@@ -20,19 +20,19 @@ bool is_empty(Queue* queue)
 
 void enqueue(Queue* queue, obj *data) 
 {
-    Node* newNode = (Node*)calloc(1, sizeof(Node));
+    Node* new_node = (Node*)calloc(1, sizeof(Node));
 
-    newNode->data = data;
-    newNode->next = NULL;
+    new_node->data = data;
+    new_node->next = NULL;
 
     if (is_empty(queue)) 
     {
-        queue->front = queue->rear = newNode;
+        queue->front = queue->rear = new_node;
     } 
     else 
     {
-        queue->rear->next = newNode;
-        queue->rear = newNode;
+        queue->rear->next = new_node;
+        queue->rear = new_node;
     }
 }
 

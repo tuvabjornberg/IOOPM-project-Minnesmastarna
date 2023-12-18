@@ -24,7 +24,6 @@ obj *allocate(size_t bytes, function1_t destructor);
 /// @param obj_ptr the object to destroy
 void deallocate(obj *obj_ptr);
 
-
 /// @brief Increases the reference count of an object by 1
 /// @param obj_ptr the object whose reference count is to be incremented
 void retain(obj *obj_ptr);
