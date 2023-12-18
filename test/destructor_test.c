@@ -8,8 +8,12 @@
 
 // **** TEST DESTRUCTORS ****
 void string_destructor(obj *o) {
-    char *string = o;
-    printf("%s SUCCESS", string);
+    printf(" %p SUCCESS ", (char *)o);
+}
+
+void int_destructor(obj *o) {
+    int *object = o;
+    printf(" %d SUCCESS ", *object);
 }
 
 int init_suite(void)
@@ -29,18 +33,29 @@ void test_default_destructor(void) {
 
     struct my_struct *test_obj = allocate(sizeof(struct my_struct), NULL);
     test_obj->internal_obj = allocate(sizeof(int), NULL);
-    retain(test_obj->internal_obj);
 
-    default_destructor(test_obj);
+    CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 0);
+    retain(test_obj->internal_obj);
+    CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 1);
+    deallocate(test_obj);
     CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 0);
 
-    deallocate(test_obj->internal_obj);
 }
 
 void test_string_destructor() {
-    char *my_string = allocate(sizeof(char*), string_destructor);
-    my_string = "testingtesting123";
-    deallocate(my_string);    
+    char *my_string = allocate(sizeof(char) * 255, *string_destructor);
+    *my_string = "testingtesting123";
+    retain(my_string);
+    release(my_string);
+    cleanup();
+}
+
+void test_int_destructor() {
+    int *my_int = allocate(sizeof(int), int_destructor);
+    *my_int = 2;
+    retain(my_int);
+    release(my_int);
+    cleanup();
 }
 
 int main()
@@ -48,7 +63,7 @@ int main()
     if (CU_initialize_registry() != CUE_SUCCESS)
         return CU_get_error();
 
-    CU_pSuite my_test_suite = CU_add_suite("Tests for queue.c", init_suite, clean_suite);
+    CU_pSuite my_test_suite = CU_add_suite("Tests for destructors in refmem.c", init_suite, clean_suite);
     if (my_test_suite == NULL)
     {
         CU_cleanup_registry();
@@ -57,7 +72,8 @@ int main()
 
     if (
         (CU_add_test(my_test_suite, "Test default destructor", test_default_destructor) == NULL ||
-        CU_add_test(my_test_suite, "Test for string destructor", test_string_destructor) == NULL)
+        CU_add_test(my_test_suite, "Test for string destructor", test_string_destructor) == NULL ||
+        CU_add_test(my_test_suite, "Test for int destructor", test_int_destructor) == NULL )
     )
 
     {

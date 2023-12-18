@@ -131,11 +131,16 @@ void integration_cleanup_test()
     obj* obj1 = allocate(sizeof(int), NULL); 
     obj* obj2 = allocate(sizeof(int), NULL); 
 
+
     retain(obj1); 
+
     retain(obj2); 
 
     release(obj1); 
+
     release(obj2); 
+
+
 
     obj* obj3 = allocate(sizeof(int), NULL); 
     release(obj3); 
@@ -146,7 +151,7 @@ void integration_cleanup_test()
 
     shutdown(); 
 
-    puts("Integration test complete");   
+    puts("\nIntegration test complete");   
 }
 
 int main()

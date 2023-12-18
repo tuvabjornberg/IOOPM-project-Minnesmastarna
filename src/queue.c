@@ -9,13 +9,14 @@ Queue* create_queue()
     Queue* newQueue = (Queue*)calloc(1, sizeof(Queue));
 
     newQueue->front = newQueue->rear = NULL;
+    newQueue->size = 0;
 
     return newQueue;
 }
 
 bool is_empty(Queue* queue) 
 {
-    return queue->front == NULL;
+    return ( queue->size == 0 );
 }
 
 void enqueue(Queue* queue, obj *data) 
@@ -34,6 +35,8 @@ void enqueue(Queue* queue, obj *data)
         queue->rear->next = newNode;
         queue->rear = newNode;
     }
+
+    queue->size++;
 }
 
 obj *dequeue(Queue* queue) 
@@ -57,6 +60,7 @@ obj *dequeue(Queue* queue)
     }
 
     free(temp);
+    queue->size--;
     return data;
 }
 
