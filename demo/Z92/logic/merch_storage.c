@@ -7,8 +7,8 @@
 
 ioopm_store_t *ioopm_store_create()
 {
-    ioopm_store_t *new_store = calloc(1, sizeof(ioopm_store_t));
-    new_store->merch_names = calloc(STORAGE_INITIAL_CAPACITY , sizeof(char*));
+    ioopm_store_t *new_store = calloc(1, sizeof(ioopm_store_t)); //TODO: allocate_array
+    new_store->merch_names = calloc(STORAGE_INITIAL_CAPACITY , sizeof(char*)); //TODO: allocate_array
     new_store->merch_details = ioopm_hash_table_create(ioopm_hash_fun_sum_key_string, ioopm_string_eq);
     new_store->merch_count = 0;
     new_store->capacity = STORAGE_INITIAL_CAPACITY ;
@@ -17,11 +17,11 @@ ioopm_store_t *ioopm_store_create()
 
 ioopm_merch_t *ioopm_merch_create(char *name, char *description, int price, ioopm_list_t *stock, int stock_size)
 {
-    ioopm_merch_t *new_merch = calloc(1, sizeof(ioopm_merch_t));
-    new_merch->name = strdup(name);
-    free(name); 
-    new_merch->description = strdup(description);
-    free(description); 
+    ioopm_merch_t *new_merch = calloc(1, sizeof(ioopm_merch_t)); //TODO: allocate_array
+    new_merch->name = strdup(name); //TODO: retain?
+    free(name); //TODO: deallocate? inputs från terminal
+    new_merch->description = strdup(description); //TODO: retain?
+    free(description); //TODO: deallocate? -||-
     new_merch->price = price;
     new_merch->stock = stock; 
     new_merch->stock_size = stock_size;
@@ -44,7 +44,7 @@ static int names_index_of(ioopm_store_t *store, char *name)
     {
         mid = start + (end - start) / 2;
 
-        int comparison = strcmp(name, *mid);
+        int comparison = strcmp(name, *mid); 
         if (comparison == 0) return mid - store->merch_names; 
         if (comparison > 0) 
         {
@@ -67,7 +67,7 @@ static void names_insert(ioopm_store_t *store, int index, char *name)
     if (last >= store->capacity)
     {
         store->capacity *= 2;
-        store->merch_names = realloc(store->merch_names, store->capacity * sizeof(char*));
+        store->merch_names = realloc(store->merch_names, store->capacity * sizeof(char*)); //TODO: ??
     }
 
     for (int i = last; i > index; i--) 
@@ -101,9 +101,9 @@ void ioopm_store_add(ioopm_store_t *store, ioopm_merch_t *merch)
 
 static location_t *location_create(char *shelf, int amount)
 {
-    location_t *location = calloc(1, sizeof(location_t)); 
-    location->shelf = strdup(shelf);
-    free(shelf);  
+    location_t *location = calloc(1, sizeof(location_t)); //TODO: allocate_array
+    location->shelf = strdup(shelf); //TODO: retain?
+    free(shelf); //TODO: deallocate?
     location->quantity = amount; 
 
     return location; 
@@ -126,12 +126,12 @@ ioopm_merch_t *ioopm_merch_get(ioopm_store_t *store, char *name)
   if (lookup_result->success)
     {
       ioopm_merch_t *merch_found = lookup_result->value.void_ptr;
-      free(lookup_result);
+      free(lookup_result); //TODO: ??
       return merch_found;          
     }
   else
     {
-      free(lookup_result);
+      free(lookup_result); //TODO: ??
       return NULL;          
     }
 }
@@ -238,7 +238,7 @@ void ioopm_location_add(ioopm_merch_t *merch, char *shelf, int amount)
         location_t *location = location_get(merch, shelf);
         location->quantity = quantity_get(location) + amount;
         merch->stock_size = stock_size_get(merch) + amount; 
-        free(shelf);  
+        free(shelf); //TODO: deallocate?
     }
     else
     {
@@ -315,7 +315,7 @@ static void search_carts(elem_t key, elem_t *value, void *old_name, void *new_na
     ioopm_hash_table_insert((ioopm_hash_table_t *) value->void_ptr, str_elem(new_name), lookup_result->value); 
     ioopm_hash_table_remove((ioopm_hash_table_t *) value->void_ptr, str_elem(old_name)); 
 
-    free(lookup_result); 
+    free(lookup_result); //TODO: ??
 }
 
 void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_name, ioopm_hash_table_t *carts)
@@ -339,16 +339,16 @@ void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_na
     names_remove(store, names_index_of(store, old_name));
     store->merch_count--;
 
-    free(old_name);
-    free(old_merch);
+    free(old_name); //TODO: deallocate
+    free(old_merch); //TODO: deallocate
 }
 
 void ioopm_description_set(ioopm_merch_t *merch, char *new_description)
 {
     char *old_description = description_get(merch); 
-    merch->description = strdup(new_description);
-    free(old_description); 
-    free(new_description); 
+    merch->description = strdup(new_description); //TODO: retain?
+    free(old_description); //TODO: deallocate
+    free(new_description); //TODO: deallocate
 }
 
 void ioopm_price_set(ioopm_merch_t *merch, int new_price)
@@ -377,8 +377,8 @@ void ioopm_stock_print(ioopm_merch_t *merch)
 static void stock_destroy(elem_t *value, void *arg)
 {
     char *shelf = shelf_get(value->void_ptr); 
-    free(shelf); 
-    free(value->void_ptr);
+    free(shelf); //TODO: deallocate
+    free(value->void_ptr); //TODO: deallocate
 }
 
 static void cart_iterator(elem_t id, elem_t *cart_items, void *name)
@@ -402,9 +402,9 @@ void ioopm_store_remove(ioopm_store_t *store, ioopm_hash_table_t *carts, char *n
     names_remove(store, names_index_of(store, name));
     ioopm_hash_table_remove(store->merch_details, str_elem(name));
     
-    free(merch->name); 
-    free(merch->description); 
-    free(merch);
+    free(merch->name); //TODO: deallocate
+    free(merch->description); //TODO: deallocate
+    free(merch); //TODO: deallocate
 
     store->merch_count--;
 }
@@ -419,16 +419,16 @@ static void merch_destroy(elem_t name, elem_t *value, void *arg)
     char *name_in_merch = merch_name_get(value->void_ptr); 
     char *description = description_get(value->void_ptr); 
 
-    free(name_in_merch); 
-    free(description); 
-    free(value->void_ptr); 
+    free(name_in_merch); //TODO: deallocate
+    free(description); //TODO: deallocate
+    free(value->void_ptr); //TODO: deallocate
 }
 
 void ioopm_store_destroy(ioopm_store_t *store)
 {
     ioopm_hash_table_apply_to_all(store->merch_details, merch_destroy, NULL);
-    free(store->merch_names);
+    free(store->merch_names); //TODO: deallocate
 
     ioopm_hash_table_destroy(store->merch_details);
-    free(store);
+    free(store); //TODO: deallocate
 }

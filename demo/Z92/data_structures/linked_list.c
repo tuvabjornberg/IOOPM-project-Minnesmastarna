@@ -31,7 +31,7 @@ struct iter
 
 ioopm_list_t *ioopm_linked_list_create(ioopm_eq_function eq_fun)
 {
-    ioopm_list_t *list = calloc(1, sizeof(struct list));
+    ioopm_list_t *list = calloc(1, sizeof(struct list)); //TODO: allocate_array
     list->eq_fun = eq_fun; 
     list->size = 0; 
     return list; 
@@ -43,12 +43,12 @@ void ioopm_linked_list_destroy(ioopm_list_t *list)
     {
         ioopm_linked_list_clear(list);
     }
-    free(list);
+    free(list); //TODO: deallocate
 }
 
 static link_t *link_create(elem_t value, link_t *next)
 {
-    link_t *new_link = calloc(1, sizeof(link_t));
+    link_t *new_link = calloc(1, sizeof(link_t)); //TODO: allocate_array
     new_link->value = value;
     new_link->next = next;
     return new_link;
@@ -148,7 +148,7 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
         {
             value = list->first->value;
             link_t *tmp = list->first->next;
-            free(list->first);
+            free(list->first); //TODO: deallocate
             list->first = tmp;
             list->size--;
         }
@@ -161,7 +161,7 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
                 {
                     value = current->next->value;
                     link_t *tmp = current->next->next;
-                    free(current->next);
+                    free(current->next); //TODO: deallocate
                     current->next = tmp;
                     list->size--;
                 }
@@ -229,7 +229,7 @@ void ioopm_linked_list_clear(ioopm_list_t *list)
     while (current != NULL)
     {
         link_t *next = current->next;
-        free(current);
+        free(current); //TODO: deallocate
         current = next;
         list->size--;
     }
@@ -282,7 +282,7 @@ void ioopm_linked_list_apply_to_all(ioopm_list_t *list, ioopm_apply_int_function
 
 ioopm_list_iterator_t *ioopm_list_iterator(ioopm_list_t *list)
 {
-    ioopm_list_iterator_t *iter = calloc(1, sizeof(ioopm_list_iterator_t));
+    ioopm_list_iterator_t *iter = calloc(1, sizeof(ioopm_list_iterator_t));//TODO: allocate_array
 
     iter->list = list;
     iter->current = list->first;
@@ -339,5 +339,5 @@ elem_t ioopm_iterator_current(ioopm_list_iterator_t *iter)
 }
 void ioopm_iterator_destroy(ioopm_list_iterator_t *iter)
 {
-    free(iter);
+    free(iter);//TODO: deallocate
 }

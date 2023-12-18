@@ -45,8 +45,8 @@ size_t ioopm_get_ht_capacity(ioopm_hash_table_t *ht)
 
 ioopm_hash_table_t *ioopm_hash_table_create(ioopm_hash_function hash_fun, ioopm_eq_function eq_fun) 
 {
-    ioopm_hash_table_t *ht = calloc(1, sizeof(ioopm_hash_table_t));
-    ht->buckets = calloc(1, sizeof(entry_t) * HASHTABLE_INITIAL_CAPACITY );
+    ioopm_hash_table_t *ht = calloc(1, sizeof(ioopm_hash_table_t)); //TODO: allocate_array
+    ht->buckets = calloc(1, sizeof(entry_t) * HASHTABLE_INITIAL_CAPACITY ); //TODO: allocate_array
     ht->hash_fun = hash_fun;
     ht->eq_fun = eq_fun;
     ht->size = 0;
@@ -60,7 +60,7 @@ static void entry_destroy(entry_t *entry)
     while (entry != NULL) 
     {
         entry_t *next = entry->next;
-        free(entry);
+        free(entry); //TODO: deallocate
         entry = next;
     }
 }
@@ -68,14 +68,14 @@ static void entry_destroy(entry_t *entry)
 void ioopm_hash_table_destroy(ioopm_hash_table_t *ht) 
 {
     ioopm_hash_table_clear(ht);
-    free(ht->buckets);
+    free(ht->buckets); //TODO: deallocate
     free(ht);
 }
 
 // Creates a new entry with a given key, value and next pointer
 static entry_t *entry_create(elem_t key, elem_t value, entry_t *next) 
 {
-    entry_t *new_entry = calloc(1, sizeof(entry_t));
+    entry_t *new_entry = calloc(1, sizeof(entry_t)); //TODO: allocate_array
     new_entry->key = key;
     new_entry->value = value;
     new_entry->next = next;
@@ -105,7 +105,7 @@ static entry_t *find_previous_entry_for_key(entry_t *bucket, elem_t key, ioopm_e
 
 static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity) 
 {
-    entry_t *new_buckets = calloc(1, sizeof(entry_t) * new_ht_capacity);
+    entry_t *new_buckets = calloc(1, sizeof(entry_t) * new_ht_capacity); //TODO: allocate_array
 
     for (size_t i = 0; i < ht->ht_capacity; ++i) 
     {
@@ -117,14 +117,14 @@ static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity)
             entry_t *new_entry = entry_create(current->key, current->value, new_buckets[new_index].next);
       
             entry_t *old_next = current->next; 
-            free(current); 
+            free(current); //TODO: deallocate
       
             new_buckets[new_index].next = new_entry;
             current = old_next; 
         }
     }
 
-    free(ht->buckets);
+    free(ht->buckets); //TODO: deallocate
     ht->buckets = new_buckets;
     ht->ht_capacity = new_ht_capacity;
 }
@@ -191,13 +191,13 @@ elem_t ioopm_hash_table_remove(ioopm_hash_table_t *ht, elem_t key)
         {
           // for last entries
             prev->next = NULL;
-            free(current);
+            free(current); //TODO: deallocate
         } 
         else 
         {
             // for first and middle entries
             prev->next = current->next;
-            free(current);
+            free(current); //TODO: deallocate
         }
     } 
     else 
@@ -206,7 +206,7 @@ elem_t ioopm_hash_table_remove(ioopm_hash_table_t *ht, elem_t key)
         removed_value.void_ptr = NULL;
     }
 
-    free(lookup_result);
+    free(lookup_result); //TODO: deallocate
     ht->size--; 
     return removed_value;
 }
@@ -292,12 +292,12 @@ bool ioopm_hash_table_has_key(ioopm_hash_table_t *ht, elem_t key)
 
     if (lookup_result->success) 
     {
-        free(lookup_result);
+        free(lookup_result); //TODO: deallocate
         return true;
     } 
     else 
     {
-        free(lookup_result);
+        free(lookup_result); //TODO: deallocate
         return false;
     }
 }
@@ -310,16 +310,16 @@ bool ioopm_hash_table_has_value(ioopm_hash_table_t *ht, elem_t value)
 
         while (current != NULL) 
         {
-            char *duplicate = strdup(current->value.string);
+            char *duplicate = strdup(current->value.string); //TODO: retain?
 
             // test using both the identical string and the equivalent string
             if (strcmp(current->value.string, value.string) == 0 && strcmp(duplicate, value.string) == 0 && current->value.string == value.string) 
             {
-                free(duplicate);
+                free(duplicate); //TODO: deallocate
                 return true;
             }
 
-            free(duplicate);
+            free(duplicate); //TODO: deallocate
             current = current->next;
         }
     }
