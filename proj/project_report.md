@@ -10,8 +10,7 @@
 |Hektor Einarsson   |     |28/11-2023   --                  |
 |Martin Ek          |     |28/11-2023   --                  |
 |Tove Frænell       |tove.fraenell.3054@student.uu.se       |28/11-2023   --
-|Theo Karlsson      |     |28/11-2023   --                  |    
-
+|Theo Karlsson      |theocarlsson@gmail.com                 |28/11-2023   --             |    
 
 ## Quantification
 Project start date: 28/11-2023 \
