@@ -9,7 +9,7 @@
 |Tuva Björnberg     |tuva.bjornberg.5452@student.uu.se      |28/11-2023   --             |
 |Hektor Einarsson   |     |28/11-2023   --                  |
 |Martin Ek          |     |28/11-2023   --                  |
-|Tove Frænell       |     |28/11-2023   --                  |
+|Tove Frænell       |tove.fraenell.3054@student.uu.se       |28/11-2023   --
 |Theo Karlsson      |     |28/11-2023   --                  |    
 
 
@@ -46,6 +46,10 @@ In this section, discuss:
     how did you attack the Christmas break problem with planning?
 
 ## Use of Tools
+
+* Makefiles, CUnit
+
+
 In this section, discuss:
 
     what tools you used in the project
@@ -54,6 +58,10 @@ In this section, discuss:
     tools you would rather not use in the future
 
 ## Communication, Cooperation and Coordination
+
+* Communication between team members through discord, and regular meetings at the beginning of the project. 
+
+
 In this section, discuss:
 
     the communication between team members and with people outside the team
@@ -64,6 +72,9 @@ In this section, discuss:
     lessons learned
 
 ## Work Breakdown Structure
+
+* Sprint plan exists at the top of the document, 
+
 In this section, discuss:
 
     what sprints you planned for and what the time plan for the sprints were
@@ -88,5 +99,4 @@ In this section, discuss briefly:
     On a scale 1–7 (7 is best), rate your satisfaction with your quality assurance and provide justification for that number
     what does the team consider its biggest win?
     what does the team consider its biggest fail?
-
 
