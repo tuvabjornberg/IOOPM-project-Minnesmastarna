@@ -22,3 +22,12 @@ Några saker att fundera på:
 
 Together with the actual pull request log on GitHub, this file should convince the examiner that you pass Y66.
 
+
+
+# ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
+
+* TODO: Hur granskas kod, används någon mall när man granskar koden.
+
+
+# LINK TO GITHUB PULL REQUESTS
+https://github.com/IOOPM-UU/Minnesmastarna/pulls

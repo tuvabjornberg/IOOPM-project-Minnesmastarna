@@ -3,13 +3,13 @@
 #include "queue.h"
 
 #define COUNTERSIZE sizeof(int)
-//#define getCounter(obj_ptr) ((obj *)(((int *)obj_ptr) - 1))
+//#define get_counter(obj_ptr) ((obj *)(((int *)obj_ptr) - 1))
 
 static size_t cascade_limit = 5;
 static Queue *to_be_freed = NULL;
 
 // TODO: gör om till macro
-obj *getCounter(obj *obj_ptr)
+obj *get_counter(obj *obj_ptr)
 {
     return ((unsigned short *)obj_ptr) - 1;
 }
@@ -50,13 +50,13 @@ obj *allocate(size_t bytes, function1_t destructor)
 
 void deallocate(obj *obj_ptr)
 {
-    unsigned short *counterPointer = getCounter(obj_ptr);
+    unsigned short *counterPointer = get_counter(obj_ptr);
     free(counterPointer);
 }
 
 void retain(obj *obj_ptr)
 {
-    unsigned short *counterPointer = getCounter(obj_ptr);
+    unsigned short *counterPointer = get_counter(obj_ptr);
     if (*counterPointer == 65535) // Reference count max size
     {
         counterPointer = 0;
@@ -79,7 +79,7 @@ static void add_to_free_queue(obj *obj_to_free)
 
 void release(obj *obj_ptr)
 {
-    unsigned short *counterPointer = getCounter(obj_ptr);
+    unsigned short *counterPointer = get_counter(obj_ptr);
     (*counterPointer)--;
 
     if ((*counterPointer) <= 0)
@@ -90,7 +90,7 @@ void release(obj *obj_ptr)
 
 unsigned short rc(obj *obj_ptr)
 {
-    unsigned short *counterPointer = getCounter(obj_ptr);
+    unsigned short *counterPointer = get_counter(obj_ptr);
     return *counterPointer;
 }
 
@@ -128,5 +128,6 @@ void cleanup()
 
 void shutdown()
 {
+    cleanup();
     destroy_queue(to_be_freed); 
 }
