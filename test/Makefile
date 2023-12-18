@@ -10,15 +10,19 @@ VPATH           = ../src
 %.o:  %.c 
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-refmem_test.out: refmem_test.o refmem.o queue.o
+refmem_test.out: refmem_test.o refmem.o queue.o hash_table.o linked_list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
 queue_test.out: queue_test.o queue.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
-test: refmem_test.out queue_test.out
+destructor_test.out: destructor_test.o refmem.o hash_table.o queue.o linked_list.o
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
+
+test: refmem_test.out queue_test.out destructor_test.out
 	./queue_test.out
 	./refmem_test.out
+	./destructor_test.out
 
 memtest: refmem_test.out queue_test.out
 	valgrind --leak-check=full ./queue_test.out

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 /**
  * @file refmem.h
@@ -52,7 +53,12 @@ void set_cascade_limit(size_t limit);
 /// @param the object to destroy
 size_t get_cascade_limit();
 
-/// @brief Frees all objects with a reference count of zero, regardless of cascade limit
+bool is_allocated_pointer(obj *obj_ptr);
+
+void object_scanner(obj *obj_ptr, size_t obj_size);
+
+void default_destructor(obj *obj_ptr);
+
 void cleanup();
 
 /// @brief Removes all allocated memory from the program

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "../src/refmem.h"
 #include "../src/queue.h"
+#include "../src/hash_table.h"
 
 int init_suite(void)
 {
@@ -134,14 +135,19 @@ void integration_cleanup_test()
 {
     cleanup();
 
-    obj* obj1 = allocate(sizeof(int), NULL);
-    obj* obj2 = allocate(sizeof(int), NULL);
+    obj* obj1 = allocate(sizeof(int), NULL); 
+    obj* obj2 = allocate(sizeof(int), NULL); 
 
-    retain(obj1);
-    retain(obj2);
 
-    release(obj1);
-    release(obj2);
+    retain(obj1); 
+
+    retain(obj2); 
+
+    release(obj1); 
+
+    release(obj2); 
+
+
 
     obj* obj3 = allocate(sizeof(int), NULL);
     retain(obj3); 
