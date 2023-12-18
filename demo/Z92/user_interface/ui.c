@@ -10,7 +10,7 @@
 
 #define PRINT_AT_A_TIME 20
 
-static char *merch_exist_check(ioopm_store_t *store, bool should_exist)
+static char *merch_does_exist_check(ioopm_store_t *store, bool should_exist)
 {
     char *input_name = ioopm_ask_question_string("\nWrite the name of the merch: ");
 
@@ -21,7 +21,7 @@ static char *merch_exist_check(ioopm_store_t *store, bool should_exist)
                 ? "\nThe merch doesn't exist, do you want to write another one (y/n)? "
                 : "\nThe merch already exists, do you want to write another one (y/n)? ");
 
-        if (toupper(*new_alt) == 'Y')
+        if (toupper(*new_alt) == 'Y' && strlen(new_alt) == 1)
         {
             free(input_name);
             input_name = ioopm_ask_question_string("\nWrite the name of the merch: ");
@@ -58,7 +58,7 @@ static int merch_quantity_check(ioopm_store_t *store, char *merch_name, int curr
     {
         char *new_alt = ioopm_ask_question_string("\nThe store doesn't carry that many items, do you want another try (y/n)? "); 
 
-        if (toupper(*new_alt) == 'Y')
+        if (toupper(*new_alt) == 'Y'  && strlen(new_alt) == 1)
         {
             input_amount = ioopm_ask_question_int("\nWrite the amount to add to cart: "); 
         }
@@ -80,7 +80,7 @@ static int cart_exists_check(ioopm_carts_t *storage_carts)
     {
         char *new_alt = ioopm_ask_question_string("\nThe cart doesn't exist, do you want to write another one (y/n)? "); 
 
-        if (toupper(*new_alt) == 'Y')
+        if (toupper(*new_alt) == 'Y' && strlen(new_alt) == 1)
         {
             input_id = ioopm_ask_question_int("\nWrite the ID of the cart: ") - 1; 
         }
@@ -99,9 +99,9 @@ static char *merch_in_cart_check(ioopm_hash_table_t *cart_items)
     char *input_name = ioopm_ask_question_string("\nWrite the merch to remove items from: ");     
     while (!ioopm_has_merch_in_cart(cart_items, input_name)) 
     {
-       char *new_alt = ioopm_ask_question_string("\nYour cart doesn't have that merch, do you want another try (y/n)? "); 
+        char *new_alt = ioopm_ask_question_string("\nYour cart doesn't have that merch, do you want another try (y/n)? "); 
 
-        if (toupper(*new_alt) == 'Y')
+        if (toupper(*new_alt) == 'Y'  && strlen(new_alt) == 1)
         {
             free(input_name); 
             input_name = ioopm_ask_question_string("\nWrite the merch to remove items from: "); 
@@ -129,7 +129,7 @@ static int cart_quantity_check(ioopm_carts_t *storage_carts, int input_id, char 
     {
        char *new_alt = ioopm_ask_question_string("\nYour cart doesn't have that quantity, do you want another try (y/n)? "); 
 
-        if (toupper(*new_alt) == 'Y')
+        if (toupper(*new_alt) == 'Y'  && strlen(new_alt) == 1)
         {
             input_quantity = ioopm_ask_question_int("\nWrite the amount to remove from cart: "); 
         }
@@ -151,7 +151,7 @@ static char *shelf_exists_check(ioopm_store_t *store, ioopm_merch_t *merch)
     {
         char *new_alt = ioopm_ask_question_string("\nThere is already a merch on this shelf, do you want to write another one (y/n)? "); 
 
-        if (toupper(*new_alt) == 'Y')
+        if (toupper(*new_alt) == 'Y'  && strlen(new_alt) == 1)
         {
             free(input_shelf); 
             input_shelf = ioopm_ask_question_string("\nEnter a shelf to add stock to: "); 
@@ -180,7 +180,7 @@ static ioopm_merch_t *merch_input(char *name)
 
 void merch_add(ioopm_store_t *store)
 {    
-    char *input_name = merch_exist_check(store, false);
+    char *input_name = merch_does_exist_check(store, false);
     if (input_name == NULL) return;
 
     ioopm_merch_t *input = merch_input(input_name); 
@@ -209,15 +209,15 @@ void merch_list(ioopm_store_t *store)
 
         if (printed_items < total_items)
         {
-            char *descision = ioopm_ask_question_string("Press any key to see more items, N/n to return");
+            char *decision = ioopm_ask_question_string("Press any key to see more items, N/n to return");
 
-	        if (toupper(descision[0]) == 'N')
+	        if (toupper(decision[0]) == 'N' && strlen(decision) == 1)
             {
-	            free(descision);
+	            free(decision);
                 return;
 	        }
             rotations++; 
-            free(descision); 
+            free(decision); 
         }  
     } while (printed_items < total_items);  
     
@@ -232,11 +232,11 @@ void merch_remove(ioopm_store_t *store, ioopm_carts_t *storage_carts)
         return; 
     }
 
-    char *input_name = merch_exist_check(store, true);
+    char *input_name = merch_does_exist_check(store, true);
     if (input_name == NULL) return;
 
     char *conf_remove = ioopm_ask_question_string("\nAre you sure you want to remove this merch? (y/n)"); 
-    if (toupper(*conf_remove) == 'Y')
+    if (toupper(*conf_remove) == 'Y'  && strlen(conf_remove) == 1)
     {
         ioopm_store_remove(store, storage_carts->carts, input_name); 
     }
@@ -253,18 +253,18 @@ void merch_edit(ioopm_store_t *store, ioopm_carts_t *storage_carts)
         return; 
     }
 
-    char *input_name = merch_exist_check(store, true);
+    char *input_name = merch_does_exist_check(store, true);
     if (input_name == NULL) return; 
     
     ioopm_merch_t *merch = ioopm_merch_get(store, input_name); 
 
     puts("\nNew name: ");
-    char *new_name = merch_exist_check(store, false);
+    char *new_name = merch_does_exist_check(store, false);
     char *new_description = ioopm_ask_question_string("\nWrite the new decription: "); 
     int new_price = ioopm_ask_question_int("\nWrite the new price: "); 
 
     char *conf_edit = ioopm_ask_question_string("\nAre you sure you want to edit this merch? (y/n)"); 
-    if (!(toupper(*conf_edit) == 'Y'))
+    if (!(toupper(*conf_edit) == 'Y') && strlen(conf_edit) == 1)
     { 
         free(input_name); 
         free(conf_edit);	
@@ -292,7 +292,7 @@ void stock_list(ioopm_store_t *store)
         return; 
     }
 
-    char *input_name = merch_exist_check(store, true);
+    char *input_name = merch_does_exist_check(store, true);
     if (input_name == NULL) return; 
 
     ioopm_merch_t *merch = ioopm_merch_get(store, input_name); 
@@ -310,7 +310,7 @@ void stock_replenish(ioopm_store_t *store)
         return; 
     }
 
-    char *input_name = merch_exist_check(store, true);
+    char *input_name = merch_does_exist_check(store, true);
     if (input_name == NULL) return; 
 
     ioopm_merch_t *merch = ioopm_merch_get(store, input_name); 
@@ -351,7 +351,7 @@ void cart_destroy(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     if (input_id == -1) return; 
 
     char *conf_remove = ioopm_ask_question_string("\nAre you sure you want to remove this cart? (y/n)"); 
-    if (!(toupper(*conf_remove) == 'Y'))
+    if (!(toupper(*conf_remove) == 'Y') && strlen(conf_remove) == 1)
     {
         free(conf_remove);  
         return; 
@@ -373,7 +373,7 @@ void cart_add(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     int input_id = cart_exists_check(storage_carts);
     if (input_id == -1) return; 
 
-    char *input_name = merch_exist_check(store, true); 
+    char *input_name = merch_does_exist_check(store, true); 
     if (input_name == NULL) return; 
 
     int merch_cart_amount = ioopm_item_in_cart_amount(storage_carts, input_id, input_name); 
@@ -469,57 +469,63 @@ void event_loop(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     {
         print_menu(); 
         char *menu_choice = ioopm_ask_question_string(" "); 
-        switch (toupper(*menu_choice))
-        {
-            case 'A': 
-                merch_add(store); 
-                break; 
-            case 'L': 
-                merch_list(store); 
-                break; 
-            case 'D':
-                merch_remove(store, storage_carts); 
-                break;
-            case 'E':
-                merch_edit(store, storage_carts); 
-                break;
-            case 'S': 
-                stock_list(store); 
-                break;
-            case 'P': 
-                stock_replenish(store); 
-                break;
-            case 'C': 
-                cart_create(storage_carts); 
-                break; 
-            case 'R':
-                cart_destroy(store, storage_carts); 
-                break; 
-            case '+':
-                cart_add(store, storage_carts); 
-                break; 
-            case '-': 
-	            cart_remove(store, storage_carts); 
-                break; 
-            case '=': 
-	            cart_cost_calculate(store, storage_carts); 
-                break; 
-            case 'O': 
-	      cart_checkout(store, storage_carts); 
-                break; 
-            case 'Q':
-                quit_confirmation = ioopm_ask_question_string("Press 'Y' if you really want to quit");
+        if (strlen(menu_choice) == 1) {
+            switch (toupper(*menu_choice))
+            {
+                case 'A': 
+                    merch_add(store); 
+                    break; 
+                case 'L': 
+                    merch_list(store); 
+                    break; 
+                case 'D':
+                    merch_remove(store, storage_carts); 
+                    break;
+                case 'E':
+                    merch_edit(store, storage_carts); 
+                    break;
+                case 'S': 
+                    stock_list(store); 
+                    break;
+                case 'P': 
+                    stock_replenish(store); 
+                    break;
+                case 'C': 
+                    cart_create(storage_carts); 
+                    break; 
+                case 'R':
+                    cart_destroy(store, storage_carts); 
+                    break; 
+                case '+':
+                    cart_add(store, storage_carts); 
+                    break; 
+                case '-': 
+	                cart_remove(store, storage_carts); 
+                    break; 
+                case '=': 
+	                cart_cost_calculate(store, storage_carts); 
+                    break; 
+                case 'O': 
+	                cart_checkout(store, storage_carts); 
+                    break; 
+                case 'Q':
+                    quit_confirmation = ioopm_ask_question_string("Press 'Y' if you really want to quit");
 
-                if (toupper(*quit_confirmation) == 'Y')
-                {
-                    running = false; 
-                    ioopm_cart_storage_destroy(storage_carts);  
-                    ioopm_store_destroy(store);
-                } 
-                free(quit_confirmation); 
-                break; 
-            default:
-                puts("\nTry again with a valid input"); 
+                    if (toupper(*quit_confirmation) == 'Y' && strlen(quit_confirmation) == 1)
+                    {
+                        running = false; 
+                        ioopm_cart_storage_destroy(storage_carts);  
+                        ioopm_store_destroy(store);
+                    } 
+                    free(quit_confirmation); 
+                    break; 
+                default:
+                    puts("\nTry again with a valid input"); 
+            }
+        } 
+        else 
+        {
+            puts("\nTry again with a valid input"); 
         }
         free(menu_choice); 
     } while (running); 

@@ -22,12 +22,12 @@ typedef union elem elem_t;
 
 union elem
 {
-  int integer;
-  unsigned int unsigned_integer;
-  bool boolean;
-  float float_number;
-  char *string;
-  void *void_ptr;
+    int integer;
+    unsigned int unsigned_integer;
+    bool boolean;
+    float float_number;
+    char *string;
+    void *void_ptr;
 };
 
 typedef bool(*ioopm_eq_function)(elem_t a, elem_t b);

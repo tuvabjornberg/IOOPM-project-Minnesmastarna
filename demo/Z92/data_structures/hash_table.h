@@ -41,8 +41,8 @@ typedef struct option option_t;
 
 struct option
 {
-  bool success;
-  elem_t value;
+    bool success;
+    elem_t value;
 };
 
 /// @brief retrieves the hashtables current capacity

@@ -8,10 +8,10 @@
 ioopm_store_t *ioopm_store_create()
 {
     ioopm_store_t *new_store = calloc(1, sizeof(ioopm_store_t));
-    new_store->merch_names = calloc(INITIAL_CAPACITY, sizeof(char*));
+    new_store->merch_names = calloc(STORAGE_INITIAL_CAPACITY , sizeof(char*));
     new_store->merch_details = ioopm_hash_table_create(ioopm_hash_fun_sum_key_string, ioopm_string_eq);
     new_store->merch_count = 0;
-    new_store->capacity = INITIAL_CAPACITY;
+    new_store->capacity = STORAGE_INITIAL_CAPACITY ;
     return new_store;
 }
 
