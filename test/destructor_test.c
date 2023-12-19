@@ -26,7 +26,8 @@ int clean_suite(void)
     return 0;
 }
 
-void test_default_destructor(void) {
+void test_default_destructor(void) 
+{
     struct my_struct {
         obj *internal_obj;
     };
@@ -38,7 +39,7 @@ void test_default_destructor(void) {
     retain(test_obj->internal_obj);
     CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 1);
     deallocate(test_obj);
-    //CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 0);
+    CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 0);
 
 }
 
