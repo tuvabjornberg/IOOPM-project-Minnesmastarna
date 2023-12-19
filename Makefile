@@ -1,12 +1,12 @@
 C_COMPILER      = gcc
-C_OPTIONS       = -Wall -pedantic -g -std=gnu99
+C_OPTIONS       = -Wall -pedantic -g 
 VPATH           = src : test : demo
 
 SRC = src
 TEST = test
 DEMO = demo
 
-all: refmem.o hash_table.o linked_list.o
+all: refmem.o 
 
 %.o:  %.c 
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
