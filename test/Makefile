@@ -10,13 +10,13 @@ VPATH           = ../src
 %.o:  %.c 
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-refmem_test.out: refmem_test.o refmem.o queue.o linked_list.o
+refmem_test.out: refmem_test.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
 queue_test.out: queue_test.o queue.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
-destructor_test.out: destructor_test.o refmem.o queue.o linked_list.o
+destructor_test.out: destructor_test.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
 test: refmem_test.out queue_test.out destructor_test.out
@@ -30,13 +30,13 @@ memtest: refmem_test.out queue_test.out destructor_test.out
 	valgrind --leak-check=full ./destructor_test.out
 
 # f-sanitize, mem tool like valgrind
-refmem_test_san.out: refmem_test.c refmem.c queue.c linked_list.c
+refmem_test_san.out: refmem_test.c refmem.c queue.c list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 queue_test_san.out: queue_test.c queue.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
-destructor_san.out: destructor_test.c refmem.c queue.c linked_list.c 
+destructor_san.out: destructor_test.c refmem.c queue.c list.c 
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 test_sanitize: refmem_test_san.out queue_test_san.out destructor_san.out

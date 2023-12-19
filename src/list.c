@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "linked_list.h"
+#include "list.h"
 #include "common.h"
 #include <stdio.h>
 #include <stdbool.h>
