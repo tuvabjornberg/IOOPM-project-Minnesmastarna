@@ -10,3 +10,12 @@ Under kursens gång har kodkvalitet beaktats åtskilliga gånger. Under projekte
 This file, together with the GitHub issue log, should convince the examiner that you pass Y65.
 
 
+
+# ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
+
+* GNU används som kodstandard, gemensamt val av alla i gruppen.
+
+
+
+# LINK TO GITHUB ISSUE LOG
+https://github.com/IOOPM-UU/Minnesmastarna/issues

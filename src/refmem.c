@@ -26,7 +26,7 @@ meta_data_t *getMetaData(obj *obj_ptr) {
 
 function1_t getDestructor(obj *obj_ptr) {
     meta_data_t *meta_data = getMetaData(obj_ptr);
-    return meta_data->destructor;
+    return &(meta_data->destructor);
 }
 
 unsigned short getSize(obj *obj_ptr) {
@@ -41,6 +41,14 @@ unsigned short getCounter(obj *obj_ptr) {
 
 static bool compare_func(elem_t a, elem_t b) {
     return a.void_ptr == b.void_ptr;
+}
+
+void set_queue_to_null() {
+    to_be_freed = NULL; 
+}
+
+void set_list_to_null() {
+    allocated_pointers = NULL; 
 }
 
 static void free_from_queue()
@@ -71,7 +79,6 @@ obj *allocate(size_t bytes, function1_t destructor)
     
     void *allocation = calloc(1, (sizeof(meta_data_t) + bytes));
     
-    meta_data_t* meta_data = (meta_data_t*)allocation;  
     meta_data->counter = 0;
     meta_data->size = bytes;
     meta_data->destructor = destructor;
@@ -82,7 +89,8 @@ obj *allocate(size_t bytes, function1_t destructor)
     return (obj *)(&meta_data[1]);
 }
 
-void deallocate(obj *obj_ptr) 
+
+void deallocate(obj *obj_ptr)
 {
     meta_data_t *meta_data = getMetaData(obj_ptr);
 
@@ -101,7 +109,7 @@ void deallocate(obj *obj_ptr)
     free(elem);
 }
 
-void retain(obj *obj_ptr) 
+void retain(obj *obj_ptr)
 {
    meta_data_t *meta_data = getMetaData(obj_ptr);
 
@@ -114,33 +122,36 @@ void retain(obj *obj_ptr)
     }
 }
 
-static void add_to_free_queue(obj *obj_to_free) 
+static void add_to_free_queue(obj *obj_to_free)
 {
-    if (to_be_freed == NULL) 
+    if (to_be_freed == NULL)
     {
         to_be_freed = create_queue();
-    } 
+    }
     enqueue(to_be_freed, obj_to_free);
 }
 
-void release(obj *obj_ptr) 
+void release(obj *obj_ptr)
 {
-    meta_data_t *meta_data = getMetaData(obj_ptr);
-    meta_data->counter--;
+    if (obj_ptr != NULL) {
+        meta_data_t *meta_data = getMetaData(obj_ptr);
 
-    if ((meta_data->counter) <= 0) 
-    {
-        add_to_free_queue(obj_ptr);
+        meta_data->counter--;
+
+        if ((meta_data->counter) <= 0) 
+        {
+            add_to_free_queue(obj_ptr);
+        }   
     }
 }
 
-size_t rc(obj *obj_ptr) 
+unsigned short rc(obj *obj_ptr)
 {
     meta_data_t *meta_data = getMetaData(obj_ptr);
     return meta_data->counter;
 }
 
-obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor) 
+obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
 {
     if(allocated_pointers == NULL) {
         allocated_pointers = ioopm_linked_list_create(compare_func);
@@ -156,16 +167,15 @@ obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
     ioopm_linked_list_append(allocated_pointers, void_elem((&meta_data[1])));
     free_from_queue();
 
-
     return (obj *)(&meta_data[1]);
 }
 
-void set_cascade_limit(size_t new) 
+void set_cascade_limit(size_t new)
 {
     cascade_limit = new;
 }
 
-size_t get_cascade_limit() 
+size_t get_cascade_limit()
 {
     return cascade_limit;
 }
@@ -193,15 +203,15 @@ void default_destructor(obj *obj_ptr)
     object_scanner(obj_ptr, obj_size);
 }
 
-void cleanup() 
+void cleanup()
 {
     if (to_be_freed == NULL)
     {
         return;
-    } 
-    else 
+    }
+    else
     {
-        while (!is_empty(to_be_freed)) 
+        while (!is_empty(to_be_freed))
         {
             obj *to_free_ptr = dequeue(to_be_freed);
             deallocate(to_free_ptr);
@@ -209,9 +219,10 @@ void cleanup()
     }
 }
 
-void shutdown() 
+void shutdown()
 {
-    destroy_queue(to_be_freed);
-    ioopm_linked_list_destroy(allocated_pointers);
+    cleanup();
+    destroy_queue(to_be_freed); 
+    ioopm_linked_list_destroy(allocated_pointers);  
     to_be_freed = NULL;
 }

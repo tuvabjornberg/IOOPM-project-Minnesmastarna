@@ -13,3 +13,17 @@ List your 6 most nasty bugs by linking to their issue pages on GitHub.
 
 This file, together with the GitHub issue log, should convince the examiner that you pass Y69.
 
+
+
+# ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
+
+* Tests created using CUnit.
+
+
+# LINK TO GITHUB ISSUE LOG (GENERAL)
+https://github.com/IOOPM-UU/Minnesmastarna/issues
+
+
+
+# LINKS TO NASTY BUGS THAT HAD TO BE FIXED
+* TODO: Add links here to the nastiest bugs that have been discovered
