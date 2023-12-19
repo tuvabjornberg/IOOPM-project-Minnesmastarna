@@ -28,6 +28,8 @@ int main(void)
     c->cell->cell = NULL;
   
     release(c);
+
+    shutdown(); 
   
     return 0;
 }
