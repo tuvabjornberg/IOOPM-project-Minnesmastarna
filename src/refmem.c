@@ -98,6 +98,29 @@ obj *allocate(size_t bytes, function1_t destructor)
     return (obj *)(&meta_data[1]);
 }
 
+static bool is_allocated_pointer(obj *obj_ptr) 
+{
+    return ioopm_linked_list_contains(allocated_pointers, void_elem(obj_ptr));
+}
+
+static void object_scanner(obj *obj_ptr, size_t obj_size) 
+{
+    for (size_t i = 0; i < obj_size; i += sizeof(void*))
+    {
+        void **possible_pointer = (void **)((char *)obj_ptr + i);
+        if (is_allocated_pointer(*possible_pointer)) 
+        {
+            release(*possible_pointer);
+        }
+    }
+}
+
+static void default_destructor(obj *obj_ptr) 
+{
+    size_t obj_size = get_size(obj_ptr);
+    object_scanner(obj_ptr, obj_size);
+}
+
 
 void deallocate(obj *obj_ptr)
 {
@@ -193,29 +216,6 @@ size_t get_cascade_limit()
     return cascade_limit;
 }
 
-static bool is_allocated_pointer(obj *obj_ptr) 
-{
-    return ioopm_linked_list_contains(allocated_pointers, void_elem(obj_ptr));
-}
-
-static void object_scanner(obj *obj_ptr, size_t obj_size) 
-{
-    for (size_t i = 0; i < obj_size; i += sizeof(void*))
-    {
-        void **possible_pointer = (void **)((char *)obj_ptr + i);
-        if (is_allocated_pointer(*possible_pointer)) 
-        {
-            release(*possible_pointer);
-        }
-    }
-}
-
-static void default_destructor(obj *obj_ptr) 
-{
-    size_t obj_size = get_size(obj_ptr);
-    object_scanner(obj_ptr, obj_size);
-}
-
 void cleanup()
 {
     if (to_be_freed == NULL)
@@ -238,4 +238,5 @@ void shutdown()
     destroy_queue(to_be_freed); 
     ioopm_linked_list_destroy(allocated_pointers);  
     to_be_freed = NULL;
+    allocated_pointers = NULL; 
 }

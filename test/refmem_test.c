@@ -16,10 +16,6 @@ int clean_suite(void)
     return 0;
 }
 
-void string_destructor(obj *o) {
-    printf(" %p SUCCESS ", (char *)o);
-}
-
 void test_allocate_deallocate()
 {
     obj* obj = allocate(sizeof(int), NULL);
@@ -28,7 +24,6 @@ void test_allocate_deallocate()
     deallocate(obj);
 
     shutdown(); 
-    set_list_to_null(); 
 }
 
 void test_retain()
@@ -46,7 +41,6 @@ void test_retain()
     deallocate(obj1);
 
     shutdown(); 
-    set_list_to_null(); 
 }
 
 void test_release()
@@ -74,8 +68,6 @@ void test_release()
     deallocate(obj1);
 
     shutdown(); 
-    set_queue_to_null();
-    set_list_to_null();  
 }
 
 void test_allocate_deallocate_array()
@@ -85,14 +77,12 @@ void test_allocate_deallocate_array()
     deallocate(obj_arr1);
 
     shutdown(); 
-    set_list_to_null();  
 
     obj* obj_arr2 = allocate_array(0, sizeof(int), NULL);
     CU_ASSERT_EQUAL(rc(obj_arr2), 0);
     deallocate(obj_arr2);
 
     shutdown(); 
-    set_list_to_null();  
 }
 
 void test_retain_array()
@@ -110,7 +100,6 @@ void test_retain_array()
     deallocate(obj_arr);
 
     shutdown(); 
-    set_list_to_null();  
 }
 
 void test_release_array()
@@ -137,8 +126,6 @@ void test_release_array()
     deallocate(obj_arr);
 
     shutdown(); 
-    set_queue_to_null(); 
-    set_list_to_null();  
 }
 
 void set_get_cascade_limit()
@@ -175,8 +162,6 @@ void integration_cleanup_test()
     cleanup(); 
 
     shutdown();
-    set_queue_to_null();
-    set_list_to_null();   
     puts("Integration test complete");
 }
 
@@ -189,7 +174,6 @@ void test_rc_overflow()
     }
     // Reference count overflow should lead to the object being destroyed
     shutdown(); 
-    set_list_to_null(); 
 }
 
 void test_shutdown()
