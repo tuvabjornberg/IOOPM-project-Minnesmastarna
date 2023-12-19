@@ -15,7 +15,7 @@ Together with the actual code, this file will be used by the examiner to convinc
 
 # ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
 
-
+* Add any design choices that has been made for the project in this report.
 
 
 ## Size of reference counter;
