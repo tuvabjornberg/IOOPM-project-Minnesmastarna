@@ -79,6 +79,7 @@ obj *allocate(size_t bytes, function1_t destructor)
     
     void *allocation = calloc(1, (sizeof(meta_data_t) + bytes));
     
+    meta_data_t* meta_data = (meta_data_t*)allocation;  
     meta_data->counter = 0;
     meta_data->size = bytes;
     meta_data->destructor = destructor;
