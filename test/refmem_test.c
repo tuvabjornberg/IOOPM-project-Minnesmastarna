@@ -211,7 +211,7 @@ int main()
         CU_add_test(my_test_suite, "release test for array", test_release_array) == NULL ||
         CU_add_test(my_test_suite, "set and get cascade limit", set_get_cascade_limit) == NULL ||
         CU_add_test(my_test_suite, "cleanup test", integration_cleanup_test) == NULL ||
-        CU_add_test(my_test_suite, "reference count overflow test", test_rc_overflow) == NULL || //TODO: 
+        CU_add_test(my_test_suite, "reference count overflow test", test_rc_overflow) == NULL || 
         CU_add_test(my_test_suite, "shutdown test", test_shutdown) == NULL
         )
     )
