@@ -15,6 +15,7 @@ typedef void(*function1_t)(obj *);
 /// @brief Sets the static queue to null
 void set_queue_to_null(); 
 
+/// @brief Sets the static queue to null
 void set_list_to_null(); 
 
 /// @brief Allocates a memory block of a given byte size to create an object
@@ -55,12 +56,12 @@ void set_cascade_limit(size_t limit);
 /// @param the object to destroy
 size_t get_cascade_limit();
 
+/// @brief Checks if list of allocated pointers contains the objct pointer
+/// @param obj_ptr the object pointer to find
+/// @return if the object pointer exists
 bool is_allocated_pointer(obj *obj_ptr);
 
-void object_scanner(obj *obj_ptr, size_t obj_size);
-
-void default_destructor(obj *obj_ptr);
-
+/// @brief Deallocates all pointers left in the queue
 void cleanup();
 
 /// @brief Removes all allocated memory from the program
