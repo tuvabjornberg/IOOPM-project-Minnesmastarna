@@ -9,13 +9,13 @@ Z92 = Z92
 %.o:  %.c 
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-example.out: example.o refmem.o queue.o
+example.out: example.o refmem.o queue.o linked_list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
 
 memexample: example.out
 	valgrind --leak-check=full ./example.out
 
-examplesan.out: example.c refmem.c queue.c 
+examplesan.out: example.c refmem.c queue.c linked_list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
 
 sanexample: examplesan.out

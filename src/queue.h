@@ -1,11 +1,10 @@
 #pragma once
 #include <stdbool.h>
-
-typedef void obj;
+#include "refmem.h" 
 
 typedef struct Node 
 {
-    obj *data;
+    obj **data;
     struct Node* next;
 } Node;
 
@@ -13,6 +12,7 @@ typedef struct
 {
     Node* front;
     Node* rear;
+    int size;
 } Queue;
 
 /// @brief Creates a new empty queue.

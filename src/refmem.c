@@ -1,22 +1,61 @@
-#include <sys/queue.h>
 #include "refmem.h"
 #include "queue.h"
+#include "hash_table.h"
+#include <stdint.h>
+#include <stdio.h>
 
-#define COUNTERSIZE sizeof(int)
-//#define get_counter(obj_ptr) ((obj *)(((int *)obj_ptr) - 1))
+#define COUNTERSIZE sizeof(unsigned short)
+#define DESTRUCTOR_PTR_SIZE sizeof(function1_t*)
+#define SIZE_BITS_SIZE sizeof(unsigned short)
+
+#define MAX_ALLOCATED_OBJECTS 1000
 
 static size_t cascade_limit = 5;
 static Queue *to_be_freed = NULL;
+ioopm_list_t *allocated_pointers = NULL;
 
-// TODO: gör om till macro
-obj *get_counter(obj *obj_ptr)
+typedef struct {
+    unsigned short counter;
+    unsigned short size;
+    function1_t destructor;
+} meta_data_t;
+
+meta_data_t *get_meta_data(obj *obj_ptr) 
 {
-    return ((unsigned short *)obj_ptr) - 1;
+    return ((meta_data_t *)obj_ptr - 1);
 }
 
-void set_queue_to_null()
+function1_t get_destructor(obj *obj_ptr) 
+{
+    meta_data_t *meta_data = get_meta_data(obj_ptr);
+    return &(meta_data->destructor);
+}
+
+unsigned short get_size(obj *obj_ptr) 
+{
+    meta_data_t *meta_data = get_meta_data(obj_ptr);
+    return meta_data->size;
+}
+
+unsigned short get_counter(obj *obj_ptr) 
+{
+    meta_data_t *meta_data = get_meta_data(obj_ptr);
+    return meta_data->counter;
+}
+
+static bool compare_func(elem_t a, elem_t b) 
+{
+    return a.void_ptr == b.void_ptr;
+}
+
+void set_queue_to_null() 
 {
     to_be_freed = NULL; 
+}
+
+void set_list_to_null() 
+{
+    allocated_pointers = NULL; 
 }
 
 static void free_from_queue()
@@ -33,38 +72,87 @@ static void free_from_queue()
         }
         else
         {
-            deallocate(dequeue(to_be_freed));
+            obj *to_free_ptr = dequeue(to_be_freed);
+            deallocate(to_free_ptr);
         }
     }
 }
 
-obj *allocate(size_t bytes, function1_t destructor)
+obj *allocate(size_t bytes, function1_t destructor) 
 {
-    unsigned short *allocation = calloc(1, (COUNTERSIZE + bytes));
-    (*allocation) = 0;
+    if (allocated_pointers == NULL) 
+    {
+        allocated_pointers = ioopm_linked_list_create(compare_func);
+    }
+    
+    void *allocation = calloc(1, (sizeof(meta_data_t) + bytes));
+    
+    meta_data_t* meta_data = (meta_data_t*)allocation;  
+    meta_data->counter = 0;
+    meta_data->size = bytes;
+    meta_data->destructor = destructor;
 
+    ioopm_linked_list_append(allocated_pointers, void_elem((&meta_data[1])));
     free_from_queue();
 
-    return &(allocation[1]);
+    return (obj *)(&meta_data[1]);
 }
+
+static bool is_allocated_pointer(obj *obj_ptr) 
+{
+    return ioopm_linked_list_contains(allocated_pointers, void_elem(obj_ptr));
+}
+
+static void object_scanner(obj *obj_ptr, size_t obj_size) 
+{
+    for (size_t i = 0; i < obj_size; i += sizeof(void*))
+    {
+        void **possible_pointer = (void **)((char *)obj_ptr + i);
+        if (is_allocated_pointer(*possible_pointer)) 
+        {
+            release(*possible_pointer);
+        }
+    }
+}
+
+static void default_destructor(obj *obj_ptr) 
+{
+    size_t obj_size = get_size(obj_ptr);
+    object_scanner(obj_ptr, obj_size);
+}
+
 
 void deallocate(obj *obj_ptr)
 {
-    unsigned short *counter_pointer = get_counter(obj_ptr);
-    free(counter_pointer);
+    meta_data_t *meta_data = get_meta_data(obj_ptr);
+
+    if (meta_data->destructor == NULL) 
+    {
+       default_destructor(obj_ptr);
+    } 
+    else 
+    {
+        meta_data->destructor(obj_ptr);
+    }
+
+    void *elem = get_meta_data(obj_ptr);
+    
+    //TODO: Needs to be adjusted to remove object without knowing index (removes takes index, not object now)
+    //ioopm_linked_list_remove(allocated_pointers, obj_ptr);
+    free(elem);
 }
 
 void retain(obj *obj_ptr)
 {
-    unsigned short *counter_pointer = get_counter(obj_ptr);
-    if (*counter_pointer == 65535) // Reference count max size
+   meta_data_t *meta_data = get_meta_data(obj_ptr);
+
+    if (meta_data->counter == 65535) 
     {
-        counter_pointer = 0;
         deallocate(obj_ptr);
     } 
     else 
     {
-        (*counter_pointer)++;
+        meta_data->counter++;
     }
 }
 
@@ -79,26 +167,43 @@ static void add_to_free_queue(obj *obj_to_free)
 
 void release(obj *obj_ptr)
 {
-    unsigned short *counter_pointer = get_counter(obj_ptr);
-    (*counter_pointer)--;
-
-    if ((*counter_pointer) <= 0)
+    if (obj_ptr != NULL) 
     {
-        add_to_free_queue(obj_ptr);
+        meta_data_t *meta_data = get_meta_data(obj_ptr);
+
+        meta_data->counter--;
+
+        if ((meta_data->counter) <= 0) 
+        {
+            add_to_free_queue(obj_ptr);
+        }   
     }
 }
 
 unsigned short rc(obj *obj_ptr)
 {
-    unsigned short *counter_pointer = get_counter(obj_ptr);
-    return *counter_pointer;
+    meta_data_t *meta_data = get_meta_data(obj_ptr);
+    return meta_data->counter;
 }
 
 obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
 {
-    unsigned short *allocation = calloc(1, (COUNTERSIZE + (elements * elem_size)));
-    (*allocation) = 0;
-    return &(allocation[1]);
+    if (allocated_pointers == NULL) 
+    {
+        allocated_pointers = ioopm_linked_list_create(compare_func);
+    } 
+
+    void *allocation = calloc(1, (sizeof(meta_data_t) + (elements * elem_size)));
+
+    meta_data_t* meta_data = (meta_data_t*)allocation;  
+    meta_data->counter = 0;
+    meta_data->size = elements * elem_size;
+    meta_data->destructor = destructor;
+
+    ioopm_linked_list_append(allocated_pointers, void_elem((&meta_data[1])));
+    free_from_queue();
+
+    return (obj *)(&meta_data[1]);
 }
 
 void set_cascade_limit(size_t new)
@@ -121,7 +226,8 @@ void cleanup()
     {
         while (!is_empty(to_be_freed))
         {
-            deallocate(dequeue(to_be_freed));
+            obj *to_free_ptr = dequeue(to_be_freed);
+            deallocate(to_free_ptr);
         }
     }
 }
@@ -130,4 +236,7 @@ void shutdown()
 {
     cleanup();
     destroy_queue(to_be_freed); 
+    ioopm_linked_list_destroy(allocated_pointers);  
+    to_be_freed = NULL;
+    allocated_pointers = NULL; 
 }
