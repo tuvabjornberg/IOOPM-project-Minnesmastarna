@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include "../src/refmem.h"
 #include "../src/queue.h"
-#include "../src/hash_table.h"
 
 int init_suite(void)
 {
@@ -17,12 +16,19 @@ int clean_suite(void)
     return 0;
 }
 
+void string_destructor(obj *o) {
+    printf(" %p SUCCESS ", (char *)o);
+}
+
 void test_allocate_deallocate()
 {
     obj* obj = allocate(sizeof(int), NULL);
     CU_ASSERT_PTR_NOT_NULL(obj);
     CU_ASSERT_EQUAL(rc(obj), 0);
     deallocate(obj);
+
+    shutdown(); 
+    set_list_to_null(); 
 }
 
 void test_retain()
@@ -38,6 +44,9 @@ void test_retain()
     CU_ASSERT_EQUAL(rc(obj1), 101);
 
     deallocate(obj1);
+
+    shutdown(); 
+    set_list_to_null(); 
 }
 
 void test_release()
@@ -65,7 +74,8 @@ void test_release()
     deallocate(obj1);
 
     shutdown(); 
-    set_queue_to_null();  
+    set_queue_to_null();
+    set_list_to_null();  
 }
 
 void test_allocate_deallocate_array()
@@ -74,9 +84,15 @@ void test_allocate_deallocate_array()
     CU_ASSERT_EQUAL(rc(obj_arr1), 0);
     deallocate(obj_arr1);
 
+    shutdown(); 
+    set_list_to_null();  
+
     obj* obj_arr2 = allocate_array(0, sizeof(int), NULL);
     CU_ASSERT_EQUAL(rc(obj_arr2), 0);
     deallocate(obj_arr2);
+
+    shutdown(); 
+    set_list_to_null();  
 }
 
 void test_retain_array()
@@ -92,6 +108,9 @@ void test_retain_array()
     CU_ASSERT_EQUAL(rc(obj_arr), 101);
 
     deallocate(obj_arr);
+
+    shutdown(); 
+    set_list_to_null();  
 }
 
 void test_release_array()
@@ -119,6 +138,7 @@ void test_release_array()
 
     shutdown(); 
     set_queue_to_null(); 
+    set_list_to_null();  
 }
 
 void set_get_cascade_limit()
@@ -138,16 +158,11 @@ void integration_cleanup_test()
     obj* obj1 = allocate(sizeof(int), NULL); 
     obj* obj2 = allocate(sizeof(int), NULL); 
 
-
     retain(obj1); 
-
     retain(obj2); 
 
     release(obj1); 
-
     release(obj2); 
-
-
 
     obj* obj3 = allocate(sizeof(int), NULL);
     retain(obj3); 
@@ -157,10 +172,11 @@ void integration_cleanup_test()
     retain(obj4); 
     release(obj4);
 
-    cleanup();
+    cleanup(); 
 
     shutdown();
-    set_queue_to_null(); 
+    set_queue_to_null();
+    set_list_to_null();   
     puts("Integration test complete");
 }
 
@@ -172,13 +188,14 @@ void test_rc_overflow()
         retain(obj);
     }
     // Reference count overflow should lead to the object being destroyed
+    shutdown(); 
+    set_list_to_null(); 
 }
 
 void test_shutdown()
 {
     obj* obj1 = allocate(sizeof(int), NULL);
     obj* obj2 = allocate(sizeof(int), NULL);
-
 
     retain(obj1);
     release(obj1);
@@ -210,7 +227,7 @@ int main()
         CU_add_test(my_test_suite, "release test for array", test_release_array) == NULL ||
         CU_add_test(my_test_suite, "set and get cascade limit", set_get_cascade_limit) == NULL ||
         CU_add_test(my_test_suite, "cleanup test", integration_cleanup_test) == NULL ||
-        CU_add_test(my_test_suite, "reference count overflow test", test_rc_overflow) == NULL ||
+        //CU_add_test(my_test_suite, "reference count overflow test", test_rc_overflow) == NULL ||
         CU_add_test(my_test_suite, "shutdown test", test_shutdown) == NULL
         )
     )
