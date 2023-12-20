@@ -138,7 +138,7 @@ void deallocate(obj *obj_ptr)
     void *elem = get_meta_data(obj_ptr);
     
     //TODO: Needs to be adjusted to remove object without knowing index (removes takes index, not object now)
-    //ioopm_linked_list_remove(allocated_pointers, obj_ptr);
+    ioopm_linked_list_remove_object(allocated_pointers, obj_ptr);
     free(elem);
 }
 

@@ -30,6 +30,8 @@ typedef struct iter ioopm_list_iterator_t;
 typedef bool(*ioopm_int_predicate)(elem_t value, void *extra);
 typedef void(*ioopm_apply_int_function)(elem_t *value, void *extra);
 
+typedef void obj;
+
 /// @brief Creates a new empty list
 /// @param fun function to store in the linked list object
 /// @return an empty linked list
@@ -65,6 +67,12 @@ void ioopm_linked_list_insert(ioopm_list_t *list, int index, elem_t value);
 /// @param index the position in the list
 /// @return the value removed
 elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index);
+
+/// @brief Remove an element from a linked list when the specified
+/// object has been found. 
+/// @param list the linked list
+/// @param obj_ptr the
+void ioopm_linked_list_remove_object(ioopm_list_t *list, obj *obj_ptr);
 
 /// @brief Retrieve an element from a linked list in O(n) time.
 /// The valid values of index are [0,n-1] for a list of n elements,

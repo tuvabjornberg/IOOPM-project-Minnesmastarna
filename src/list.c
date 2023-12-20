@@ -37,9 +37,11 @@ ioopm_list_t *ioopm_linked_list_create(ioopm_eq_function eq_fun)
 
 void ioopm_linked_list_destroy(ioopm_list_t *list)
 {
-    if (!ioopm_linked_list_is_empty(list))
-    {
-        ioopm_linked_list_clear(list);
+    if (list != NULL) {
+        if (!ioopm_linked_list_is_empty(list))
+        {
+            ioopm_linked_list_clear(list);
+        }
     }
     free(list);
 }
@@ -171,6 +173,44 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
     }
     return value;
 }
+
+void ioopm_linked_list_remove_object(ioopm_list_t *list, obj *obj_ptr)
+{
+    //elem_t value = {.void_ptr = NULL};
+    if (list == NULL || obj_ptr == NULL)
+    {
+        return; // value; 
+    }
+
+    link_t *current = list->first;
+    link_t *prev = NULL;
+
+    while (current != NULL)
+    {
+        if (current->value.void_ptr == obj_ptr)
+        {
+            //value = current->value; 
+            if (prev == NULL)
+            {
+                list->first = current->next;
+            }
+            else
+            {
+                prev->next = current->next;
+            }
+
+            free(current);
+            list->size--;
+            return; // value;  
+        }
+
+        prev = current;
+        current = current->next;
+    }
+    
+    return; // value; 
+}
+
 
 elem_t ioopm_linked_list_get(ioopm_list_t *list, int index)
 {
