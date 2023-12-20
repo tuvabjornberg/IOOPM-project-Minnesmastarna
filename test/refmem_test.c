@@ -45,7 +45,6 @@ void test_retain()
 
 void test_release()
 {
-    set_queue_to_null(); 
     obj* obj1 = allocate(sizeof(int), NULL);
 
     retain(obj1);
