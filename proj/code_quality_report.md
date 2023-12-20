@@ -13,7 +13,26 @@ This file, together with the GitHub issue log, should convince the examiner that
 
 # ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
 
-* GNU används som kodstandard, gemensamt val av alla i gruppen.
+## Why have we written good code, why is our code good
+* Could be something that should be done in a discussion
+
+
+## Is the code readable for everyone in the team
+* Discussion?
+
+
+## Helpful to reviewer
+* For specifics, look in the instruction above.
+
+
+## What does it mean to have good code
+* Discussion, to write.
+
+
+## What code standard have we used, how is it good?
+* We have decided to use GNU as code standard. It was a democratic choice in the group, which means that we decided this together.
+
+* Why is GNU a good choice. Discuss here.
 
 
 
