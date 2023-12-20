@@ -41,7 +41,6 @@ void test_default_destructor(void)
     deallocate(test_obj);
     //TODO: 
     //CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 0);
-
 }
 
 void test_string_destructor() {
@@ -49,7 +48,7 @@ void test_string_destructor() {
     *my_string = "testingtesting123";
     retain(my_string);
     release(my_string);
-    cleanup();
+    shutdown();
 }
 
 void test_int_destructor() {
@@ -57,12 +56,9 @@ void test_int_destructor() {
     *my_int = 2;
     retain(my_int);
     release(my_int);
-    cleanup();
-}
-
-void not_a_test_just_cleaning_up() {
     shutdown();
 }
+
 
 int main()
 {
@@ -79,8 +75,8 @@ int main()
     if (
         (CU_add_test(my_test_suite, "Test default destructor", test_default_destructor) == NULL ||
         CU_add_test(my_test_suite, "Test for string destructor", test_string_destructor) == NULL ||
-        CU_add_test(my_test_suite, "Test for int destructor", test_int_destructor) == NULL||
-        CU_add_test(my_test_suite, "Cleanup", not_a_test_just_cleaning_up) == NULL )
+        CU_add_test(my_test_suite, "Test for int destructor", test_int_destructor) == NULL
+        )
     )
 
     {
