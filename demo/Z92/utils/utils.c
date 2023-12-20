@@ -58,6 +58,7 @@ static int read_string(char *buf, int buf_size)
 
 static answer_t ask_question(char *question, check_func check, convert_func convert)
 {
+    //TODO: allocate
     char *answer = malloc(BUF_SIZE);
   
     puts(question);
@@ -72,6 +73,7 @@ static answer_t ask_question(char *question, check_func check, convert_func conv
     if (convert)
     {
         answer_t result = convert(answer);
+        //TODO: deallocate
         free(answer);
         return result;
     }
