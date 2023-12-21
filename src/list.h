@@ -71,7 +71,7 @@ elem_t linked_list_remove(list_t *list, int index);
 /// @brief Remove an element from a linked list when the specified
 /// object has been found. 
 /// @param list the linked list
-/// @param obj_ptr the
+/// @param obj_ptr the object to be removed
 void linked_list_remove_object(list_t *list, obj *obj_ptr);
 
 /// @brief Retrieve an element from a linked list in O(n) time.
