@@ -12,12 +12,6 @@
 typedef void obj;
 typedef void(*function1_t)(obj *);
 
-/// @brief Sets the static queue to null
-void set_queue_to_null(); 
-
-/// @brief Sets the static list to null
-void set_list_to_null(); 
-
 /// @brief Allocates a memory block of a given byte size to create an object
 /// @param bytes the number of bytes of the allocated memory block
 /// @param destructor a destructor function associated with the object

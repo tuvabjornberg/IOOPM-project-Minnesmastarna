@@ -30,6 +30,6 @@ union elem
   void *void_ptr;
 };
 
-typedef bool(*ioopm_eq_function)(elem_t a, elem_t b);
+typedef bool(*eq_function)(elem_t a, elem_t b);
 
-typedef unsigned int(*ioopm_hash_function)(elem_t key);
+typedef unsigned int(*hash_function)(elem_t key);
