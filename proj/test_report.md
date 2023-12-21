@@ -17,7 +17,26 @@ This file, together with the GitHub issue log, should convince the examiner that
 
 # ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
 
+## How do we test the program
+* Small introductory text
 * Tests created using CUnit.
+
+### Unit testing
+* Add text here
+
+### Integration testing
+* Add text here
+
+### Regression testing
+* Add text here
+
+
+## How have we automated the testing
+* Add text here
+
+
+## Graphical overview of code coverage
+* Add text here. This will be done after all code is written.
 
 
 # LINK TO GITHUB ISSUE LOG (GENERAL)
@@ -26,4 +45,4 @@ https://github.com/IOOPM-UU/Minnesmastarna/issues
 
 
 # LINKS TO NASTY BUGS THAT HAD TO BE FIXED
-* TODO: Add links here to the nastiest bugs that have been discovered
+* Add links here to the nastiest bugs that have been discovered, maybe with some text about what they were, and how we solved them.

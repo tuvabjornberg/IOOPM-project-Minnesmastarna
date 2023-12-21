@@ -15,7 +15,9 @@ Together with the actual code, this file will be used by the examiner to convinc
 
 # ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
 
+## How have e implemented the program
 
+* Add text here.
 
 
 ## Size of reference counter;
@@ -24,3 +26,10 @@ We made the choice of having the size of the reference counter as an unsigned sh
 - How does your system handles (or not) reference counter overflow?
     * Common approaches include either preventing overflow by choosing a larger data type for the reference counter or implementing mechanisms to detect and handle overflow gracefully, such as by triggering garbage collection or other memory management strategies.
 
+
+## Design decisions
+* Add any design decisions made here
+
+
+## Not delivered features.
+* Any feautres we haven't implemented, how could they be implemented/integrated in the future.

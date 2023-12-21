@@ -58,7 +58,7 @@ In this section, discuss:
 
 ## Communication, Cooperation and Coordination
 
-* Communication between team members through discord, and regular meetings at the beginning of the project. 
+* Communication between team members through Discord, and regular meetings at the beginning of the project. Meetings have been held in person for the most part, but some have been on Discord and Zoom when people were unable to attend.
 
 
 In this section, discuss:
@@ -72,7 +72,7 @@ In this section, discuss:
 
 ## Work Breakdown Structure
 
-* Sprint plan exists at the top of the document, 
+* Sprint plan exists at the top of the document, as well as some of the meeting projects.
 
 In this section, discuss:
 
@@ -89,6 +89,8 @@ Also, visualise:
     using a pie chart, how the time you spent was distributed across different activities. (Refer to the main project task description for activities.) 
 
 ## Reflection
+
+* DO THIS TOGETHER, A REFLECTION OF HOW THE WORK WENT.
 
 In this section, discuss briefly:
 
