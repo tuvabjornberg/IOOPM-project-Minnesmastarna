@@ -3,6 +3,7 @@
 #include "list.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stddef.h>
 
 #define COUNTERSIZE sizeof(unsigned short)
 #define DESTRUCTOR_PTR_SIZE sizeof(function1_t*)
@@ -12,13 +13,13 @@
 
 static size_t cascade_limit = 5;
 static Queue *to_be_freed = NULL;
-ioopm_list_t *allocated_pointers = NULL;
+list_t *allocated_pointers = NULL;
 
 typedef struct {
     unsigned short counter;
     unsigned short size;
     function1_t destructor;
-} meta_data_t;
+} meta_data_t; //__attribute__((packed)) meta_data_t;
 
 meta_data_t *get_meta_data(obj *obj_ptr) 
 {
@@ -82,7 +83,7 @@ obj *allocate(size_t bytes, function1_t destructor)
 {
     if (allocated_pointers == NULL) 
     {
-        allocated_pointers = ioopm_linked_list_create(compare_func);
+        allocated_pointers = linked_list_create(compare_func);
     }
     
     void *allocation = calloc(1, (sizeof(meta_data_t) + bytes));
@@ -92,7 +93,7 @@ obj *allocate(size_t bytes, function1_t destructor)
     meta_data->size = bytes;
     meta_data->destructor = destructor;
 
-    ioopm_linked_list_append(allocated_pointers, void_elem((&meta_data[1])));
+    linked_list_append(allocated_pointers, void_elem((&meta_data[1])));
     free_from_queue();
 
     return (obj *)(&meta_data[1]);
@@ -100,7 +101,7 @@ obj *allocate(size_t bytes, function1_t destructor)
 
 static bool is_allocated_pointer(obj *obj_ptr) 
 {
-    return ioopm_linked_list_contains(allocated_pointers, void_elem(obj_ptr));
+    return linked_list_contains(allocated_pointers, void_elem(obj_ptr));
 }
 
 static void object_scanner(obj *obj_ptr, size_t obj_size) 
@@ -137,8 +138,7 @@ void deallocate(obj *obj_ptr)
 
     void *elem = get_meta_data(obj_ptr);
     
-    //TODO: Needs to be adjusted to remove object without knowing index (removes takes index, not object now)
-    ioopm_linked_list_remove_object(allocated_pointers, obj_ptr);
+    linked_list_remove_object(allocated_pointers, obj_ptr);
     free(elem);
 }
 
@@ -190,7 +190,7 @@ obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
 {
     if (allocated_pointers == NULL) 
     {
-        allocated_pointers = ioopm_linked_list_create(compare_func);
+        allocated_pointers = linked_list_create(compare_func);
     } 
 
     void *allocation = calloc(1, (sizeof(meta_data_t) + (elements * elem_size)));
@@ -200,7 +200,7 @@ obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
     meta_data->size = elements * elem_size;
     meta_data->destructor = destructor;
 
-    ioopm_linked_list_append(allocated_pointers, void_elem((&meta_data[1])));
+    linked_list_append(allocated_pointers, void_elem((&meta_data[1])));
     free_from_queue();
 
     return (obj *)(&meta_data[1]);
@@ -236,7 +236,7 @@ void shutdown()
 {
     cleanup();
     destroy_queue(to_be_freed); 
-    ioopm_linked_list_destroy(allocated_pointers);  
+    linked_list_destroy(allocated_pointers);  
     to_be_freed = NULL;
     allocated_pointers = NULL; 
 }
