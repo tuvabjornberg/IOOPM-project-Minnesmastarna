@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <assert.h>
 
 #define COUNTERSIZE sizeof(unsigned short)
 #define DESTRUCTOR_PTR_SIZE sizeof(function1_t*)
@@ -87,6 +88,14 @@ obj *allocate(size_t bytes, function1_t destructor)
     }
     
     void *allocation = calloc(1, (sizeof(meta_data_t) + bytes));
+    //printf("\n%ld", sizeof(function1_t)); 
+    //printf("\n%ld", sizeof(unsigned short)); 
+    //printf("\n%ld", sizeof(meta_data_t)); 
+    //printf("\n%ld", sizeof(void*)); 
+    //printf("\nOffset of counter: %zu", offsetof(meta_data_t, counter));
+    //printf("\nOffset of size: %zu", offsetof(meta_data_t, size));
+    //printf("\nOffset of destructor: %zu", offsetof(meta_data_t, destructor));
+    //printf("\nSize of meta_data_t: %zu", sizeof(meta_data_t));
     
     meta_data_t* meta_data = (meta_data_t*)allocation;  
     meta_data->counter = 0;
@@ -171,12 +180,23 @@ void release(obj *obj_ptr)
     {
         meta_data_t *meta_data = get_meta_data(obj_ptr);
 
-        meta_data->counter--;
-
-        if ((meta_data->counter) <= 0) 
+        if (meta_data->counter == 0) 
         {
-            add_to_free_queue(obj_ptr);
-        }   
+            add_to_free_queue(obj_ptr); 
+        } 
+        else if (meta_data->counter < 0) 
+        {
+            assert(meta_data->counter < 0); 
+        } 
+        else 
+        {
+            meta_data->counter--;
+
+            if ((meta_data->counter) == 0) 
+            {
+                add_to_free_queue(obj_ptr);
+            }   
+        }
     }
 }
 
