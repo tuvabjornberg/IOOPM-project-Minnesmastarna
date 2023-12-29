@@ -36,21 +36,21 @@ Together with the actual pull request log on GitHub, this file should convince t
 
 
 # Code reviews and pull requests
-During the course of the project we have been using pull requests and continuous reviewing of the code that goes into our main branch. The goal being to verify code as well as make sure we only push working code (as far as we know) into the master branch. The reason being that we wanted to make sure everybody has a good base code when starting on something new. If we were to push into main before anything has been reviewed or tested properly someone could be building something based on bad or broken code, which in itself can lead to more issues down the line.
+During the course of the project we used pull requests and continuous reviewing of the code that goes into our main branch. The goal being to verify code as well as make sure we only push working code (as far as we know) into the master branch. The reason being that we wanted to make sure everybody has a good base code when starting on something new. If we were to push into main before anything has been reviewed or tested properly someone could be building something based on bad or broken code, which in itself can lead to more issues down the line.
 
 
 ## What has our process been like?
 Before we started with the actual coding we set up a strategy for code review and made sure everyone learned how to start with pull requests at least. Another important baseline we set was to communicate if you have created a pull request and await review.
 
 
-The main process has been an author pushing their code into a branch (not the main branch) and creating a pull request. When announcing this to the rest of the group someone will review and test their code. The goal being it's reviewes as soon as possible. A reviewer can usually be found if the author just asks a person in the group directly, asks volunteers at meetings or through our group communication channel.
+The main process has been an author pushing their code into a branch (not the main branch) and creating a pull request. When announcing this to the rest of the group someone will review and test their code. The goal being it's reviewed as soon as possible. A reviewer can usually be found if the author just asks a person in the group directly, asks volunteers at meetings or through our group communication channel.
 
 
-Some of the most efficient reviews have been done with the author in discussion with the person(s) reviewing and changes made accordingly as fast as possible. This dynamic has contributes to some of our best and most efficent reviewes. 
+Some of the most efficient reviews were done with the author in discussion with the person(s) reviewing and changes made accordingly as fast as possible. This dynamic has contributed to some of our best and most efficent reviewes. 
 An efficent review is especially valuable if the code reviewed is important for the project to move forward.
 
 
-In some cases we have tried to have two reviewers on the same code, in order to have several inputs on the code. 
+In some cases we tried to have two reviewers on the same code, in order to have several inputs on the code. 
 
 
 ## How did we review our code?
@@ -71,13 +71,13 @@ TODO:
 
 
 ## Consequences of code reviews in GitHub
-The beneficial consequences of using pull requests were the garantie that the code was agreed between at least two people before given to the rest of the group, the author and the reviewer. During these code reviews both small errors and more concerning problems arose which were solved to a certain degree before being pushed into main.
+The beneficial consequences of using pull requests were the guarantee that the code was agreed between at least two people before given to the rest of the group, the author and the reviewer. During these code reviews both small errors and more concerning problems arose which were solved to a certain degree before being pushed into main.
 
 
 We had more clear milestones when code was pushed into main because for important implementations we urged each other to update their current working branch to continue working on something we know works.
 
 
-Though, this consequence could have its own drawbacks for certain implementations. In most cases it would be because we have started working on an implementation assuming another worked as imagined. Some branches could easily fall behind the main branch. This led to some people working on older versions, which meant that some implementations had to be changed when the newer code was pushed up.
+Though, this consequence did have its own drawbacks for certain implementations. In most cases it would be because we have started working on an implementation assuming another worked as imagined. Some branches could easily fall behind the main branch. This led to some people working on older versions, which meant that some implementations had to be changed when the newer code was pushed up.
 
 
 This became an issue in cases where a review took time. For example, when we had to reimplement the release function most of the implementation for the Z92 program was done. But because this type of review was extensive, it took time before the affected members could have access to the updated code. Through the extensive review definitely was necessary.
@@ -90,7 +90,7 @@ Using pull requests did serve a good purpose. It made sure at least two people w
 Whether GitHub's built- in functions helped with reviewing the code is an individual opinion. <-- TODO:
 
 
-The color difference on GitHub did help some to distinguish old and new code. If a change were made to existing code the reviewer could see what changes were made, instead of manually trying to see what was removed or not by comparing the old with the new file. The color difference also helped to narrow down to only new code. It helped the reviewer only see relevant code. Furthermore, if the new code needed to be put into a context the reviewer simply could extend the file to see code already existing in the main branch.
+The color difference on GitHub helped to distinguish old and new code. If a change were made to existing code the reviewer could see what changes were made, instead of manually trying to see what was removed or not by comparing the old with the new file. The color difference also helped to narrow down to only new code. It helped the reviewer only see relevant code. Furthermore, if the new code needed to be put into a context the reviewer simply could extend the file to see code already existing in the main branch.
 
 
 ## Redos and future use
