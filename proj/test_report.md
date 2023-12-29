@@ -18,6 +18,16 @@ This file, together with the GitHub issue log, should convince the examiner that
 # ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
 
 ## How do we test the program (Started on)
+We have tested our program mainly through unit testing. This has been done through newly written tests. We have also had to change the tests from Z92 during the integration part of the project, so that they fit the mold of how the new code is written. The code from before can also be tested with a txt-file, to make sure that when using the user input, the program still won't have any memory leaks.
+
+### Unit testing (Started on)
+Unit tests were created using CUnit. These were created mainly during the first stage of the program, when we had to start implementation of the refmem functions. These were also split up into multiple files, so each test file handled different parts of the origin file.
+
+This separation meant that we separated the standardised refmem tests into one file, whereas the destructor tests got their own file. This meant that if one of these files were to suddenly stop passing their tests, we could easily find which part of the program that was suddenly not working.
+
+Because we had to create a queue structure, we had to test this one as well. This meant that this also got a few tests, to make sure that it wouldn't have any memory leaks, and work accordingly to how we want it to work. These tests were also created in a separate file, as they held no relevance to the refmem tests or the destructor tests.
+
+## How do we test the program (Started on)
 We have tested our program mainly through unit testing. This has meen done through newly written tests. We have also had to change the tests fro Z92 during the integration part of the project, so that they fit the mold of how the new code is written. The code from before can also be tested with a txt-file, to make sure that when using the user input, the program still won't have any memory leaks.
 
 ### Unit testing (Started on)

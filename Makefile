@@ -29,8 +29,14 @@ cov:
 prof: 
 	$(MAKE) -C $(TEST) prof
 
-demo: 
-	$(MAKE) -C $@
+testdemo: 
+	$(MAKE) -C $(DEMO) test_demo_hash
+
+memdemo: 
+	$(MAKE) -C $(DEMO) mem_demo_hash
+
+sandemo: 
+	$(MAKE) -C $(DEMO) san_demo_hash
 
 example: 
 	$(MAKE) -C $(DEMO) memexample

@@ -22,14 +22,14 @@ examplesan.out: example.c refmem.c queue.c list.c
 sanexample: examplesan.out
 	./examplesan.out
 
-shop_cart_tests.out: shop_cart_tests.o shop_cart.o hash_table.o linked_list.o merch_storage.o hash_fun.o refmem.o queue.o list.o
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
+test_demo_hash: 
+	$(MAKE) -C $(Z92) ds_tests
 
-sc_tests: shop_cart_tests.out 
-	./shop_cart_tests.out
+mem_demo_hash: 
+	$(MAKE) -C $(Z92) ds_memtests
 
-sc_memtests: shop_cart_tests.out 
-	valgrind --leak-check=full ./shop_cart_tests.out
+san_demo_hash: 
+	$(MAKE) -C $(Z92) hash_sanitize
 
 clean: 
 	rm -f *.o *.out

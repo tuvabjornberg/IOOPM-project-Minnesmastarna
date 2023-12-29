@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <assert.h>
 
 #define COUNTERSIZE sizeof(unsigned short)
 #define DESTRUCTOR_PTR_SIZE sizeof(function1_t*)
@@ -15,7 +16,8 @@ static size_t cascade_limit = 5;
 static Queue *to_be_freed = NULL;
 list_t *allocated_pointers = NULL;
 
-typedef struct {
+typedef struct 
+{
     unsigned short counter;
     unsigned short size;
     function1_t destructor;
@@ -171,12 +173,23 @@ void release(obj *obj_ptr)
     {
         meta_data_t *meta_data = get_meta_data(obj_ptr);
 
-        meta_data->counter--;
-
-        if ((meta_data->counter) <= 0) 
+        if (meta_data->counter == 0) 
         {
-            add_to_free_queue(obj_ptr);
-        }   
+            add_to_free_queue(obj_ptr); 
+        } 
+        else if (meta_data->counter < 0) 
+        {
+            assert(meta_data->counter < 0); 
+        } 
+        else 
+        {
+            meta_data->counter--;
+
+            if ((meta_data->counter) == 0) 
+            {
+                add_to_free_queue(obj_ptr);
+            }   
+        }
     }
 }
 

@@ -5,7 +5,7 @@ C_LINK_OPTIONS = -lm
 CUNIT_LINK     = -lcunit
 C_PROF		   = -pg
 C_GCOV	   	   = -fprofile-arcs -ftest-coverage
-VPATH		   = user_interface : data_structures : utils : tests : logic
+VPATH		   = user_interface : data_structures : utils : tests : logic  : ../../src
 
 %.o:  %.c 
 	$(C_COMPILER) $(C_OPTIONS) $^ -c 
@@ -37,7 +37,7 @@ ui_memtests: ui.out
 ui_arg_memtests: ui.out
 	valgrind --leak-check=full ./ui.out < tests/ui_tests.txt
 
-hash_test.out: hash_table_tests.o hash_table.o linked_list.o 
+hash_test.out: hash_table_tests.o hash_table.o linked_list.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
 
 list_test.out: linked_list.o linked_list_tests.o
@@ -51,20 +51,18 @@ ds_memtests: hash_test.out list_test.out
 	valgrind --leak-check=full ./hash_test.out
 	valgrind --leak-check=full ./list_test.out
 
+hash_san.out: hash_table_tests.c hash_table.c linked_list.c refmem.c queue.c list.o
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
+
+hash_sanitize: hash_san.out
+	./hash_san.out 
+
 merch_test_coverage.out: merch_storage_tests.o merch_storage.c shop_cart.o hash_table.o linked_list.o hash_fun.o	
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
 shop_test_coverage.out: shop_cart_tests.o shop_cart.c hash_table.o linked_list.o merch_storage.o hash_fun.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
 ui_test_coverage.out: ui.c shop_cart.o hash_table.o linked_list.o merch_storage.o hash_fun.o utils.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
-
-#cov: merch_test_coverage.out shop_test_coverage.out ui_test_coverage.out
-#	./ui_test_coverage.out < tests/ui_tests.txt
-#	gcov -b -c ui.c
-#	./merch_test_coverage.out	
-#	gcov -b -c merch_storage.c
-#	./shop_test_coverage.out
-#	gcov -b -c shop_cart.c
 
 cov: merch_test_coverage.out shop_test_coverage.out ui_test_coverage.out
 	./ui_test_coverage.out < tests/ui_tests.txt
@@ -90,7 +88,6 @@ prof: ui_prof.out merch_storage_prof.out shop_cart_prof.out shop_cart_prof.out
 	gprof merch_storage_prof.out gmon.out > merch_storage_prof.profiling
 	./shop_cart_prof.out 
 	gprof shop_cart_prof.out gmon.out > shop_cart_prof.profiling
-
 
 ui_san.out: ui.c hash_table.c linked_list.c utils.c merch_storage.c shop_cart.c hash_fun.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ 
