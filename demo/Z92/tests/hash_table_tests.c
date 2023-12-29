@@ -4,6 +4,7 @@
 #include "../data_structures/common.h"
 #include <stdbool.h>
 #include <stdlib.h>
+#include "../../../src/refmem.h"
 
 int init_suite(void)
 {
@@ -36,8 +37,11 @@ static void insert_set_elements(ioopm_hash_table_t *ht, elem_t *arr_keys, elem_t
 void test_create_destroy()
 {
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
+    retain(ht); 
     CU_ASSERT_PTR_NOT_NULL(ht);
-    ioopm_hash_table_destroy(ht);
+
+    release(ht); 
+    shutdown(); 
 }
 
 void test_insert_once()
@@ -55,48 +59,54 @@ void test_insert_once()
 
     CU_ASSERT_TRUE(Successful((*lookup_result)));
     CU_ASSERT_STRING_EQUAL("value1", lookup_result->value.string);
-    free(lookup_result);
+    release(lookup_result);
 
     // Test existing key2
     lookup_result = ioopm_hash_table_lookup(ht, key[1]);
     CU_ASSERT_TRUE(Successful((*lookup_result)));
     CU_ASSERT_STRING_EQUAL("value2", lookup_result->value.string);
-    free(lookup_result);
+    release(lookup_result);
 
     //Insert new value to existing key
     ioopm_hash_table_insert(ht, key[0], (elem_t) {.string = "updated_value"});
     lookup_result = ioopm_hash_table_lookup(ht, key[0]);
     CU_ASSERT_STRING_EQUAL("updated_value", lookup_result->value.string); 
-    free(lookup_result);
+    release(lookup_result);
 
     // Test invalid_key
     lookup_result = ioopm_hash_table_lookup(ht, invalid_key);
     CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    free(lookup_result);
+    release(lookup_result);
 
-    ioopm_hash_table_destroy(ht);
+    release(ht); 
+    shutdown(); 
 }
 
 void test_lookup_empty() 
 {
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
+
     for (elem_t i = {.integer = 0}; i.integer < No_Buckets; ++i.integer) 
     {
         option_t *lookup_result = ioopm_hash_table_lookup(ht, i);
         CU_ASSERT_FALSE(lookup_result->success);
-        free(lookup_result);
+        release(lookup_result);
     }
+
     elem_t invalid_lookup = {.integer = -1}; 
     option_t *lookup_result = ioopm_hash_table_lookup(ht, invalid_lookup);
     CU_ASSERT_FALSE(lookup_result->success);
-
-    free(lookup_result);
-    ioopm_hash_table_destroy(ht);
+    release(lookup_result);
+    
+    release(ht); 
+    shutdown(); 
 }
 
+//TODO: Big memleak :(
 void test_remove_entry()
 {
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
+    retain(ht); 
 
     elem_t key[] = {{.integer = 1}, {.integer = 18}, {.integer = 35}, {.integer = 52}}; 
     elem_t value[] = {{.string = "value1"}, {.string = "value2"}, {.string = "value3"}, {.string = "value4"}};  
@@ -108,21 +118,21 @@ void test_remove_entry()
     option_t *lookup_result = ioopm_hash_table_lookup(ht, key[1]);
     CU_ASSERT_STRING_EQUAL("value2", value_removed.string);
     CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    free(lookup_result);
+    release(lookup_result);
 
     // Remove inserted item (last)
     value_removed = ioopm_hash_table_remove(ht, key[3]);
     lookup_result = ioopm_hash_table_lookup(ht, key[3]);
     CU_ASSERT_STRING_EQUAL("value4", value_removed.string);
     CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    free(lookup_result);
+    release(lookup_result);
 
     // Remove inserted item (first)
     value_removed = ioopm_hash_table_remove(ht, key[0]);
     lookup_result = ioopm_hash_table_lookup(ht, key[0]);
     CU_ASSERT_STRING_EQUAL("value1", value_removed.string);
     CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    free(lookup_result);
+    release(lookup_result);
 
     // Remove for not inserted item
     value_removed = ioopm_hash_table_remove(ht, key[0]);
@@ -130,9 +140,10 @@ void test_remove_entry()
     CU_ASSERT_PTR_NULL(value_removed.void_ptr); 
 
     CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    free(lookup_result);
+    release(lookup_result);
 
-    ioopm_hash_table_destroy(ht);
+    release(ht); 
+    shutdown(); 
 }
 
 void test_size_hash_table()
@@ -149,7 +160,8 @@ void test_size_hash_table()
     ioopm_hash_table_clear(ht); 
     CU_ASSERT_EQUAL(0, ioopm_hash_table_size(ht)); 
     
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 void test_is_empty_hash_table() 
@@ -163,7 +175,8 @@ void test_is_empty_hash_table()
     ioopm_hash_table_clear(ht); 
     CU_ASSERT_TRUE(ioopm_hash_table_is_empty(ht)); 
 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 void test_clear_hash_table() 
@@ -179,11 +192,12 @@ void test_clear_hash_table()
 
     option_t *lookup_result = ioopm_hash_table_lookup(ht, key[2]);
     CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    free(lookup_result);
+    release(lookup_result);
 
     CU_ASSERT_EQUAL(0, ioopm_hash_table_size(ht)); 
 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 void test_table_keys()
@@ -225,7 +239,8 @@ void test_table_keys()
     }
 
     ioopm_linked_list_destroy(keys_from_ht); 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 void test_table_values()
@@ -283,7 +298,8 @@ void test_table_values()
 
     ioopm_linked_list_destroy(values_from_ht);  
     ioopm_linked_list_destroy(keys_from_ht);  
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 void test_ht_has_key()
@@ -297,7 +313,8 @@ void test_ht_has_key()
     CU_ASSERT_TRUE(ioopm_hash_table_has_key(ht, key[1])); 
     CU_ASSERT_FALSE(ioopm_hash_table_has_key(ht, key[2]));
 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 void test_ht_has_value() 
@@ -311,7 +328,8 @@ void test_ht_has_value()
     CU_ASSERT_TRUE(ioopm_hash_table_has_value(ht, value[1])); 
     CU_ASSERT_FALSE(ioopm_hash_table_has_value(ht, value[2])); 
 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown();  
 }
 
 static bool key_equiv(elem_t key, elem_t value_ignored, void *x)
@@ -320,7 +338,6 @@ static bool key_equiv(elem_t key, elem_t value_ignored, void *x)
   int other_key = *other_key_ptr;
   return key.integer == other_key;
 }
-
 
 void test_ht_has_any()
 {
@@ -336,7 +353,8 @@ void test_ht_has_any()
     CU_ASSERT_TRUE(ioopm_hash_table_any(ht, key_equiv, &key[1]));  
     CU_ASSERT_FALSE(ioopm_hash_table_any(ht, key_equiv, &false_key)); 
 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 static bool mod_equiv(elem_t key, elem_t value_ignored, void *x)
@@ -366,7 +384,8 @@ void test_ht_has_all()
 
     CU_ASSERT_TRUE(ioopm_hash_table_all(ht, starts_with_char, "v"))
 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 static void add_version_value(elem_t key_ignored, elem_t *value, void *arg) 
@@ -375,7 +394,7 @@ static void add_version_value(elem_t key_ignored, elem_t *value, void *arg)
     char *original_value = value->string;
 
     // allocate memory for the new value, since new value has more characters than the original
-    char *new_value = calloc(1, strlen(version) + strlen(original_value) + 1); // +1 for null-terminator
+    char *new_value = allocate(strlen(version) + strlen(original_value) + 1, NULL); // +1 for null-terminator
 
     strcpy(new_value, version);
     strcat(new_value, original_value);
@@ -416,7 +435,7 @@ void test_ht_apply_to_all()
         {
             found[i] = true; 
         }
-        free(value_after_apply); 
+        release(value_after_apply); 
     } 
 
     for (int i = 0; i < 3; i++)
@@ -425,7 +444,8 @@ void test_ht_apply_to_all()
     }
     
     ioopm_linked_list_destroy(array_of_applied); 
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown(); 
 }
 
 void boundary_test() 
@@ -441,35 +461,27 @@ void boundary_test()
     {
         ioopm_hash_table_remove(ht, int_elem(1)); 
     }
-    ioopm_hash_table_destroy(ht); 
+    release(ht); 
+    shutdown();  
 }
 
 int main()
 {
-    // First we try to set up CUnit, and exit if we fail
     if (CU_initialize_registry() != CUE_SUCCESS)
         return CU_get_error();
 
-    // We then create an empty test suite and specify the name and
-    // the init and cleanup functions
     CU_pSuite my_test_suite = CU_add_suite("Tests for hash_table.c", init_suite, clean_suite);
     if (my_test_suite == NULL)
     {
-        // If the test suite could not be added, tear down CUnit and exit
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    // This is where we add the test functions to our test suite.
-    // For each call to CU_add_test we specify the test suite, the
-    // name or description of the test, and the function that runs
-    // the test in question. If you want to add another test, just
-    // copy a line below and change the information
     if (
         (CU_add_test(my_test_suite, "A simple create and destroy test", test_create_destroy) == NULL ||
          CU_add_test(my_test_suite, "A simple insert and lookup test", test_insert_once) == NULL ||
-         CU_add_test(my_test_suite, "Empty lookup", test_lookup_empty) == NULL ||
-         CU_add_test(my_test_suite, "Remove a single element", test_remove_entry) == NULL ||
+         CU_add_test(my_test_suite, "Empty lookup", test_lookup_empty) == NULL  ||
+         CU_add_test(my_test_suite, "Remove a single element", test_remove_entry) == NULL || 
          CU_add_test(my_test_suite, "Test size of a hash_table", test_size_hash_table) == NULL ||
          CU_add_test(my_test_suite, "Test for an empty hash table", test_is_empty_hash_table) == NULL ||
          CU_add_test(my_test_suite, "Clearing a hash_table", test_clear_hash_table) == NULL ||
@@ -484,19 +496,14 @@ int main()
         )
        )
     {
-        // If adding any of the tests fails, we tear down CUnit and exit
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    // Set the running mode. Use CU_BRM_VERBOSE for maximum output.
-    // Use CU_BRM_NORMAL to only print errors and a summary
     CU_basic_set_mode(CU_BRM_VERBOSE);
 
-    // This is where the tests are actually run!
     CU_basic_run_tests();
 
-    // Tear down CUnit before exiting
     CU_cleanup_registry();
     return CU_get_error();
 }

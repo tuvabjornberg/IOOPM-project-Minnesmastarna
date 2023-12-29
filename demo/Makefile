@@ -21,6 +21,15 @@ examplesan.out: example.c refmem.c queue.c list.c
 sanexample: examplesan.out
 	./examplesan.out
 
+test_demo_hash: 
+	$(MAKE) -C $(Z92) ds_tests
+
+mem_demo_hash: 
+	$(MAKE) -C $(Z92) ds_memtests
+
+san_demo_hash: 
+	$(MAKE) -C $(Z92) hash_sanitize
+
 clean: 
 	rm -f *.o *.out
 	$(MAKE) -C $(Z92) clean
