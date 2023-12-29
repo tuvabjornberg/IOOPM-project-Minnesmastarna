@@ -45,11 +45,11 @@ list_test.out: linked_list.o linked_list_tests.o
 
 ds_tests: hash_test.out list_test.out
 	./hash_test.out 
-#./list_test.out	
+	./list_test.out	
 
 ds_memtests: hash_test.out list_test.out
 	valgrind --leak-check=full ./hash_test.out
-#valgrind --leak-check=full ./list_test.out
+	valgrind --leak-check=full ./list_test.out
 
 hash_san.out: hash_table_tests.c hash_table.c linked_list.c refmem.c queue.c list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
@@ -88,7 +88,6 @@ prof: ui_prof.out merch_storage_prof.out shop_cart_prof.out shop_cart_prof.out
 	gprof merch_storage_prof.out gmon.out > merch_storage_prof.profiling
 	./shop_cart_prof.out 
 	gprof shop_cart_prof.out gmon.out > shop_cart_prof.profiling
-
 
 ui_san.out: ui.c hash_table.c linked_list.c utils.c merch_storage.c shop_cart.c hash_fun.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ 
