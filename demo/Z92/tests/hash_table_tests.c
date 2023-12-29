@@ -37,7 +37,9 @@ static void insert_set_elements(ioopm_hash_table_t *ht, elem_t *arr_keys, elem_t
 void test_create_destroy()
 {
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
+    retain(ht); 
     CU_ASSERT_PTR_NOT_NULL(ht);
+
     release(ht); 
     shutdown(); 
 }
@@ -83,12 +85,14 @@ void test_insert_once()
 void test_lookup_empty() 
 {
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
+
     for (elem_t i = {.integer = 0}; i.integer < No_Buckets; ++i.integer) 
     {
         option_t *lookup_result = ioopm_hash_table_lookup(ht, i);
         CU_ASSERT_FALSE(lookup_result->success);
         release(lookup_result);
     }
+
     elem_t invalid_lookup = {.integer = -1}; 
     option_t *lookup_result = ioopm_hash_table_lookup(ht, invalid_lookup);
     CU_ASSERT_FALSE(lookup_result->success);
@@ -102,6 +106,7 @@ void test_lookup_empty()
 void test_remove_entry()
 {
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
+    retain(ht); 
 
     elem_t key[] = {{.integer = 1}, {.integer = 18}, {.integer = 35}, {.integer = 52}}; 
     elem_t value[] = {{.string = "value1"}, {.string = "value2"}, {.string = "value3"}, {.string = "value4"}};  
@@ -110,34 +115,33 @@ void test_remove_entry()
 
     // Remove inserted item (middle)
     elem_t value_removed = ioopm_hash_table_remove(ht, key[1]);
-    //option_t *lookup_result = ioopm_hash_table_lookup(ht, key[1]);
+    option_t *lookup_result = ioopm_hash_table_lookup(ht, key[1]);
     CU_ASSERT_STRING_EQUAL("value2", value_removed.string);
-    //CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    //release(lookup_result);
+    CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
+    release(lookup_result);
 
     // Remove inserted item (last)
     value_removed = ioopm_hash_table_remove(ht, key[3]);
-    //lookup_result = ioopm_hash_table_lookup(ht, key[3]);
+    lookup_result = ioopm_hash_table_lookup(ht, key[3]);
     CU_ASSERT_STRING_EQUAL("value4", value_removed.string);
-    //CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    //release(lookup_result);
-//
-    //// Remove inserted item (first)
-    //value_removed = ioopm_hash_table_remove(ht, key[0]);
-    //lookup_result = ioopm_hash_table_lookup(ht, key[0]);
-    //CU_ASSERT_STRING_EQUAL("value1", value_removed.string);
-    //CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    //release(lookup_result);
-//
-    //// Remove for not inserted item
-    //value_removed = ioopm_hash_table_remove(ht, key[0]);
-    //lookup_result = ioopm_hash_table_lookup(ht, key[0]);
-    //CU_ASSERT_PTR_NULL(value_removed.void_ptr); 
-//
-    //CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
-    //release(lookup_result);
-//
-    //ioopm_hash_table_destroy(ht);
+    CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
+    release(lookup_result);
+
+    // Remove inserted item (first)
+    value_removed = ioopm_hash_table_remove(ht, key[0]);
+    lookup_result = ioopm_hash_table_lookup(ht, key[0]);
+    CU_ASSERT_STRING_EQUAL("value1", value_removed.string);
+    CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
+    release(lookup_result);
+
+    // Remove for not inserted item
+    value_removed = ioopm_hash_table_remove(ht, key[0]);
+    lookup_result = ioopm_hash_table_lookup(ht, key[0]);
+    CU_ASSERT_PTR_NULL(value_removed.void_ptr); 
+
+    CU_ASSERT_TRUE(Unsuccessful((*lookup_result)));
+    release(lookup_result);
+
     release(ht); 
     shutdown(); 
 }
@@ -296,7 +300,7 @@ void test_table_values()
     ioopm_linked_list_destroy(keys_from_ht);  
     release(ht); 
     shutdown(); 
-    }
+}
 
 void test_ht_has_key()
 {
@@ -334,7 +338,6 @@ static bool key_equiv(elem_t key, elem_t value_ignored, void *x)
   int other_key = *other_key_ptr;
   return key.integer == other_key;
 }
-
 
 void test_ht_has_any()
 {
@@ -478,7 +481,7 @@ int main()
         (CU_add_test(my_test_suite, "A simple create and destroy test", test_create_destroy) == NULL ||
          CU_add_test(my_test_suite, "A simple insert and lookup test", test_insert_once) == NULL ||
          CU_add_test(my_test_suite, "Empty lookup", test_lookup_empty) == NULL  ||
-         //CU_add_test(my_test_suite, "Remove a single element", test_remove_entry) == NULL || TODO:
+         CU_add_test(my_test_suite, "Remove a single element", test_remove_entry) == NULL || 
          CU_add_test(my_test_suite, "Test size of a hash_table", test_size_hash_table) == NULL ||
          CU_add_test(my_test_suite, "Test for an empty hash table", test_is_empty_hash_table) == NULL ||
          CU_add_test(my_test_suite, "Clearing a hash_table", test_clear_hash_table) == NULL ||

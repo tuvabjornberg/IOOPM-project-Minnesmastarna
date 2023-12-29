@@ -19,7 +19,8 @@ typedef struct entry entry_t;
 typedef struct hash_table ioopm_hash_table_t;
 typedef struct option option_t;
 
-struct entry {
+struct entry 
+{
     elem_t key;    // holds the key
     elem_t value;  // holds the value
     entry_t *next; // points to the next entry (possibly NULL)
@@ -49,7 +50,8 @@ static void entry_destroy(entry_t *entry)
     release(entry); 
 }
 
-static void hash_table_destructor(obj *obj_ptr) {
+static void hash_table_destructor(obj *obj_ptr) 
+{
     ioopm_hash_table_t *ht = (ioopm_hash_table_t *)obj_ptr;
     ioopm_hash_table_clear(ht);
     release(ht->buckets); 
@@ -85,6 +87,7 @@ void ioopm_hash_table_clear(ioopm_hash_table_t *ht)
 static entry_t *entry_create(elem_t key, elem_t value, entry_t *next) 
 {
     entry_t *new_entry = allocate(sizeof(entry_t), NULL); 
+
     new_entry->key = key;
     new_entry->value = value;
     new_entry->next = next;
@@ -174,13 +177,13 @@ option_t *ioopm_hash_table_lookup(ioopm_hash_table_t *ht, elem_t key)
     if (current != NULL) 
     {
         *lookup_result = Success(current->value);
+        retain(lookup_result); 
     } 
     else 
     {
         *lookup_result = Failure();
     }
 
-    retain(lookup_result); 
     return lookup_result;
 }
 
@@ -201,18 +204,18 @@ elem_t ioopm_hash_table_remove(ioopm_hash_table_t *ht, elem_t key)
         {
             // for last entries
             prev->next = NULL;
-            release(current); 
         } 
         else 
         {
             // for first and middle entries
             prev->next = current->next;
-            release(current); 
-        }
+            retain(prev->next); 
+        }        
+        release(current); 
     } 
     else 
     {
-      // error handeling
+        // error handeling
         removed_value.void_ptr = NULL;
     }
 

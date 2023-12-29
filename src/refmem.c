@@ -16,7 +16,8 @@ static size_t cascade_limit = 5;
 static Queue *to_be_freed = NULL;
 list_t *allocated_pointers = NULL;
 
-typedef struct {
+typedef struct 
+{
     unsigned short counter;
     unsigned short size;
     function1_t destructor;
@@ -88,14 +89,6 @@ obj *allocate(size_t bytes, function1_t destructor)
     }
     
     void *allocation = calloc(1, (sizeof(meta_data_t) + bytes));
-    //printf("\n%ld", sizeof(function1_t)); 
-    //printf("\n%ld", sizeof(unsigned short)); 
-    //printf("\n%ld", sizeof(meta_data_t)); 
-    //printf("\n%ld", sizeof(void*)); 
-    //printf("\nOffset of counter: %zu", offsetof(meta_data_t, counter));
-    //printf("\nOffset of size: %zu", offsetof(meta_data_t, size));
-    //printf("\nOffset of destructor: %zu", offsetof(meta_data_t, destructor));
-    //printf("\nSize of meta_data_t: %zu", sizeof(meta_data_t));
     
     meta_data_t* meta_data = (meta_data_t*)allocation;  
     meta_data->counter = 0;
