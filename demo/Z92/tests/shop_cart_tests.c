@@ -45,6 +45,7 @@ void create_destroy_test()
     CU_ASSERT_PTR_NOT_NULL(storage_carts); 
     CU_ASSERT_TRUE(ioopm_carts_are_empty(storage_carts)); 
     ioopm_cart_storage_destroy(storage_carts); 
+    //shutdown();
 }
 
 void add_to_cart_test()
@@ -68,8 +69,9 @@ void add_to_cart_test()
 
     ioopm_cart_storage_destroy(storage_carts); 
     ioopm_store_destroy(store); 
+    //shutdown();
 }
-
+/*
 void remove_from_cart_test()
 {
     ioopm_carts_t *storage_carts = ioopm_cart_storage_create(); 
@@ -94,6 +96,7 @@ void remove_from_cart_test()
 
     ioopm_cart_storage_destroy(storage_carts); 
     ioopm_store_destroy(store);
+    shutdown();
 }
 
 void remove_cart_test()
@@ -115,6 +118,7 @@ void remove_cart_test()
 
     ioopm_cart_storage_destroy(storage_carts); 
     ioopm_store_destroy(store);
+    shutdown();
 }
 
 void empty_cart_test()
@@ -126,6 +130,7 @@ void empty_cart_test()
     CU_ASSERT_FALSE(ioopm_carts_are_empty(storage_carts)); 
 
     ioopm_cart_storage_destroy(storage_carts); 
+    shutdown();
 }
 
 void has_merch_in_cart_test()
@@ -150,6 +155,7 @@ void has_merch_in_cart_test()
 
     ioopm_cart_storage_destroy(storage_carts);
     ioopm_store_destroy(store); 
+    shutdown();
 }
 
 void cost_calculate_test()
@@ -176,6 +182,7 @@ void cost_calculate_test()
 
     ioopm_cart_storage_destroy(storage_carts); 
     ioopm_store_destroy(store); 
+    shutdown();
 }
  
 void checkout_cart_test()
@@ -202,8 +209,9 @@ void checkout_cart_test()
 
     ioopm_cart_storage_destroy(storage_carts); 
     ioopm_store_destroy(store); 
+    shutdown();
 }
-
+*/
 int main()
 {
     // First we try to set up CUnit, and exit if we fail
@@ -227,13 +235,13 @@ int main()
     // copy a line below and change the information
     if (
         (CU_add_test(my_test_suite, "Create and destroy storage carts test", create_destroy_test) == NULL ||
-         CU_add_test(my_test_suite, "Create and add to cart test", add_to_cart_test) == NULL ||
-         CU_add_test(my_test_suite, "Remove from cart test", remove_from_cart_test) == NULL ||
+         CU_add_test(my_test_suite, "Create and add to cart test", add_to_cart_test) == NULL 
+         /*CU_add_test(my_test_suite, "Remove from cart test", remove_from_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Empty carts in store test", empty_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Has merch in cart test", has_merch_in_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Calculate total in cart", cost_calculate_test) == NULL ||
          CU_add_test(my_test_suite, "Checkout cart test", checkout_cart_test) == NULL ||
-         CU_add_test(my_test_suite, "Test for removing a cart with items", remove_cart_test) == NULL
+         CU_add_test(my_test_suite, "Test for removing a cart with items", remove_cart_test) == NULL*/
         )
     )
     

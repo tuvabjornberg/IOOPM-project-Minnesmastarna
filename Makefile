@@ -36,7 +36,13 @@ example:
 	$(MAKE) -C $(DEMO) memexample
 
 sanexample: 
-	$(MAKE) -C $(DEMO) sanexample	
+	$(MAKE) -C $(DEMO) sanexample
+
+sc_tests:
+	$(MAKE) -C $(DEMO) sc_tests
+
+sc_memtests:
+	$(MAKE) -C $(DEMO) sc_memtests
 
 clean: 
 	rm -f *.o
