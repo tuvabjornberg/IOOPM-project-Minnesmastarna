@@ -45,7 +45,7 @@ void create_destroy_test()
     CU_ASSERT_PTR_NOT_NULL(storage_carts); 
     CU_ASSERT_TRUE(ioopm_carts_are_empty(storage_carts)); 
     ioopm_cart_storage_destroy(storage_carts); 
-    //shutdown();
+    shutdown();
 }
 
 void add_to_cart_test()

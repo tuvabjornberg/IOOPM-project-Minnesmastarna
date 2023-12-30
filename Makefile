@@ -31,12 +31,15 @@ prof:
 
 testdemo: 
 	$(MAKE) -C $(DEMO) test_demo_hash
+	$(MAKE) -C $(DEMO) test_demo_shopcart
 
 memdemo: 
 	$(MAKE) -C $(DEMO) mem_demo_hash
+	$(MAKE) -C $(DEMO) mem_demo_shopcart
 
 sandemo: 
-	$(MAKE) -C $(DEMO) san_demo_hash
+#$(MAKE) -C $(DEMO) san_demo_hash
+	$(MAKE) -C $(DEMO) san_demo_shopcart
 
 example: 
 	$(MAKE) -C $(DEMO) memexample

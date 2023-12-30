@@ -14,10 +14,10 @@ ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
 
 
-merch_storage_tests.out: merch_storage_tests.o merch_storage.o shop_cart.o hash_table.o linked_list.o hash_fun.o	
+merch_storage_tests.out: merch_storage_tests.o merch_storage.o shop_cart.o hash_table.o linked_list.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
-shop_cart_tests.out: shop_cart_tests.o shop_cart.o hash_table.o linked_list.o merch_storage.o hash_fun.o
+shop_cart_tests.out: shop_cart_tests.o shop_cart.o hash_table.o linked_list.o merch_storage.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
 
 logic_tests: merch_storage_tests.out shop_cart_tests.out 
@@ -100,6 +100,12 @@ merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c u
 
 merchsan: merchsan.out
 	./merchsan.out
+
+shopsan.out: shop_cart_tests.c merch_storage.c shop_cart.c hash_table.c linked_list.c utils.c hash_fun.c refmem.c queue.c list.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
+
+shopsan: shopsan.out
+	./shopsan.out
 
 clean:
 	rm -f *.o *.out *.profiling *.gcno *gcda *.gcov ui merch_storage_tests shop_cart_tests ui_sanitize

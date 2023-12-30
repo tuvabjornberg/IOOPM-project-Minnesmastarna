@@ -3,6 +3,7 @@
 #include "merch_storage.h"
 #include <string.h>
 #include <stdbool.h>
+#include "../../../src/refmem.h"
 
 ioopm_carts_t *ioopm_cart_storage_create()
 {

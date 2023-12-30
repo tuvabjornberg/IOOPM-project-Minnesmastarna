@@ -31,6 +31,17 @@ mem_demo_hash:
 san_demo_hash: 
 	$(MAKE) -C $(Z92) hash_sanitize
 
+
+test_demo_shopcart: 
+	$(MAKE) -C $(Z92) logic_tests
+
+mem_demo_shopcart: 
+	$(MAKE) -C $(Z92) logic_memtests
+
+san_demo_shopcart: 
+	$(MAKE) -C $(Z92) shopsan
+
+
 clean: 
 	rm -f *.o *.out
 	$(MAKE) -C $(Z92) clean
