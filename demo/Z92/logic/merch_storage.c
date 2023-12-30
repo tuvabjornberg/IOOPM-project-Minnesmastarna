@@ -4,11 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "../../../src/refmem.h"
 
 ioopm_store_t *ioopm_store_create()
 {
-    ioopm_store_t *new_store = calloc(1, sizeof(ioopm_store_t)); //TODO: allocate_array
-    new_store->merch_names = calloc(STORAGE_INITIAL_CAPACITY , sizeof(char*)); //TODO: allocate_array
+    ioopm_store_t *new_store = allocate(sizeof(ioopm_store_t), NULL); //TODO: allocate_array
+    new_store->merch_names = allocate_array(STORAGE_INITIAL_CAPACITY , sizeof(char*), NULL); //TODO: allocate_array
     new_store->merch_details = ioopm_hash_table_create(ioopm_hash_fun_sum_key_string, ioopm_string_eq);
     new_store->merch_count = 0;
     new_store->capacity = STORAGE_INITIAL_CAPACITY ;
@@ -17,11 +18,21 @@ ioopm_store_t *ioopm_store_create()
 
 ioopm_merch_t *ioopm_merch_create(char *name, char *description, int price, ioopm_list_t *stock, int stock_size)
 {
-    ioopm_merch_t *new_merch = calloc(1, sizeof(ioopm_merch_t)); //TODO: allocate_array
-    new_merch->name = strdup(name); //TODO: retain?
-    free(name); //TODO: deallocate? inputs från terminal
-    new_merch->description = strdup(description); //TODO: retain?
-    free(description); //TODO: deallocate? -||-
+    ioopm_merch_t *new_merch = allocate(sizeof(ioopm_merch_t), NULL); //TODO: allocate_array
+    //new_merch->name = strdup(name); //TODO: retain?
+
+    char *dup_name = allocate_array(strlen(name) + 1, sizeof(char), NULL);
+    strcpy(dup_name, name);
+    new_merch->name = dup_name; 
+
+    release(name); //TODO: deallocate? inputs från terminal
+    //new_merch->description = strdup(description); //TODO: retain?
+
+    char *dup_desc = allocate_array(strlen(description) + 1, sizeof(char), NULL);
+    strcpy(dup_desc, description);
+    new_merch->description = dup_desc; 
+
+    release(description); //TODO: deallocate? -||-
     new_merch->price = price;
     new_merch->stock = stock; 
     new_merch->stock_size = stock_size;
