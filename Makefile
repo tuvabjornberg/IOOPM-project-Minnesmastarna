@@ -31,12 +31,16 @@ prof:
 
 testdemo: 
 	$(MAKE) -C $(DEMO) test_demo_hash
+	$(MAKE) -C $(DEMO) test_demo_ui
 
 memdemo: 
 	$(MAKE) -C $(DEMO) mem_demo_hash
+	$(MAKE) -C $(DEMO) mem_demo_ui_arg
+	$(MAKE) -C $(DEMO) mem_demo_ui	
 
 sandemo: 
 	$(MAKE) -C $(DEMO) san_demo_hash
+	$(MAKE) -C $(DEMO) san_demo_ui
 
 example: 
 	$(MAKE) -C $(DEMO) memexample

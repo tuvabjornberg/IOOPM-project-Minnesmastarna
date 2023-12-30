@@ -30,6 +30,18 @@ mem_demo_hash:
 san_demo_hash: 
 	$(MAKE) -C $(Z92) hash_sanitize
 
+test_demo_ui: 
+	$(MAKE) -C $(Z92) ui_tests
+
+mem_demo_ui: 
+	$(MAKE) -C $(Z92) ui_memtests
+
+mem_demo_ui_arg: 
+	$(MAKE) -C $(Z92) ui_arg_memtests
+
+san_demo_ui: 
+	$(MAKE) -C $(Z92) ui_sanitize
+
 clean: 
 	rm -f *.o *.out
 	$(MAKE) -C $(Z92) clean
