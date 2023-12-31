@@ -54,7 +54,6 @@ void test_append()
     printf("%d", rc(list));
     release(list);
     shutdown();
-    printf("%d", rc(list));
 }
 
 void test_prepend()

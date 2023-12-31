@@ -40,6 +40,9 @@ ioopm_list_t *ioopm_linked_list_create(ioopm_eq_function eq_fun)
     ioopm_list_t *list = allocate(sizeof(struct list), linked_list_destructor);
     list->eq_fun = eq_fun; 
     list->size = 0; 
+    list->first = NULL;
+    list->last = NULL;
+    retain(list);
     return list; 
 }
 
@@ -62,7 +65,6 @@ void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)
 
     if (new_link != NULL) 
     {
-        retain(new_link);
         if (list->last == NULL)
         {
             // if empty list
@@ -73,7 +75,8 @@ void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)
             // if non-empty list
             list->last->next = new_link;
         }
-
+        retain(new_link);
+        //retain(new_link->value.void_ptr); //Does not work for me
         list->last = new_link;
         list->size++;
     }
@@ -85,7 +88,6 @@ void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value)
 
     if (new_link != NULL) 
     {
-        retain(new_link);
         list->first = new_link;
 
         if (list->last == NULL)
@@ -93,6 +95,7 @@ void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value)
             // if empty list
             list->last = new_link;
         }
+        retain(new_link);
         list->size++;
     }
 }
@@ -125,7 +128,7 @@ void ioopm_linked_list_insert(ioopm_list_t *list, int index, elem_t value)
                 link_t *tmp = current->next;
                 current->next = new_link;
                 new_link->next = tmp;
-                retain(current->next);
+                retain(new_link);
                 list->size++;
             }
             counter++;
@@ -165,7 +168,7 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
                 {
                     value = current->next->value;
                     link_t *tmp = current->next->next;
-                    release(current->next);
+                    release(current);
                     current->next = tmp;
                     list->size--;
                 }
@@ -237,6 +240,9 @@ void ioopm_linked_list_clear(ioopm_list_t *list)
         current = next;
         list->size--;
     }
+    list->first = NULL;
+    list->last = NULL;
+    list->size = 0;
 }
 
 bool ioopm_linked_list_all(ioopm_list_t *list, ioopm_int_predicate prop, void *extra)
