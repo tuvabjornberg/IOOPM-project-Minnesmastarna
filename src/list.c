@@ -267,7 +267,7 @@ void linked_list_clear(list_t *list)
     while (current != NULL)
     {
         link_t *next = current->next;
-        free(current->value.void_ptr); 
+        //free(current->value.void_ptr); // Not necessary?
         free(current); 
         current = next;
         list->size--;
