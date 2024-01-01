@@ -177,13 +177,13 @@ option_t *ioopm_hash_table_lookup(ioopm_hash_table_t *ht, elem_t key)
     if (current != NULL) 
     {
         *lookup_result = Success(current->value);
-        retain(lookup_result); 
+        //retain(lookup_result); 
     } 
     else 
     {
         *lookup_result = Failure();
     }
-
+    retain(lookup_result); 
     return lookup_result;
 }
 

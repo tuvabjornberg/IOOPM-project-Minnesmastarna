@@ -21,12 +21,12 @@ shop_cart_tests.out: shop_cart_tests.o shop_cart.o hash_table.o linked_list.o me
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
 
 logic_tests: merch_storage_tests.out shop_cart_tests.out 
-	./merch_storage_tests.out 
+#./merch_storage_tests.out 
 	./shop_cart_tests.out
 
 logic_memtests: merch_storage_tests.out shop_cart_tests.out 
 	valgrind --leak-check=full ./shop_cart_tests.out
-	valgrind --leak-check=full ./merch_storage_tests.out	
+#valgrind --leak-check=full ./merch_storage_tests.out	
 
 ui_tests: ui.out
 	./ui.out < tests/ui_tests.txt

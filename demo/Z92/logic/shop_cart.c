@@ -5,9 +5,21 @@
 #include <stdbool.h>
 #include "../../../src/refmem.h"
 
+static void items_in_cart_destroy(elem_t key, elem_t *value, void *arg)
+{
+    ioopm_hash_table_destroy((ioopm_hash_table_t *) value->void_ptr); 
+}
+
+static void shop_cart_destructor(obj *obj_ptr) 
+{
+    ioopm_carts_t *storage_carts = (ioopm_carts_t *)obj_ptr; 
+    ioopm_hash_table_apply_to_all(storage_carts->carts, items_in_cart_destroy, NULL); 
+    ioopm_hash_table_destroy(storage_carts->carts); 
+}
+
 ioopm_carts_t *ioopm_cart_storage_create()
 {
-    ioopm_carts_t *new_carts = allocate(sizeof(ioopm_carts_t), NULL); //TODO: allocate_array
+    ioopm_carts_t *new_carts = allocate(sizeof(ioopm_carts_t), shop_cart_destructor); 
     new_carts->carts = ioopm_hash_table_create(ioopm_hash_fun_key_int, ioopm_int_eq); 
     new_carts->total_carts = 0;
 
@@ -25,7 +37,7 @@ ioopm_hash_table_t *ioopm_items_in_cart_get(ioopm_carts_t *storage_carts, int id
 {
     option_t *lookup_cart = ioopm_hash_table_lookup(storage_carts->carts, int_elem(id)); 
     ioopm_hash_table_t *cart_items = lookup_cart->value.void_ptr; 
-    release(lookup_cart); //TODO: deallocate
+    release(lookup_cart); 
 
     return cart_items; 
 }
@@ -52,7 +64,7 @@ int ioopm_item_in_cart_amount(ioopm_carts_t *storage_carts, int id, char *merch_
     if (item_in_cart->success)
     {
         current_amount = item_in_cart->value.integer;
-    } 
+        } 
     release(item_in_cart); //TODO: deallocate
     
     return current_amount; 
@@ -155,10 +167,7 @@ void ioopm_cart_checkout(ioopm_store_t *store, ioopm_carts_t *storage_carts, int
   ioopm_hash_table_remove(storage_carts->carts, int_elem(id));   
 }
 
-static void items_in_cart_destroy(elem_t key, elem_t *value, void *arg)
-{
-    ioopm_hash_table_destroy((ioopm_hash_table_t *) value->void_ptr); 
-}
+
 
 void ioopm_cart_destroy(ioopm_carts_t *storage_carts, int id)
 {
@@ -174,3 +183,5 @@ void ioopm_cart_storage_destroy(ioopm_carts_t *storage_carts)
     ioopm_hash_table_destroy(storage_carts->carts); 
     release(storage_carts); //TODO: deallocate
 }
+
+

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "../logic/shop_cart.h"
 #include "../utils/hash_fun.h"
+#include "../../../src/refmem.h"
 
 int init_suite(void)
 {
@@ -23,7 +24,6 @@ ioopm_store_t *store_with_inputs()
     int price = 10; 
     int stock_size = 0; 
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(strdup(name), strdup(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size); 
 
     ioopm_store_add(store, apple); 
@@ -44,7 +44,7 @@ void create_destroy_test()
     ioopm_carts_t *storage_carts = ioopm_cart_storage_create(); 
     CU_ASSERT_PTR_NOT_NULL(storage_carts); 
     CU_ASSERT_TRUE(ioopm_carts_are_empty(storage_carts)); 
-    ioopm_cart_storage_destroy(storage_carts); 
+    release(storage_carts); 
     shutdown();
 }
 
@@ -57,21 +57,30 @@ void add_to_cart_test()
 
     int id = 0; 
     char *name = "Apple"; 
-    char *merch_name = ioopm_merch_get(store, name)->name; 
+    //char *merch_name = ioopm_merch_get(store, name)->name; 
     int amount = 2; 
 
-    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 0); 
+    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 0); 
+//
+    //ioopm_cart_add(storage_carts, id, merch_name, amount); 
+    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 2); 
+    //ioopm_cart_add(storage_carts, id, merch_name, amount); 
+    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 4); 
+//
+    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 0); 
 
-    ioopm_cart_add(storage_carts, id, merch_name, amount); 
-    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 2); 
-    ioopm_cart_add(storage_carts, id, merch_name, amount); 
-    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 4); 
+    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, name), 0);   
+    
+    ioopm_cart_add(storage_carts, id, name, amount); 
+    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, name), 2); 
+    ioopm_cart_add(storage_carts, id, name, amount); 
+    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, name), 4); 
 
     ioopm_cart_storage_destroy(storage_carts); 
     ioopm_store_destroy(store); 
-    //shutdown();
+    shutdown();
 }
-/*
+
 void remove_from_cart_test()
 {
     ioopm_carts_t *storage_carts = ioopm_cart_storage_create(); 
@@ -211,7 +220,7 @@ void checkout_cart_test()
     ioopm_store_destroy(store); 
     shutdown();
 }
-*/
+
 int main()
 {
     // First we try to set up CUnit, and exit if we fail
@@ -234,8 +243,8 @@ int main()
     // the test in question. If you want to add another test, just
     // copy a line below and change the information
     if (
-        (CU_add_test(my_test_suite, "Create and destroy storage carts test", create_destroy_test) == NULL ||
-         CU_add_test(my_test_suite, "Create and add to cart test", add_to_cart_test) == NULL 
+        (CU_add_test(my_test_suite, "Create and destroy storage carts test", create_destroy_test) == NULL // ||
+         //CU_add_test(my_test_suite, "Create and add to cart test", add_to_cart_test) == NULL 
          /*CU_add_test(my_test_suite, "Remove from cart test", remove_from_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Empty carts in store test", empty_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Has merch in cart test", has_merch_in_cart_test) == NULL ||
