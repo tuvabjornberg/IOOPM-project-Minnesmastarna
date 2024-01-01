@@ -30,14 +30,19 @@ struct iter
     ioopm_list_t *list;
 };
 
-void linked_list_destructor(obj *obj_ptr) {
+static void linked_list_destructor(obj *obj_ptr) 
+{
     ioopm_list_t *list = (ioopm_list_t*)obj_ptr;
-    ioopm_linked_list_clear(list);
+    if (!ioopm_linked_list_is_empty(list))
+    {
+        ioopm_linked_list_clear(list);
+    }
 }
 
 ioopm_list_t *ioopm_linked_list_create(ioopm_eq_function eq_fun)
 {
     ioopm_list_t *list = allocate(sizeof(struct list), linked_list_destructor);
+
     list->eq_fun = eq_fun; 
     list->size = 0; 
     list->first = NULL;
@@ -51,9 +56,12 @@ void ioopm_linked_list_destroy(ioopm_list_t *list)
     release(list);
 }
 
+static void link_destructor(obj *obj_ptr) {}
+
 static link_t *link_create(elem_t value, link_t *next)
 {
-    link_t *new_link = allocate(sizeof(link_t), NULL);
+    link_t *new_link = allocate(sizeof(link_t), link_destructor);
+
     new_link->value = value;
     new_link->next = next;
     return new_link;
@@ -76,7 +84,6 @@ void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)
             list->last->next = new_link;
         }
         retain(new_link);
-        //retain(new_link->value.void_ptr); //Does not work for me
         list->last = new_link;
         list->size++;
     }
@@ -168,7 +175,7 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
                 {
                     value = current->next->value;
                     link_t *tmp = current->next->next;
-                    release(current);
+                    release(current->next);
                     current->next = tmp;
                     list->size--;
                 }
@@ -185,6 +192,7 @@ elem_t ioopm_linked_list_get(ioopm_list_t *list, int index)
 {
     link_t *current = list->first;
     int counter = 0;
+
     // if correct index input
     if (index >= 0 && index < ioopm_linked_list_size(list)) 
     {
@@ -290,12 +298,16 @@ void ioopm_linked_list_apply_to_all(ioopm_list_t *list, ioopm_apply_int_function
     }
 }
 
+static void iterator_destructor(obj *obj_ptr) {}
+
 ioopm_list_iterator_t *ioopm_list_iterator(ioopm_list_t *list)
 {
-    ioopm_list_iterator_t *iter = allocate_array(1, sizeof(ioopm_list_iterator_t), NULL);
+    ioopm_list_iterator_t *iter = allocate(sizeof(ioopm_list_iterator_t), iterator_destructor);
+
 
     iter->list = list;
     iter->current = list->first;
+
     retain(iter);
 
     return iter;
@@ -348,6 +360,7 @@ elem_t ioopm_iterator_current(ioopm_list_iterator_t *iter)
         return (elem_t){.void_ptr = NULL};
     }
 }
+
 void ioopm_iterator_destroy(ioopm_list_iterator_t *iter)
 {
     release(iter);

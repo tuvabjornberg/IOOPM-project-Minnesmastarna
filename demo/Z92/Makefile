@@ -57,11 +57,9 @@ hash_san.out: hash_table_tests.c hash_table.c linked_list.c refmem.c queue.c lis
 list_san.out: linked_list_tests.c linked_list.c refmem.c queue.c list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
 
-hash_sanitize: hash_san.out
+ds_sanitize: hash_san.out list_san.out
 	./hash_san.out 
-
-list_sanitize: list_san.out
-	./list_san.out 
+	./list_san.out
 
 merch_test_coverage.out: merch_storage_tests.o merch_storage.c shop_cart.o hash_table.o linked_list.o hash_fun.o	
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
