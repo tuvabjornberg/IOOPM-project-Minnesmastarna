@@ -16,9 +16,12 @@ src:
 
 test: src
 	$(MAKE) -C $(TEST) test
+	$(MAKE) -C $(DEMO) test_demo_ds
 
 memtest: 
 	$(MAKE) -C $(TEST) memtest
+	$(MAKE) -C $(DEMO) memexample
+	$(MAKE) -C $(DEMO) mem_demo_ds
 
 test_sanitize: 
 	$(MAKE) -C $(TEST) test_sanitize
