@@ -51,7 +51,6 @@ void test_append()
     elem_t false_contain = {.integer = 5}; 
     CU_ASSERT_FALSE(ioopm_linked_list_contains(list, false_contain));
 
-    printf("%d", rc(list));
     release(list);
     shutdown();
 }
@@ -338,13 +337,13 @@ void test_iterator_has_next()
     ioopm_list_t *list = ioopm_linked_list_create(bool_eq_fun);
     ioopm_list_iterator_t *iter = ioopm_list_iterator(list);
     CU_ASSERT_FALSE(ioopm_iterator_has_next(iter));
-    ioopm_iterator_destroy(iter);
+    release(iter); 
 
     ioopm_int_ll_append(list, 1); 
     iter = ioopm_list_iterator(list);
 
     CU_ASSERT_FALSE(ioopm_iterator_has_next(iter));
-    ioopm_iterator_destroy(iter);
+    release(iter); 
 
     ioopm_int_ll_append(list, 1); 
     ioopm_int_ll_append(list, 2); 
@@ -352,8 +351,9 @@ void test_iterator_has_next()
 
     CU_ASSERT_TRUE(ioopm_iterator_has_next(iter));
 
-    ioopm_linked_list_destroy(list);
-    ioopm_iterator_destroy(iter);
+    release(iter); 
+    release(list);
+    shutdown();
 }
 
 void test_iterator_next()
@@ -361,7 +361,7 @@ void test_iterator_next()
     ioopm_list_t *list = ioopm_linked_list_create(bool_eq_fun);
     ioopm_list_iterator_t *iter = ioopm_list_iterator(list);
     CU_ASSERT_PTR_NULL(ioopm_iterator_next(iter).void_ptr); 
-    ioopm_iterator_destroy(iter);
+    release(iter);
 
     elem_t values[] = {{.integer = 1}, {.integer = 2}, {.integer = 3}, {.integer = 4}};
 
@@ -372,10 +372,11 @@ void test_iterator_next()
         ioopm_linked_list_prepend(list, values[i]);
         iter = ioopm_list_iterator(list);
         CU_ASSERT_EQUAL(ioopm_iterator_next(iter).integer, i);
-        ioopm_iterator_destroy(iter);
+        release(iter);
     }
-
-    ioopm_linked_list_destroy(list);
+ 
+    release(list);
+    shutdown();
 }
 
 void test_iterator_reset()
@@ -385,7 +386,7 @@ void test_iterator_reset()
     CU_ASSERT_PTR_NULL(ioopm_iterator_current(iter).void_ptr); 
     ioopm_iterator_reset(iter);
     CU_ASSERT_EQUAL(ioopm_iterator_current(iter).integer, 0);
-        ioopm_iterator_destroy(iter);
+    release(iter); 
 
     elem_t values[] = {{.integer = 1}, {.integer = 2}, {.integer = 3}, {.integer = 4}};
     int length = 4;
@@ -400,8 +401,9 @@ void test_iterator_reset()
     ioopm_iterator_reset(iter);
     CU_ASSERT_EQUAL(ioopm_iterator_current(iter).integer, 1);
 
-    ioopm_linked_list_destroy(list);
-    ioopm_iterator_destroy(iter);
+    release(iter); 
+    release(list);
+    shutdown();
 }
 
 void test_iterator_current()
@@ -409,7 +411,7 @@ void test_iterator_current()
     ioopm_list_t *list = ioopm_linked_list_create(bool_eq_fun);
     ioopm_list_iterator_t *iter = ioopm_list_iterator(list);
     CU_ASSERT_PTR_NULL(ioopm_iterator_current(iter).void_ptr); 
-    ioopm_iterator_destroy(iter);
+    release(iter); 
 
     elem_t values[] = {{.integer = 1}, {.integer = 2}, {.integer = 3}, {.integer = 4}};
 
@@ -418,7 +420,7 @@ void test_iterator_current()
         ioopm_linked_list_prepend(list, values[i]);
         iter = ioopm_list_iterator(list);
         CU_ASSERT_EQUAL(ioopm_iterator_current(iter).integer, i + 1);
-        ioopm_iterator_destroy(iter);
+        release(iter); 
     }
 
     iter = ioopm_list_iterator(list);
@@ -428,64 +430,50 @@ void test_iterator_current()
     ioopm_iterator_reset(iter);
     CU_ASSERT_EQUAL(ioopm_iterator_current(iter).integer, 4);
 
-    ioopm_linked_list_destroy(list);
-    ioopm_iterator_destroy(iter);
+    release(iter); 
+    release(list);
+    shutdown();
 }
 
 int main()
 {
-    // First we try to set up CUnit, and exit if we fail
     if (CU_initialize_registry() != CUE_SUCCESS)
         return CU_get_error();
 
-    // We then create an empty test suite and specify the name and
-    // the init and cleanup functions
     CU_pSuite my_test_suite = CU_add_suite("Tests for linked_list.c", init_suite, clean_suite);
     if (my_test_suite == NULL)
     {
-        // If the test suite could not be added, tear down CUnit and exit
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    // This is where we add the test functions to our test suite.
-    // For each call to CU_add_test we specify the test suite, the
-    // name or description of the test, and the function that runs
-    // the test in question. If you want to add another test, just
-    // copy a line below and change the information
     if (
         (CU_add_test(my_test_suite, "A simple create and destroy test", test_create_destroy) == NULL ||
          CU_add_test(my_test_suite, "Append element to linked list", test_append) == NULL ||
-         //CU_add_test(my_test_suite, "Prepend element to linked list", test_prepend) == NULL ||
-         //CU_add_test(my_test_suite, "Insert test", test_insert) == NULL ||
-         //CU_add_test(my_test_suite, "A simple contain element test", test_contains) == NULL ||
-         //CU_add_test(my_test_suite, "Test for linked list size", test_size) == NULL ||
-         //CU_add_test(my_test_suite, "Test if list is empty", test_is_empty) == NULL ||
-         //CU_add_test(my_test_suite, "Get value correctly", test_get) == NULL ||
-         //CU_add_test(my_test_suite, "Test for removing elements", test_remove) == NULL ||
-         //CU_add_test(my_test_suite, "Test for clearing list", test_clear) == NULL ||
-         //CU_add_test(my_test_suite, "Test for all in list", test_all) == NULL ||
-         //CU_add_test(my_test_suite, "Test for any in list", test_any) == NULL ||
-         //CU_add_test(my_test_suite, "Test for apply to all in list", test_apply_to_all) == NULL ||
-         //CU_add_test(my_test_suite, "If iterator has more elements to go over", test_iterator_has_next) == NULL ||
-         //CU_add_test(my_test_suite, "The next element for iterator to go over", test_iterator_next) == NULL ||
-         //CU_add_test(my_test_suite, "Reposition iterator to start of list", test_iterator_reset) == NULL ||
-         //CU_add_test(my_test_suite, "Current element iterator goes over", test_iterator_current) == NULL))
-         0))
+         CU_add_test(my_test_suite, "Prepend element to linked list", test_prepend) == NULL ||
+         CU_add_test(my_test_suite, "Insert test", test_insert) == NULL ||
+         CU_add_test(my_test_suite, "A simple contain element test", test_contains) == NULL ||
+         CU_add_test(my_test_suite, "Test for linked list size", test_size) == NULL ||
+         CU_add_test(my_test_suite, "Test if list is empty", test_is_empty) == NULL ||
+         CU_add_test(my_test_suite, "Get value correctly", test_get) == NULL ||
+         CU_add_test(my_test_suite, "Test for removing elements", test_remove) == NULL ||
+         CU_add_test(my_test_suite, "Test for clearing list", test_clear) == NULL ||
+         CU_add_test(my_test_suite, "Test for all in list", test_all) == NULL ||
+         CU_add_test(my_test_suite, "Test for any in list", test_any) == NULL ||
+         CU_add_test(my_test_suite, "Test for apply to all in list", test_apply_to_all) == NULL ||
+         CU_add_test(my_test_suite, "If iterator has more elements to go over", test_iterator_has_next) == NULL ||
+         CU_add_test(my_test_suite, "The next element for iterator to go over", test_iterator_next) == NULL ||
+         CU_add_test(my_test_suite, "Reposition iterator to start of list", test_iterator_reset) == NULL ||
+         CU_add_test(my_test_suite, "Current element iterator goes over", test_iterator_current) == NULL))
     {
-        // If adding any of the tests fails, we tear down CUnit and exit
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    // Set the running mode. Use CU_BRM_VERBOSE for maximum output.
-    // Use CU_BRM_NORMAL to only print errors and a summary
     CU_basic_set_mode(CU_BRM_VERBOSE);
 
-    // This is where the tests are actually run!
     CU_basic_run_tests();
 
-    // Tear down CUnit before exiting
     CU_cleanup_registry();
     return CU_get_error();
 }
