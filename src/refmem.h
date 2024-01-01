@@ -42,6 +42,11 @@ unsigned short rc(obj *obj_ptr);
 /// @return the object created
 obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor);
 
+/// @brief makes a copy of a string
+/// @param str the string to be copied
+/// @return the copy of the given string
+char *duplicate_string(char *str);
+
 /// @brief Sets an upper limit of the number of frees allowed to be done consecutively,
 /// @param limit the given limit of consecutive frees
 void set_cascade_limit(size_t limit);
