@@ -31,7 +31,7 @@ meta_data_t *get_meta_data(obj *obj_ptr)
 function1_t get_destructor(obj *obj_ptr) 
 {
     meta_data_t *meta_data = get_meta_data(obj_ptr);
-    return &(meta_data->destructor);
+    return (meta_data->destructor); //Removed "&", gave warnings and does not seem to make a difference.
 }
 
 unsigned short get_size(obj *obj_ptr) 
