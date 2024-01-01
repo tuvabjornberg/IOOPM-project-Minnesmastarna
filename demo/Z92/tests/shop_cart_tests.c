@@ -76,8 +76,11 @@ void add_to_cart_test()
     ioopm_cart_add(storage_carts, id, name, amount); 
     CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, name), 4); 
 
-    ioopm_cart_storage_destroy(storage_carts); 
-    ioopm_store_destroy(store); 
+    //ioopm_cart_storage_destroy(storage_carts); 
+    //ioopm_store_destroy(store); 
+    
+    release(storage_carts); 
+    release(store); 
     shutdown();
 }
 
@@ -243,8 +246,8 @@ int main()
     // the test in question. If you want to add another test, just
     // copy a line below and change the information
     if (
-        (CU_add_test(my_test_suite, "Create and destroy storage carts test", create_destroy_test) == NULL // ||
-         //CU_add_test(my_test_suite, "Create and add to cart test", add_to_cart_test) == NULL 
+        (CU_add_test(my_test_suite, "Create and destroy storage carts test", create_destroy_test) == NULL ||
+         CU_add_test(my_test_suite, "Create and add to cart test", add_to_cart_test) == NULL 
          /*CU_add_test(my_test_suite, "Remove from cart test", remove_from_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Empty carts in store test", empty_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Has merch in cart test", has_merch_in_cart_test) == NULL ||
