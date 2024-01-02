@@ -9,7 +9,7 @@
 /**
  * @file linked_list.h
  * @author Tuva Björnberg & Gustav Fridén
- * @date 29/09-2023
+ * @date 29/09-2023, edited by Martin Ek and Tuva Björnberg 1/1-2024
  * @brief The program includes functions to create and destroy a linked list, perform various operations. 
  *
  * The linked list is implemented using a singly linked structure (`link_t`) with a `list_t` 

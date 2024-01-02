@@ -16,9 +16,12 @@ src:
 
 test: src
 	$(MAKE) -C $(TEST) test
+	$(MAKE) -C $(DEMO) test_demo_ds
 
 memtest: 
 	$(MAKE) -C $(TEST) memtest
+	$(MAKE) -C $(DEMO) memexample
+	$(MAKE) -C $(DEMO) mem_demo_ds
 
 test_sanitize: 
 	$(MAKE) -C $(TEST) test_sanitize
@@ -30,13 +33,13 @@ prof:
 	$(MAKE) -C $(TEST) prof
 
 testdemo: 
-	$(MAKE) -C $(DEMO) test_demo_hash
+	$(MAKE) -C $(DEMO) test_demo_ds
 
 memdemo: 
-	$(MAKE) -C $(DEMO) mem_demo_hash
+	$(MAKE) -C $(DEMO) mem_demo_ds
 
 sandemo: 
-	$(MAKE) -C $(DEMO) san_demo_hash
+	$(MAKE) -C $(DEMO) san_demo_ds
 
 example: 
 	$(MAKE) -C $(DEMO) memexample
