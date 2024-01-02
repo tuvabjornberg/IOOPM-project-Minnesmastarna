@@ -224,6 +224,7 @@ char *duplicate_string(char *str)
 {
     char *duplicate = allocate_array(strlen(str) + 1, sizeof(char), NULL);
     strcpy(duplicate, str);
+    retain(duplicate);
     return duplicate;
 }
 

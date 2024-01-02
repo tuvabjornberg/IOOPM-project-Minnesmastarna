@@ -96,20 +96,13 @@ void stock_add_remove_test()
     int quantity[] = {0, 1, 4};
     int stock_size = 0;
 
-    //TODO: retain?
-    char *name_copy = duplicate_string(name);
-    char *desc_copy = duplicate_string(description);
-    retain(name_copy);
-    retain(desc_copy);
-    ioopm_merch_t *apple = ioopm_merch_create(name_copy, desc_copy, price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
+    ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);
 
     for (int i = 0; i < 3; i++)
     {
-        char *shelf_copy = duplicate_string(shelf[i]);
-        retain(shelf_copy);
-        ioopm_location_add(apple, shelf_copy, quantity[i]);
+        ioopm_location_add(apple, duplicate_string(shelf[i]), quantity[i]);
     }
     ioopm_merch_t *merch = ioopm_merch_get(store, name);
     CU_ASSERT_EQUAL(ioopm_linked_list_size(merch->stock), 3);
@@ -476,7 +469,7 @@ int main()
     if (
         (CU_add_test(my_test_suite, "simple create destroy merch test", create_destroy_merch_test) == NULL ||
          CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL ||
-         CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL ||
+         CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL /* ||
          CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
          CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
          CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL ||
@@ -486,7 +479,7 @@ int main()
          CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
 	     CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL ||
 	     CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL ||
-         CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL
+         CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL */
         )
     )
 

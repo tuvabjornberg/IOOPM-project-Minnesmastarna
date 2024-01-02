@@ -40,13 +40,8 @@ ui_arg_memtests: ui.out
 hash_test.out: hash_table_tests.o hash_table.o linked_list.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
-<<<<<<< HEAD
 list_test.out: linked_list.o linked_list_tests.o refmem.o queue.o list.o
-	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) 
-=======
-list_test.out: linked_list.o linked_list_tests.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK)
->>>>>>> 32f62d8 (merch_storage progress)
 
 ds_tests: hash_test.out list_test.out
 	./hash_test.out
@@ -59,17 +54,12 @@ ds_memtests: hash_test.out list_test.out
 hash_san.out: hash_table_tests.c hash_table.c linked_list.c refmem.c queue.c list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
-<<<<<<< HEAD
 list_san.out: linked_list_tests.c linked_list.c refmem.c queue.c list.o
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 ds_sanitize: hash_san.out list_san.out
-	./hash_san.out 
-	./list_san.out
-=======
-hash_sanitize: hash_san.out
 	./hash_san.out
->>>>>>> 32f62d8 (merch_storage progress)
+	./list_san.out
 
 merch_test_coverage.out: merch_storage_tests.o merch_storage.c shop_cart.o hash_table.o linked_list.o hash_fun.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
