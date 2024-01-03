@@ -46,7 +46,14 @@ In this section, discuss:
 
 ## Use of Tools
 
-* Makefiles, CUnit
+
+We haven't used that many different tools in the project. In external uses, this has mainly been Make. This is due to learning this early in the coruse, which further led to us knowing how it worked and easly being able to compile and run the program we work on. Since we had multiple Makefiles, this led to us needing to change quite a few files in order to run different parts of the code. This was mainly shown when integration started, as some parts of the code wanted to be ran, while we worked on different parts. This led to learning how to extend the Makfile so that it fulfilled the goal that wanted to be coded.
+
+A lot of internal tools in C has been used as well. Most of these were tools that we had previously learned, such as CUnit, gdb, and coverage checking, but also some that not all of us had previously used, such as coverage checking. Since all of us was used to CUnit from earlier in the course, this wasn't a problem to work with and adapt for our own use. This meant that we could use those heavily, and rely on our knowledge that we knew how they worked.
+
+TODO: Tools that were lacking and too we'd rather not use in the future.
+
+
 
 
 In this section, discuss:
@@ -58,7 +65,15 @@ In this section, discuss:
 
 ## Communication, Cooperation and Coordination
 
-* Communication between team members through Discord, and regular meetings at the beginning of the project. Meetings have been held in person for the most part, but some have been on Discord and Zoom when people were unable to attend.
+### How did we communicate
+Most of the communication between team members was online. We decided really early to create a Discord server here we could ask questions and have our main communication. This was mainly as an easy way to reach all team members, and make sure that everyone was on the same page when it came to the code. At the beginning, we also tried to frequently have meetings in person, to make sure that everyone was up to date on where we were in the code. These became more spread-out and over zoom as the holidays came around, and we were spread out all over the world. These were also a bit further apart, as it was harder to coordinate, and we wanted to be able to work whenever we had time on our own.
+
+TODO: How did we communicate with the coach.
+
+
+### How did it go during the holidays
+During the break, we knew that some people maybe had more plans than others, but we decided to divide the work as evenly as we could. This was so that everyone had their own part to work with. At this time, we also made sure to update the discord if we needed help, or if someone could check out a pull request that had been made. This made it so that event though some wanted to spend time with family or focus on our other course, there was still something that could be done. We also made sure to have one meeting where we checked how the work was going, and what we had left. This was also where we decided mainly who should work mainly on each report, as they could be done if someone were to travel for a longer time, or had some spare time to write as their part of the integration was done.
+
 
 
 In this section, discuss:
