@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <assert.h>
+#include <string.h>
 
 #define COUNTERSIZE sizeof(unsigned short)
 #define DESTRUCTOR_PTR_SIZE sizeof(function1_t*)
@@ -214,6 +215,14 @@ obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
     free_from_queue();
 
     return (obj *)(&meta_data[1]);
+}
+
+char *duplicate_string(char *str)
+{
+    char *duplicate = allocate_array(strlen(str) + 1, sizeof(char), NULL);
+    strcpy(duplicate, str);
+    retain(duplicate);
+    return duplicate;
 }
 
 void set_cascade_limit(size_t new)

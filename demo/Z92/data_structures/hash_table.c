@@ -325,9 +325,7 @@ bool ioopm_hash_table_has_value(ioopm_hash_table_t *ht, elem_t value)
 
         while (current != NULL)
         {
-            char *duplicate = allocate_array(strlen(current->value.string) + 1, sizeof(char), NULL);
-            retain(duplicate);
-            strcpy(duplicate, current->value.string);
+            char *duplicate = duplicate_string(current->value.string);
 
             if (strcmp(current->value.string, value.string) == 0 && strcmp(duplicate, value.string) == 0 && current->value.string == value.string)
             {
