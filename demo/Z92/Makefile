@@ -10,7 +10,7 @@ VPATH		   = user_interface : data_structures : utils : tests : logic  : ../../sr
 %.o:  %.c
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash_fun.o
+ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@
 
 
@@ -99,7 +99,7 @@ ui_san.out: ui.c hash_table.c linked_list.c utils.c merch_storage.c shop_cart.c 
 ui_sanitize: ui_san.out
 	./ui_san.out < tests/ui_tests.txt
 
-merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c
+merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c refmem.c queue.c list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 merchsan: merchsan.out

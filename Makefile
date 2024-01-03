@@ -33,13 +33,13 @@ prof:
 	$(MAKE) -C $(TEST) prof
 
 testdemo: 
-	$(MAKE) -C $(DEMO) test_demo_ds
+	$(MAKE) -C $(DEMO) test_demo
 
 memdemo: 
-	$(MAKE) -C $(DEMO) mem_demo_ds
+	$(MAKE) -C $(DEMO) mem_demo
 
 sandemo: 
-	$(MAKE) -C $(DEMO) san_demo_ds
+	$(MAKE) -C $(DEMO) san_demo
 
 example: 
 	$(MAKE) -C $(DEMO) memexample
