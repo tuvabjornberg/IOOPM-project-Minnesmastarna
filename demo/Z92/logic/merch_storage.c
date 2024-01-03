@@ -40,14 +40,23 @@ void ioopm_store_destroy(ioopm_store_t *store)
 
 ioopm_store_t *ioopm_store_create()
 {
-    ioopm_store_t *new_store = allocate_array(STORAGE_INITIAL_CAPACITY, sizeof(ioopm_store_t), store_destructor); //TODO: allocate_array
-    new_store->merch_names = allocate_array(STORAGE_INITIAL_CAPACITY , sizeof(char*), NULL); //TODO: allocate_array
-    retain(new_store->merch_names);
+    ioopm_store_t *new_store = allocate(sizeof(ioopm_store_t), store_destructor); 
+    new_store->merch_names = allocate_array(STORAGE_INITIAL_CAPACITY , sizeof(char*), NULL);
+    //retain(new_store->merch_names);
     new_store->merch_details = ioopm_hash_table_create(ioopm_hash_fun_sum_key_string, ioopm_string_eq);
     new_store->merch_count = 0;
     new_store->capacity = STORAGE_INITIAL_CAPACITY;
     return new_store;
 }
+
+//char *duplicate = allocate_array(strlen(current->value.string) + 1, sizeof(char), NULL);
+//strcpy(duplicate, current->value.string);
+
+
+//new_merch->name = strdup(name);
+//free(name); 
+//new_merch->description = strdup(description);
+//free(description); 
 
 static void merch_destructor(obj *obj_ptr)
 {
@@ -58,7 +67,7 @@ static void merch_destructor(obj *obj_ptr)
 
 ioopm_merch_t *ioopm_merch_create(char *name, char *description, int price, ioopm_list_t *stock, int stock_size)
 {
-    ioopm_merch_t *new_merch = allocate_array(1, sizeof(ioopm_merch_t), merch_destructor);
+    ioopm_merch_t *new_merch = allocate(sizeof(ioopm_merch_t), merch_destructor);
     new_merch->name = duplicate_string(name);
     release(name);
     new_merch->description = duplicate_string(description);
@@ -148,7 +157,7 @@ static void location_destructor(obj *obj_ptr)
 
 static location_t *location_create(char *shelf, int amount)
 {
-    location_t *location = allocate_array(1, sizeof(location_t), location_destructor); //TODO: allocate_array
+    location_t *location = allocate(sizeof(location_t), location_destructor); //TODO: allocate_array
     location->shelf = duplicate_string(shelf);
     release(shelf);
     location->quantity = amount;
@@ -221,12 +230,12 @@ static location_t *location_get(ioopm_merch_t *merch, char *shelf)
     {
         if (!strcmp(shelf_get(location), shelf))
         {
-            ioopm_iterator_destroy(iter);
+            release(iter); 
             return location;
         }
         location = ioopm_iterator_next(iter).void_ptr;
     }
-    ioopm_iterator_destroy(iter);
+    release(iter); 
 
     return (location_t *) NULL;
 }
@@ -445,7 +454,7 @@ void ioopm_store_remove(ioopm_store_t *store, ioopm_hash_table_t *carts, char *n
     }
 
     ioopm_linked_list_apply_to_all(stock, stock_destroy, NULL);
-    ioopm_linked_list_destroy(stock);
+    release(stock); 
 
     names_remove(store, names_index_of(store, name));
     ioopm_hash_table_remove(store->merch_details, str_elem(name));

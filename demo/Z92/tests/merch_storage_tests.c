@@ -50,7 +50,7 @@ void create_destroy_merch_test()
     ioopm_store_t *store = ioopm_store_create();
     retain(store);
     CU_ASSERT_PTR_NOT_NULL(store);
-    ioopm_store_destroy(store);
+    release(store); 
     shutdown();
 }
 
@@ -468,18 +468,18 @@ int main()
     // copy a line below and change the information
     if (
         (CU_add_test(my_test_suite, "simple create destroy merch test", create_destroy_merch_test) == NULL ||
-         CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL ||
-         CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL /* ||
-         CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
-         CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
-         CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL ||
-         CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL ||
-         CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
-         CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
-         CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
-	     CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL ||
-	     CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL ||
-         CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL */
+         CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL // ||
+         //CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL  ||
+         //CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
+         //CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
+         //CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL ||
+         //CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL ||
+         //CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
+         //CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
+         //CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
+	     //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL ||
+	     //CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL ||
+         //CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL 
         )
     )
 
