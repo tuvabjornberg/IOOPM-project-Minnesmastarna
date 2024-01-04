@@ -174,13 +174,10 @@ void release(obj *obj_ptr)
     {
         meta_data_t *meta_data = get_meta_data(obj_ptr);
 
-        if (meta_data->counter == 0)
+        if (meta_data->counter <= 0)
         {
-            add_to_free_queue(obj_ptr);
-        }
-        else if (meta_data->counter < 0)
-        {
-            assert(meta_data->counter < 0);
+            printf("Warning! More releases than retains\n");
+            assert(meta_data->counter == 0);
         }
         else
         {

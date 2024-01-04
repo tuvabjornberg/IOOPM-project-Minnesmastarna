@@ -60,7 +60,9 @@ static void hash_table_destructor(obj *obj_ptr)
 ioopm_hash_table_t *ioopm_hash_table_create(ioopm_hash_function hash_fun, ioopm_eq_function eq_fun)
 {
     ioopm_hash_table_t *ht = allocate(sizeof(ioopm_hash_table_t), hash_table_destructor);
+    retain(ht);
     ht->buckets = allocate_array(HASHTABLE_INITIAL_CAPACITY, sizeof(entry_t), NULL);
+    retain(ht->buckets);
     ht->hash_fun = hash_fun;
     ht->eq_fun = eq_fun;
     ht->size = 0;
@@ -87,10 +89,12 @@ void ioopm_hash_table_clear(ioopm_hash_table_t *ht)
 static entry_t *entry_create(elem_t key, elem_t value, entry_t *next)
 {
     entry_t *new_entry = allocate(sizeof(entry_t), NULL);
+    retain(new_entry);
 
     new_entry->key = key;
     new_entry->value = value;
     new_entry->next = next;
+    //retain(next);
 
     return new_entry;
 }
@@ -118,10 +122,12 @@ static entry_t *find_previous_entry_for_key(entry_t *bucket, elem_t key, ioopm_e
 static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity)
 {
     entry_t *new_buckets = allocate_array(new_ht_capacity, sizeof(entry_t), NULL);
+    retain(new_buckets);
 
     for (size_t i = 0; i < ht->ht_capacity; ++i)
     {
         entry_t *current = ht->buckets[i].next;
+        retain(current);
 
         while (current != NULL)
         {
@@ -138,6 +144,7 @@ static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity)
 
     release(ht->buckets);
     ht->buckets = new_buckets;
+    retain(new_buckets);
     ht->ht_capacity = new_ht_capacity;
 }
 
@@ -157,7 +164,6 @@ void ioopm_hash_table_insert(ioopm_hash_table_t *ht, elem_t key, elem_t value)
     if (next == NULL)
     {
         entry->next = entry_create(key, value, next);
-        retain(entry->next);
         ht->size++;
     }
     else
@@ -171,13 +177,14 @@ option_t *ioopm_hash_table_lookup(ioopm_hash_table_t *ht, elem_t key)
     unsigned bucket_index = get_bucket_index(ht, ht->hash_fun, key);
 
     option_t *lookup_result = allocate(sizeof(option_t), NULL);
+    retain(lookup_result);
     entry_t *prev = find_previous_entry_for_key(&ht->buckets[bucket_index], key, ht->eq_fun);
     entry_t *current = prev->next;
+    //retain(current);
 
     if (current != NULL)
     {
         *lookup_result = Success(current->value);
-        retain(lookup_result);
     }
     else
     {
@@ -262,11 +269,13 @@ ioopm_list_t *ioopm_hash_table_keys(ioopm_hash_table_t *ht)
     for (int i = 0; i < ht->ht_capacity; i++)
     {
         entry_t *current = (&ht->buckets[i])->next;
+        //retain(current);
 
         while (current != NULL)
         {
             ioopm_linked_list_append(list, current->key);
             current = current->next;
+            //retain(current);
         }
     }
   return list;
@@ -280,11 +289,13 @@ ioopm_list_t *ioopm_hash_table_values(ioopm_hash_table_t *ht)
     for (int i = 0; i < ht->ht_capacity; i++)
     {
         entry_t *current = (&ht->buckets[i])->next;
+        //retain(current);
 
         while (current != NULL)
         {
             ioopm_linked_list_append(list, current->value);
             current = current->next;
+            //retain(current);
         }
     }
   return list;
@@ -314,8 +325,7 @@ bool ioopm_hash_table_has_value(ioopm_hash_table_t *ht, elem_t value)
 
         while (current != NULL)
         {
-            char *duplicate = allocate_array(strlen(current->value.string) + 1, sizeof(char), NULL);
-            strcpy(duplicate, current->value.string);
+            char *duplicate = duplicate_string(current->value.string);
 
             if (strcmp(current->value.string, value.string) == 0 && strcmp(duplicate, value.string) == 0 && current->value.string == value.string)
             {
