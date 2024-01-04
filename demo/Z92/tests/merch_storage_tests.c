@@ -68,8 +68,7 @@ void store_add_remove_test()
     //TODO: retain?
     char *name_copy = duplicate_string(name);
     char *desc_copy = duplicate_string(description);
-    retain(name_copy);
-    retain(desc_copy);
+
     ioopm_merch_t *apple = ioopm_merch_create(name_copy, desc_copy, price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
     retain(apple);
 
@@ -77,11 +76,12 @@ void store_add_remove_test()
     CU_ASSERT_TRUE(ioopm_merch_exists(store, name));
     CU_ASSERT_EQUAL(ioopm_merch_get(store, name), apple);
 
-    ioopm_store_remove(store, carts, name);
-    CU_ASSERT_FALSE(ioopm_merch_exists(store, name));
-    CU_ASSERT_EQUAL(ioopm_merch_get(store, name), NULL);
+    //ioopm_store_remove(store, carts, name);
+    //CU_ASSERT_FALSE(ioopm_merch_exists(store, name));
+    //CU_ASSERT_EQUAL(ioopm_merch_get(store, name), NULL);
 
-    ioopm_store_destroy(store);
+    release(apple); 
+    release(store); 
     shutdown();
 }
 

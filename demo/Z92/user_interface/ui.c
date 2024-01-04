@@ -518,8 +518,8 @@ void event_loop(ioopm_store_t *store, ioopm_carts_t *storage_carts)
                     if (toupper(*quit_confirmation) == 'Y' && strlen(quit_confirmation) == 1)
                     {
                         running = false; 
-                        ioopm_cart_storage_destroy(storage_carts);  
-                        ioopm_store_destroy(store);
+                        release(storage_carts); 
+                        release(store); 
                     } 
                     release(quit_confirmation); 
                     break; 

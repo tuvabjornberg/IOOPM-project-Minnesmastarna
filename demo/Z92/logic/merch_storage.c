@@ -47,22 +47,14 @@ ioopm_store_t *ioopm_store_create()
     new_store->merch_count = 0;
     new_store->capacity = STORAGE_INITIAL_CAPACITY;
     return new_store;
-}
-
-//char *duplicate = allocate_array(strlen(current->value.string) + 1, sizeof(char), NULL);
-//strcpy(duplicate, current->value.string);
-
-
-//new_merch->name = strdup(name);
-//free(name); 
-//new_merch->description = strdup(description);
-//free(description); 
+}   
 
 static void merch_destructor(obj *obj_ptr)
 {
     ioopm_merch_t *merch = (ioopm_merch_t *)obj_ptr;
     release(merch->name);
     release(merch->description);
+    release(merch->stock);
 }
 
 ioopm_merch_t *ioopm_merch_create(char *name, char *description, int price, ioopm_list_t *stock, int stock_size)
