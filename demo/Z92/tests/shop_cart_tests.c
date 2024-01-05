@@ -57,24 +57,15 @@ void add_to_cart_test()
 
     int id = 0; 
     char *name = "Apple"; 
-    //char *merch_name = ioopm_merch_get(store, name)->name; 
+    char *merch_name = ioopm_merch_get(store, name)->name; 
     int amount = 2; 
 
-    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 0); 
-//
-    //ioopm_cart_add(storage_carts, id, merch_name, amount); 
-    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 2); 
-    //ioopm_cart_add(storage_carts, id, merch_name, amount); 
-    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 4); 
-//
-    //CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 0); 
+    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 0); 
 
-    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, name), 0);   
-    
-    ioopm_cart_add(storage_carts, id, name, amount); 
-    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, name), 2); 
-    ioopm_cart_add(storage_carts, id, name, amount); 
-    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, name), 4); 
+    ioopm_cart_add(storage_carts, id, merch_name, amount); 
+    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 2); 
+    ioopm_cart_add(storage_carts, id, merch_name, amount); 
+    CU_ASSERT_EQUAL(ioopm_item_in_cart_amount(storage_carts, id, merch_name), 4); 
 
     //ioopm_cart_storage_destroy(storage_carts); 
     //ioopm_store_destroy(store); 

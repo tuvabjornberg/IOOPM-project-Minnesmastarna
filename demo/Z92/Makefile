@@ -22,11 +22,11 @@ shop_cart_tests.out: shop_cart_tests.o shop_cart.o hash_table.o linked_list.o me
 
 logic_tests: merch_storage_tests.out shop_cart_tests.out
 	./merch_storage_tests.out
-#	./shop_cart_tests.out
+	./shop_cart_tests.out
 
 logic_memtests: merch_storage_tests.out shop_cart_tests.out
-#	valgrind --leak-check=full ./shop_cart_tests.out
 	valgrind --leak-check=full ./merch_storage_tests.out
+	valgrind --leak-check=full ./shop_cart_tests.out
 
 ui_tests: ui.out
 	./ui.out < tests/ui_tests.txt
@@ -102,13 +102,11 @@ ui_sanitize: ui_san.out
 merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c refmem.c queue.c list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
-merchsan: merchsan.out
-	./merchsan.out
-
 shopsan.out: shop_cart_tests.c merch_storage.c shop_cart.c hash_table.c linked_list.c utils.c hash_fun.c refmem.c queue.c list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
 
-shopsan: shopsan.out
+logic_sanitize: merchsan.out shopsan.out
+	./merchsan.out
 	./shopsan.out
 
 clean:

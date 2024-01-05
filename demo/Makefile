@@ -32,7 +32,7 @@ mem_demo:
 
 san_demo: 
 #$(MAKE) -C $(Z92) ds_sanitize
-	$(MAKE) -C $(Z92) merchsan
+	$(MAKE) -C $(Z92) logic_sanitize
 
 test_demo_ui: 
 	$(MAKE) -C $(Z92) ui_tests
