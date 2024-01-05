@@ -48,7 +48,6 @@ ioopm_store_t *store_with_inputs()
 void create_destroy_merch_test()
 {
     ioopm_store_t *store = ioopm_store_create();
-    retain(store);
     CU_ASSERT_PTR_NOT_NULL(store);
     release(store); 
     shutdown();
@@ -57,7 +56,6 @@ void create_destroy_merch_test()
 void store_add_remove_test()
 {
     ioopm_store_t *store = ioopm_store_create();
-    retain(store);
     ioopm_hash_table_t *carts = NULL;
 
     char *name = "Apple";
@@ -65,22 +63,19 @@ void store_add_remove_test()
     int price = 10;
     int stock_size = 0;
 
-    //TODO: retain?
     char *name_copy = duplicate_string(name);
     char *desc_copy = duplicate_string(description);
 
     ioopm_merch_t *apple = ioopm_merch_create(name_copy, desc_copy, price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
-    retain(apple);
 
     ioopm_store_add(store, apple);
     CU_ASSERT_TRUE(ioopm_merch_exists(store, name));
     CU_ASSERT_EQUAL(ioopm_merch_get(store, name), apple);
 
-    //ioopm_store_remove(store, carts, name);
-    //CU_ASSERT_FALSE(ioopm_merch_exists(store, name));
-    //CU_ASSERT_EQUAL(ioopm_merch_get(store, name), NULL);
+    ioopm_store_remove(store, carts, name);
+    CU_ASSERT_FALSE(ioopm_merch_exists(store, name));
+    CU_ASSERT_EQUAL(ioopm_merch_get(store, name), NULL);
 
-    release(apple); 
     release(store); 
     shutdown();
 }
@@ -115,19 +110,18 @@ void stock_add_remove_test()
         CU_ASSERT_STRING_EQUAL(location->shelf, shelf[i]);
     }
 
-    //TODO: retain
     ioopm_location_add(apple, duplicate_string(shelf[2]), 5);
     location_t *location = ioopm_linked_list_get(merch->stock, 2).void_ptr;
     CU_ASSERT_EQUAL(location->quantity, 9);
     CU_ASSERT_STRING_EQUAL(location->shelf, shelf[2]);
 
-    //TODO: retain?
     ioopm_location_add(apple, duplicate_string("B3"), 3);
     location = ioopm_linked_list_get(merch->stock, 1).void_ptr;
     CU_ASSERT_EQUAL(location->quantity, 3);
     CU_ASSERT_STRING_EQUAL(location->shelf, "B3");
 
-    ioopm_store_destroy(store);
+    release(store); 
+    //ioopm_store_destroy(store);
     shutdown();
 }
 
@@ -468,8 +462,8 @@ int main()
     // copy a line below and change the information
     if (
         (CU_add_test(my_test_suite, "simple create destroy merch test", create_destroy_merch_test) == NULL ||
-         CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL // ||
-         //CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL  ||
+         CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL ||
+         CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL  //||
          //CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
          //CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
          //CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL ||
