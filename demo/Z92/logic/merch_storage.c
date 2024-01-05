@@ -272,7 +272,7 @@ void ioopm_location_add(ioopm_merch_t *merch, char *shelf, int amount)
         location_t *location = location_get(merch, shelf);
         location->quantity = quantity_get(location) + amount;
         merch->stock_size = stock_size_get(merch) + amount;
-        release(shelf); //TODO: deallocate?
+        release(shelf); 
     }
     else
     {
@@ -356,10 +356,21 @@ void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_na
 {
     int price = ioopm_price_get(old_merch);
     char *description = description_get(old_merch);
-    ioopm_list_t *stock = stock_get(old_merch);
-    //ioopm_list_t *stock = ioopm_linked_list_copy(stock_get(old_merch));
+    ioopm_list_t *old_stock = stock_get(old_merch);
 
-    ioopm_merch_t *new_merch = ioopm_merch_create(new_name, description, price, stock, old_merch->stock_size);
+    ioopm_list_t *stock_copy = ioopm_linked_list_create(get_list_eq_fun(old_stock));
+
+    ioopm_merch_t *new_merch = ioopm_merch_create(new_name, description, price, stock_copy, old_merch->stock_size);
+
+    for (int i = 0; i < ioopm_linked_list_size(old_stock); i++)
+    {
+        location_t *old_location = ioopm_linked_list_get(old_stock, i).void_ptr; 
+        
+        char *old_shelf = shelf_get(old_location); 
+        int old_quantity = quantity_get(old_location);
+
+        ioopm_location_add(new_merch, duplicate_string(old_shelf), old_quantity);  
+    }
 
     ioopm_store_add(store, new_merch);
 
@@ -373,9 +384,6 @@ void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_na
     ioopm_hash_table_remove(store->merch_details, str_elem(old_name));
     names_remove(store, names_index_of(store, old_name));
     store->merch_count--;
-
-    release(old_name);
-    release(old_merch); //TODO: problematic that the stock of old merch gets freed
 }
 
 void ioopm_description_set(ioopm_merch_t *merch, char *new_description)
@@ -409,14 +417,6 @@ void ioopm_stock_print(ioopm_merch_t *merch)
     puts("\n");
 }
 
-static void stock_destroy(elem_t *value, void *arg)
-// TODO: Change this in accordance with list-destroy
-{
-    char *shelf = shelf_get(value->void_ptr);
-    release(shelf);
-    release(value->void_ptr);
-}
-
 static void cart_iterator(elem_t id, elem_t *cart_items, void *name)
 {
     ioopm_hash_table_remove((ioopm_hash_table_t *) cart_items->void_ptr, str_elem(name));
@@ -432,13 +432,8 @@ void ioopm_store_remove(ioopm_store_t *store, ioopm_hash_table_t *carts, char *n
         ioopm_hash_table_apply_to_all(carts, cart_iterator, name);
     }
 
-    //ioopm_linked_list_apply_to_all(stock, stock_destroy, NULL);
-    //release(stock); 
-
     names_remove(store, names_index_of(store, name));
     ioopm_hash_table_remove(store->merch_details, str_elem(name));
-
-    //release(merch);
 
     store->merch_count--;
 }

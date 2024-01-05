@@ -137,7 +137,6 @@ void merch_exists_test()
     int price = 10;
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     char *name_o = "Orange";
@@ -433,56 +432,41 @@ void boundary_cases_test()
 
 int main()
 {
-    // First we try to set up CUnit, and exit if we fail
     if (CU_initialize_registry() != CUE_SUCCESS)
         return CU_get_error();
 
-    // We then create an empty test suite and specify the name and
-    // the init and cleanup functions
     CU_pSuite my_test_suite = CU_add_suite("Tests for merch_storage.c", init_suite, clean_suite);
     if (my_test_suite == NULL)
     {
-        // If the test suite could not be added, tear down CUnit and exit
         CU_cleanup_registry();
         return CU_get_error();
     }
-
-    // This is where we add the test functions to our test suite.
-    // For each call to CU_add_test we specify the test suite, the
-    // name or description of the test, and the function that runs
-    // the test in question. If you want to add another test, just
-    // copy a line below and change the information
-    if (
-        (CU_add_test(my_test_suite, "simple create destroy merch test", create_destroy_merch_test) == NULL ||
-         CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL ||
-         CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL  ||
-         CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
-         CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
-         CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL //||
-         //CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL //||
-         //CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
-         //CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
-         //CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
-	     //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL ||
-	     //CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL ||
-         //CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL 
+        if (
+            (CU_add_test(my_test_suite, "simple create destroy merch test", create_destroy_merch_test) == NULL ||
+            CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL ||
+            CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL  ||
+            CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
+            CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
+            CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL ||
+            CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL || 
+            CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
+            CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
+            CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
+            //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL //|| TODO: needs impl of realloc
+            //CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL || //TODO: needs impl of storage_carts
+            CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL 
+            )
         )
-    )
 
     {
-        // If adding any of the tests fails, we tear down CUnit and exit
         CU_cleanup_registry();
         return CU_get_error();
     }
 
-    // Set the running mode. Use CU_BRM_VERBOSE for maximum output.
-    // Use CU_BRM_NORMAL to only print errors and a summary
     CU_basic_set_mode(CU_BRM_VERBOSE);
 
-    // This is where the tests are actually run!
     CU_basic_run_tests();
 
-    // Tear down CUnit before exiting
     CU_cleanup_registry();
     return CU_get_error();
 }

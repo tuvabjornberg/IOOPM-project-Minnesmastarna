@@ -363,24 +363,7 @@ void ioopm_iterator_destroy(ioopm_list_iterator_t *iter)
     release(iter);
 }
 
-//TODO: not tested
-ioopm_list_t *ioopm_linked_list_copy(ioopm_list_t *original_list)
+ioopm_eq_function get_list_eq_fun(ioopm_list_t *list)
 {
-    if (original_list == NULL)
-    {
-        return NULL;
-    }
-
-    ioopm_list_t *list_copy = ioopm_linked_list_create(original_list->eq_fun);
-
-    ioopm_list_iterator_t *iter = ioopm_list_iterator(original_list);
-    while (ioopm_iterator_has_next(iter))
-    {
-        ioopm_linked_list_append(list_copy,ioopm_iterator_next(iter));
-    }
-
-    release(iter);
-    release(original_list); 
-
-    return list_copy;
+    return list->eq_fun; 
 }
