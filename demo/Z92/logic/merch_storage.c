@@ -5,40 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-static void merch_destroy(elem_t name, elem_t *value, void *arg)
-{
-    //ioopm_list_t *stock = stock_get(value->void_ptr);
-    //release(stock); 
-
-    release(value->void_ptr);    
-}
-
+    
 static void store_destructor(obj *obj_ptr)
 {
     ioopm_store_t *store = (ioopm_store_t *)obj_ptr;
-    //ioopm_hash_table_apply_to_all(store->merch_details, merch_destroy, NULL);
-
     release(store->merch_details);
     release(store->merch_names);
 }
 
-/*
-static void merch_destroy(elem_t name, elem_t *value, void *arg)
-{
-    ioopm_list_t *stock = stock_get(value->void_ptr);
-
-    ioopm_linked_list_apply_to_all(stock, stock_destroy, NULL);
-    ioopm_linked_list_destroy(stock);
-
-    char *name_in_merch = merch_name_get(value->void_ptr);
-    char *description = description_get(value->void_ptr);
-
-    release(name_in_merch); //TODO: deallocate
-    release(description); //TODO: deallocate
-    release(value->void_ptr); //TODO: deallocate
-}
-*/
 
 void ioopm_store_destroy(ioopm_store_t *store)
 {
@@ -59,26 +33,22 @@ ioopm_store_t *ioopm_store_create()
     return new_store;
 }   
 
-static void merch_destructor(obj *obj_ptr)
-{
-    ioopm_merch_t *merch = (ioopm_merch_t *)obj_ptr;
-    //release(merch->name);
-    release(merch->description);
-    release(merch->stock);
-}
-
 ioopm_merch_t *ioopm_merch_create(char *name, char *description, int price, ioopm_list_t *stock, int stock_size)
 {
-    ioopm_merch_t *new_merch = allocate(sizeof(ioopm_merch_t), merch_destructor);
+    ioopm_merch_t *new_merch = allocate(sizeof(ioopm_merch_t), NULL);
+
 
     new_merch->name = duplicate_string(name);
     release(name);
+
     new_merch->description = duplicate_string(description);
     release(description);
+
     new_merch->price = price;
     new_merch->stock = stock;
     new_merch->stock_size = stock_size;
     new_merch->reserved_stock = 0;
+
     retain(new_merch); 
     return new_merch;
 }
@@ -164,7 +134,7 @@ static void location_destructor(obj *obj_ptr)
 
 static location_t *location_create(char *shelf, int amount)
 {
-    location_t *location = allocate(sizeof(location_t), location_destructor); //TODO: allocate_array
+    location_t *location = allocate(sizeof(location_t), location_destructor); 
     location->shelf = duplicate_string(shelf);
     release(shelf);
     location->quantity = amount;
@@ -387,6 +357,7 @@ void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_na
     int price = ioopm_price_get(old_merch);
     char *description = description_get(old_merch);
     ioopm_list_t *stock = stock_get(old_merch);
+    //ioopm_list_t *stock = ioopm_linked_list_copy(stock_get(old_merch));
 
     ioopm_merch_t *new_merch = ioopm_merch_create(new_name, description, price, stock, old_merch->stock_size);
 
@@ -404,7 +375,7 @@ void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_na
     store->merch_count--;
 
     release(old_name);
-    release(old_merch);
+    release(old_merch); //TODO: problematic that the stock of old merch gets freed
 }
 
 void ioopm_description_set(ioopm_merch_t *merch, char *new_description)

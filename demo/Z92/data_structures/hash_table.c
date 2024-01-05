@@ -89,13 +89,12 @@ void ioopm_hash_table_clear(ioopm_hash_table_t *ht)
 static entry_t *entry_create(elem_t key, elem_t value, entry_t *next)
 {
     entry_t *new_entry = allocate(sizeof(entry_t), NULL);
-    retain(new_entry);
 
     new_entry->key = key;
     new_entry->value = value;
     new_entry->next = next;
-    //retain(next);
 
+    retain(new_entry);
     return new_entry;
 }
 

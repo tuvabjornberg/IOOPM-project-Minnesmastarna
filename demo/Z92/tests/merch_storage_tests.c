@@ -121,7 +121,6 @@ void stock_add_remove_test()
     CU_ASSERT_STRING_EQUAL(location->shelf, "B3");
 
     release(store); 
-    //ioopm_store_destroy(store);
     shutdown();
 }
 
@@ -158,7 +157,7 @@ void merch_exists_test()
     ioopm_store_remove(store, carts, name);
     CU_ASSERT_FALSE(ioopm_merch_exists(store, name));
 
-    ioopm_store_destroy(store);
+    release(store); 
     shutdown();
 }
 
@@ -176,8 +175,7 @@ void store_size_test()
 
     char *name_copy = duplicate_string(name);
     char *desc_copy = duplicate_string(description);
-    retain(name_copy);
-    retain(desc_copy);
+
     ioopm_merch_t *apple = ioopm_merch_create(name_copy, desc_copy, price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);
@@ -186,7 +184,7 @@ void store_size_test()
     ioopm_store_remove(store, carts, name);
     CU_ASSERT_EQUAL(store->merch_count, 0);
 
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -203,7 +201,6 @@ void get_merch_test()
     int quantity[] = {0, 1, 4};
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);
@@ -230,7 +227,7 @@ void get_merch_test()
         CU_ASSERT_EQUAL(location->quantity, quantity[i])
     }
 
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -246,7 +243,6 @@ void set_name_test()
     int quantity[] = {0, 1, 4};
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);
@@ -281,7 +277,7 @@ void set_name_test()
     CU_ASSERT_TRUE(!strcmp(third_location->shelf, "R62"));
     CU_ASSERT_EQUAL(third_location->quantity, 1);
 
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -294,7 +290,6 @@ void set_description_test()
     int price = 10;
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);
@@ -303,7 +298,7 @@ void set_description_test()
     CU_ASSERT_STRING_NOT_EQUAL(apple->description, description);
     CU_ASSERT_STRING_EQUAL(apple->description, "Green");
 
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -316,7 +311,6 @@ void set_price_test()
     int price = 10;
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);
@@ -325,7 +319,7 @@ void set_price_test()
     CU_ASSERT_NOT_EQUAL(ioopm_price_get(apple), 10);
     CU_ASSERT_EQUAL(apple->price, 30);
 
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -333,7 +327,7 @@ void store_is_empty_test()
 {
     ioopm_store_t *store = ioopm_store_create();
     CU_ASSERT_TRUE(ioopm_store_is_empty(store));
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -348,7 +342,6 @@ void shelves_exists_test()
     int quantity[] = {0, 1, 4, 5, 2};
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     CU_ASSERT_EQUAL(apple->stock_size, 0);
@@ -376,7 +369,7 @@ void shelves_exists_test()
 
     CU_ASSERT_TRUE(apple->stock_size == 8);
 
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -398,7 +391,6 @@ void merch_storage_cart_functions_test()
     ioopm_stock_print(old_merch);
     ioopm_merch_print(old_merch);
 
-    //TODO: retain?
     char *new_name = duplicate_string("Orange");
     ioopm_name_set(store, old_merch, new_name, storage_carts->carts);
 
@@ -408,8 +400,8 @@ void merch_storage_cart_functions_test()
     CU_ASSERT_FALSE(ioopm_hash_table_has_key(cart, str_elem("Orange")));
     CU_ASSERT(ioopm_hash_table_is_empty(cart));
 
-    ioopm_cart_storage_destroy(storage_carts);
-    ioopm_store_destroy(store);
+    release(storage_carts);
+    release(store);
     shutdown();
 }
 
@@ -435,7 +427,7 @@ void boundary_cases_test()
     }
     CU_ASSERT_EQUAL(store->merch_count, 0);
 
-    ioopm_store_destroy(store);
+    release(store);
     shutdown();
 }
 
@@ -463,11 +455,11 @@ int main()
     if (
         (CU_add_test(my_test_suite, "simple create destroy merch test", create_destroy_merch_test) == NULL ||
          CU_add_test(my_test_suite, "testing for adding and removing from store", store_add_remove_test) == NULL ||
-         CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL  //||
-         //CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
-         //CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
-         //CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL ||
-         //CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL ||
+         CU_add_test(my_test_suite, "test for adding and removing from stock", stock_add_remove_test) == NULL  ||
+         CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
+         CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
+         CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL //||
+         //CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL //||
          //CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
          //CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
          //CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
