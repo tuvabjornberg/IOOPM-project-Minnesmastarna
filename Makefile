@@ -33,16 +33,17 @@ prof:
 	$(MAKE) -C $(TEST) prof
 
 testdemo: 
-#$(MAKE) -C $(DEMO) test_demo_ds
-	$(MAKE) -C $(DEMO) test_demo_shopcart
+	$(MAKE) -C $(DEMO) test_demo
+#$(MAKE) -C $(DEMO) test_demo_ui
 
 memdemo: 
-#$(MAKE) -C $(DEMO) mem_demo_ds
-	$(MAKE) -C $(DEMO) mem_demo_shopcart
+	$(MAKE) -C $(DEMO) mem_demo
+#$(MAKE) -C $(DEMO) mem_demo_ui_arg
+#$(MAKE) -C $(DEMO) mem_demo_ui	
 
 sandemo: 
-#$(MAKE) -C $(DEMO) san_demo_ds
-	$(MAKE) -C $(DEMO) san_demo_shopcart
+	$(MAKE) -C $(DEMO) san_demo
+#$(MAKE) -C $(DEMO) san_demo_ui
 
 example: 
 	$(MAKE) -C $(DEMO) memexample

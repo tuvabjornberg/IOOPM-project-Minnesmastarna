@@ -22,14 +22,29 @@ examplesan.out: example.c refmem.c queue.c list.c
 sanexample: examplesan.out
 	./examplesan.out
 
-test_demo_ds: 
-	$(MAKE) -C $(Z92) ds_tests
+test_demo: 
+#$(MAKE) -C $(Z92) ds_tests
+	$(MAKE) -C $(Z92) logic_tests
 
-mem_demo_ds: 
-	$(MAKE) -C $(Z92) ds_memtests
+mem_demo: 
+#$(MAKE) -C $(Z92) ds_memtests
+	$(MAKE) -C $(Z92) logic_memtests
 
-san_demo_ds: 
-	$(MAKE) -C $(Z92) ds_sanitize
+san_demo: 
+#$(MAKE) -C $(Z92) ds_sanitize
+	$(MAKE) -C $(Z92) merchsan
+
+test_demo_ui: 
+	$(MAKE) -C $(Z92) ui_tests
+
+mem_demo_ui: 
+	$(MAKE) -C $(Z92) ui_memtests
+
+mem_demo_ui_arg: 
+	$(MAKE) -C $(Z92) ui_arg_memtests
+
+san_demo_ui: 
+	$(MAKE) -C $(Z92) ui_sanitize
 
 
 test_demo_shopcart: 
