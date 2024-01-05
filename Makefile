@@ -16,12 +16,12 @@ src:
 
 test: src
 	$(MAKE) -C $(TEST) test
-	$(MAKE) -C $(DEMO) test_demo_ds
+	$(MAKE) -C $(DEMO) test_demo
 
 memtest: 
 	$(MAKE) -C $(TEST) memtest
 	$(MAKE) -C $(DEMO) memexample
-	$(MAKE) -C $(DEMO) mem_demo_ds
+	$(MAKE) -C $(DEMO) mem_demo
 
 test_sanitize: 
 	$(MAKE) -C $(TEST) test_sanitize
@@ -50,12 +50,6 @@ example:
 
 sanexample: 
 	$(MAKE) -C $(DEMO) sanexample
-
-sc_tests:
-	$(MAKE) -C $(DEMO) sc_tests
-
-sc_memtests:
-	$(MAKE) -C $(DEMO) sc_memtests
 
 clean: 
 	rm -f *.o

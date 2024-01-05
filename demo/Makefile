@@ -46,17 +46,6 @@ mem_demo_ui_arg:
 san_demo_ui: 
 	$(MAKE) -C $(Z92) ui_sanitize
 
-
-test_demo_shopcart: 
-	$(MAKE) -C $(Z92) logic_tests
-
-mem_demo_shopcart: 
-	$(MAKE) -C $(Z92) logic_memtests
-
-san_demo_shopcart: 
-	$(MAKE) -C $(Z92) shopsan
-
-
 clean: 
 	rm -f *.o *.out
 	$(MAKE) -C $(Z92) clean
