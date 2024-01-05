@@ -24,7 +24,7 @@ ioopm_store_t *store_with_inputs()
     int price = 10; 
     int stock_size = 0; 
 
-    ioopm_merch_t *apple = ioopm_merch_create(strdup(name), strdup(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size); 
+    ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size); 
 
     ioopm_store_add(store, apple); 
 
@@ -33,7 +33,7 @@ ioopm_store_t *store_with_inputs()
 
     for (int i = 0; i < 3; i++)
     {
-        ioopm_location_add(apple, strdup(shelf[i]), quantity[i]);
+        ioopm_location_add(apple, duplicate_string(shelf[i]), quantity[i]);
     }
 
     return store; 
