@@ -424,9 +424,6 @@ static void cart_iterator(elem_t id, elem_t *cart_items, void *name)
 
 void ioopm_store_remove(ioopm_store_t *store, ioopm_hash_table_t *carts, char *name)
 {
-    ioopm_merch_t *merch = ioopm_merch_get(store, name);
-    ioopm_list_t *stock = stock_get(merch);
-
     if (carts != NULL)
     {
         ioopm_hash_table_apply_to_all(carts, cart_iterator, name);

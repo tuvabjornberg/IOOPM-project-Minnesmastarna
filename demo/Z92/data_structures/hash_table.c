@@ -192,7 +192,7 @@ option_t *ioopm_hash_table_lookup(ioopm_hash_table_t *ht, elem_t key)
     {
         *lookup_result = Failure();
     }
-    retain(lookup_result); 
+
     return lookup_result;
 }
 
