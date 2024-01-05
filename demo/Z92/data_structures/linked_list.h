@@ -115,3 +115,8 @@ bool ioopm_linked_list_any(ioopm_list_t *list, ioopm_int_predicate prop, void *e
 /// @param fun the function to be applied
 /// @param extra an additional argument (may be NULL) that will be passed to all internal calls of fun
 void ioopm_linked_list_apply_to_all(ioopm_list_t *list, ioopm_apply_int_function fun, void *extra);
+
+/// @brief Makes a copy of a list
+/// @param original_list the list to be copied
+/// @return a copy of a list
+ioopm_list_t *ioopm_linked_list_copy(ioopm_list_t *original_list); 

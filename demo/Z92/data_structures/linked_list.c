@@ -35,7 +35,7 @@ static void linked_list_destructor(obj *obj_ptr)
     ioopm_list_t *list = (ioopm_list_t*)obj_ptr;
     if (!ioopm_linked_list_is_empty(list))
     {
-        ioopm_linked_list_clear(list);
+        release(list->first); 
     }
 }
 
@@ -56,14 +56,13 @@ void ioopm_linked_list_destroy(ioopm_list_t *list)
     release(list);
 }
 
-static void link_destructor(obj *obj_ptr) {}
-
 static link_t *link_create(elem_t value, link_t *next)
 {
-    link_t *new_link = allocate(sizeof(link_t), link_destructor);
+    link_t *new_link = allocate(sizeof(link_t), NULL);
 
     new_link->value = value;
     new_link->next = next;
+    retain(new_link); 
     return new_link;
 }
 
@@ -83,7 +82,6 @@ void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)
             // if non-empty list
             list->last->next = new_link;
         }
-        retain(new_link);
         list->last = new_link;
         list->size++;
     }
@@ -102,7 +100,6 @@ void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value)
             // if empty list
             list->last = new_link;
         }
-        retain(new_link);
         list->size++;
     }
 }
@@ -135,7 +132,6 @@ void ioopm_linked_list_insert(ioopm_list_t *list, int index, elem_t value)
                 link_t *tmp = current->next;
                 current->next = new_link;
                 new_link->next = tmp;
-                retain(new_link);
                 list->size++;
             }
             counter++;
@@ -164,6 +160,7 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
             link_t *tmp = list->first->next;
             release(list->first);
             list->first = tmp;
+            retain(list->first); 
             list->size--;
         }
         else
@@ -177,6 +174,11 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
                     link_t *tmp = current->next->next;
                     release(current->next);
                     current->next = tmp;
+                    if (tmp != NULL)
+                    {
+                        retain(current->next);
+                    }
+                    
                     list->size--;
                 }
 
@@ -241,13 +243,8 @@ void ioopm_linked_list_clear(ioopm_list_t *list)
 {
     link_t *current = list->first;
 
-    while (current != NULL)
-    {
-        link_t *next = current->next;
-        release(current);
-        current = next;
-        list->size--;
-    }
+    release(current); 
+
     list->first = NULL;
     list->last = NULL;
     list->size = 0;
@@ -364,4 +361,26 @@ elem_t ioopm_iterator_current(ioopm_list_iterator_t *iter)
 void ioopm_iterator_destroy(ioopm_list_iterator_t *iter)
 {
     release(iter);
+}
+
+//TODO: not tested
+ioopm_list_t *ioopm_linked_list_copy(ioopm_list_t *original_list)
+{
+    if (original_list == NULL)
+    {
+        return NULL;
+    }
+
+    ioopm_list_t *list_copy = ioopm_linked_list_create(original_list->eq_fun);
+
+    ioopm_list_iterator_t *iter = ioopm_list_iterator(original_list);
+    while (ioopm_iterator_has_next(iter))
+    {
+        ioopm_linked_list_append(list_copy,ioopm_iterator_next(iter));
+    }
+
+    release(iter);
+    release(original_list); 
+
+    return list_copy;
 }
