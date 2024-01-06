@@ -26,5 +26,5 @@ unsigned ioopm_hash_fun_sum_key_string(elem_t key)
         result += *str;
     }
     while (*++str != '\0');
-    return result; 
+    return result;
 }

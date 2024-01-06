@@ -5,17 +5,17 @@
 ### Participant list
 |Name               |Email                                  |Active Dates|
 |----               |-----                                  |------------|
-|Liam Anderberg     |liam.anderberg.7761@student.uu.se      |28/11-2023   --             |    
+|Liam Anderberg     |liam.anderberg.7761@student.uu.se      |28/11-2023   --             |
 |Tuva Björnberg     |tuva.bjornberg.5452@student.uu.se      |28/11-2023   --             |
 |Hektor Einarsson   |     |28/11-2023   --                  |
 |Martin Ek          |     |28/11-2023   --                  |
 |Tove Frænell       |tove.fraenell.3054@student.uu.se       |28/11-2023   --
-|Theo Karlsson      |theocarlsson@gmail.com                 |28/11-2023   --             |    
+|Theo Karlsson      |theocarlsson@gmail.com                 |28/11-2023   --             |
 
 ## Quantification
 Project start date: 28/11-2023 \
 Project end date:    /1-2024 \
-Number of sprints, their start and end dates:    
+Number of sprints, their start and end dates:
 1. 1/12 -  12/12
 2. 12/12 - 19/12
 3. 19/12 - 2/1
@@ -86,7 +86,7 @@ In this section, discuss:
 Also, visualise:
 
     using a burndown chart for the sprints, how your time planning compared with reality.
-    using a pie chart, how the time you spent was distributed across different activities. (Refer to the main project task description for activities.) 
+    using a pie chart, how the time you spent was distributed across different activities. (Refer to the main project task description for activities.)
 
 ## Reflection
 

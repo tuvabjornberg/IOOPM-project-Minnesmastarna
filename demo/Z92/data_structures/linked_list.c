@@ -21,7 +21,7 @@ struct list
     link_t *first;
     link_t *last;
     size_t size;
-    ioopm_eq_function eq_fun; 
+    ioopm_eq_function eq_fun;
 };
 
 struct iter
@@ -30,7 +30,7 @@ struct iter
     ioopm_list_t *list;
 };
 
-static void linked_list_destructor(obj *obj_ptr) 
+static void linked_list_destructor(obj *obj_ptr)
 {
     ioopm_list_t *list = (ioopm_list_t*)obj_ptr;
     if (!ioopm_linked_list_is_empty(list))
@@ -43,12 +43,12 @@ ioopm_list_t *ioopm_linked_list_create(ioopm_eq_function eq_fun)
 {
     ioopm_list_t *list = allocate(sizeof(struct list), linked_list_destructor);
 
-    list->eq_fun = eq_fun; 
-    list->size = 0; 
+    list->eq_fun = eq_fun;
+    list->size = 0;
     list->first = NULL;
     list->last = NULL;
     retain(list);
-    return list; 
+    return list;
 }
 
 void ioopm_linked_list_destroy(ioopm_list_t *list)
@@ -71,7 +71,7 @@ void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)
 {
     link_t *new_link = link_create(value, NULL);
 
-    if (new_link != NULL) 
+    if (new_link != NULL)
     {
         if (list->last == NULL)
         {
@@ -93,7 +93,7 @@ void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value)
 {
     link_t *new_link = link_create(value, list->first);
 
-    if (new_link != NULL) 
+    if (new_link != NULL)
     {
         list->first = new_link;
 
@@ -194,7 +194,7 @@ elem_t ioopm_linked_list_get(ioopm_list_t *list, int index)
     int counter = 0;
 
     // if correct index input
-    if (index >= 0 && index < ioopm_linked_list_size(list)) 
+    if (index >= 0 && index < ioopm_linked_list_size(list))
     {
         while (counter != index)
         {
@@ -216,7 +216,7 @@ bool ioopm_linked_list_contains(ioopm_list_t *list, elem_t element)
 
     while (current != NULL)
     {
-        if (list->eq_fun(current->value, element)) 
+        if (list->eq_fun(current->value, element))
         {
             return true;
         }
@@ -276,7 +276,7 @@ bool ioopm_linked_list_any(ioopm_list_t *list, ioopm_int_predicate prop, void *e
 
     while (current != NULL)
     {
-        if (prop(current->value, extra)) 
+        if (prop(current->value, extra))
         {
             return true;
         }
@@ -321,7 +321,7 @@ bool ioopm_iterator_has_next(ioopm_list_iterator_t *iter)
     }
     else
     {
-        return false; 
+        return false;
     }
 }
 
@@ -329,7 +329,7 @@ elem_t ioopm_iterator_next(ioopm_list_iterator_t *iter)
 {
     if (!ioopm_iterator_has_next(iter))
     {
-        
+
         return (elem_t){.void_ptr = NULL};
     }
 
