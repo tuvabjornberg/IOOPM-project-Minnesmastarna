@@ -5,26 +5,21 @@
 #include <stdbool.h>
 #include "../../../src/refmem.h"
 
-static void items_in_cart_destroy(elem_t key, elem_t *value, void *arg)
-{
-    ioopm_hash_table_destroy((ioopm_hash_table_t *) value->void_ptr); 
-}
 
 static void shop_cart_destructor(obj *obj_ptr) 
 {
     ioopm_carts_t *storage_carts = (ioopm_carts_t *)obj_ptr; 
-    //ioopm_hash_table_apply_to_all(storage_carts->carts, items_in_cart_destroy, NULL); 
-    //ioopm_hash_table_destroy(storage_carts->carts); 
     release(storage_carts->carts); 
 }
 
 ioopm_carts_t *ioopm_cart_storage_create()
 {
     ioopm_carts_t *new_carts = allocate(sizeof(ioopm_carts_t), shop_cart_destructor); 
+    retain(new_carts); 
+
     new_carts->carts = ioopm_hash_table_create(ioopm_hash_fun_key_int, ioopm_int_eq); 
     new_carts->total_carts = 0;
 
-    retain(new_carts); 
     return new_carts;
 }
 
@@ -85,7 +80,7 @@ void ioopm_cart_add(ioopm_carts_t *storage_carts, int id, char *merch_name, int 
     }
     else
     {  
-        ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(amount)); 
+        ioopm_hash_table_insert(cart_items, str_elem(duplicate_string(merch_name)), int_elem(amount)); 
     }
     release(item_in_cart); 
 }
@@ -127,7 +122,7 @@ int ioopm_cost_calculate(ioopm_store_t *store, ioopm_carts_t *storage_carts, int
         }  
         release(value);
     }
-    ioopm_linked_list_destroy(keys);
+    release(keys);
     
     return total_cost;
 }
@@ -148,7 +143,7 @@ static void stock_update(elem_t name, elem_t *amount, void *store)
     {
       amount->integer -= shelf->quantity;
 
-      release(shelf->shelf); 
+      //release(shelf->shelf); 
       release(shelf); 
       ioopm_linked_list_remove(stock, i);
     } 
@@ -181,8 +176,6 @@ void ioopm_cart_destroy(ioopm_carts_t *storage_carts, int id)
 
 void ioopm_cart_storage_destroy(ioopm_carts_t *storage_carts)
 {
-    ioopm_hash_table_apply_to_all(storage_carts->carts, items_in_cart_destroy, NULL); 
-    ioopm_hash_table_destroy(storage_carts->carts); 
     release(storage_carts); 
 }
 
