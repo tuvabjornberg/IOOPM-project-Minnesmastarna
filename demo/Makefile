@@ -1,28 +1,52 @@
 C_COMPILER      = gcc
 C_OPTIONS       = -Wall -pedantic -g
-C_LINK_OPTIONS = -lm 
+C_LINK_OPTIONS = -lm
 C_SANITIZE	   = -fsanitize=address
 VPATH           = ../src : Z92
 
 Z92 = Z92
 
-%.o:  %.c 
+%.o:  %.c
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-example.out: example.o refmem.o queue.o
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
+example.out: example.o refmem.o queue.o list.o
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@
 
 memexample: example.out
 	valgrind --leak-check=full ./example.out
 
-examplesan.out: example.c refmem.c queue.c 
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
+examplesan.out: example.c refmem.c queue.c list.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 sanexample: examplesan.out
 	./examplesan.out
 
-clean: 
+test_demo:
+	$(MAKE) -C $(Z92) ds_tests
+	$(MAKE) -C $(Z92) logic_tests
+
+mem_demo:
+	$(MAKE) -C $(Z92) ds_memtests
+	$(MAKE) -C $(Z92) logic_memtests
+
+san_demo:
+	$(MAKE) -C $(Z92) ds_sanitize
+	$(MAKE) -C $(Z92) logic_sanitize
+
+test_demo_ui: 
+	$(MAKE) -C $(Z92) ui_tests
+
+mem_demo_ui: 
+	$(MAKE) -C $(Z92) ui_memtests
+
+mem_demo_ui_arg: 
+	$(MAKE) -C $(Z92) ui_arg_memtests
+
+san_demo_ui: 
+	$(MAKE) -C $(Z92) ui_sanitize
+
+clean:
 	rm -f *.o *.out
 	$(MAKE) -C $(Z92) clean
 
-.PHONY: 
+.PHONY: memexample sanexample test_demo_ds mem_demo_ds san_demo_ds test_demo_ui mem_demo_ui mem_demo_ui_arg san_demo_ui clean

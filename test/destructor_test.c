@@ -3,19 +3,18 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include "../src/queue.h"
 #include "../src/refmem.h"
 
-void destructor(obj *obj){
-    return NULL;
-    //TODO
+// **** TEST DESTRUCTORS ****
+void string_destructor(obj *o) {
+    printf(" %p SUCCESS ", (char *)o);
 }
 
-void default_destructor(obj *obj){
-    return NULL;
-    //TODO
+void int_destructor(obj *o) {
+    int *object = o;
+    printf(" %d SUCCESS ", *object);
 }
-
-
 
 int init_suite(void)
 {
@@ -27,55 +26,46 @@ int clean_suite(void)
     return 0;
 }
 
-void test_allocate_destructor() {
-    obj* obj1 = allocate(sizeof(int), destructor()); 
-    obj* obj2 = allocate(sizeof(int), destructor());
+void test_default_destructor(void)
+{
+    struct my_struct {
+        obj *internal_obj;
+    };
 
-    CU_ASSERT_PTR_NOT_NULL(obj1);
-    CU_ASSERT_EQUAL(rc(obj1), 0);
+    struct my_struct *test_obj = allocate(sizeof(struct my_struct), NULL);
+    test_obj->internal_obj = allocate(sizeof(int), NULL);
 
-    CU_ASSERT_PTR_NOT_NULL(obj2);
-    CU_ASSERT_EQUAL(rc(obj2), 0);
-
-    destructor(obj1);
-    destructor(obj2);
-
-    deallocate(obj1);
-    deallocate(obj2);
+    CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 0);
+    retain(test_obj->internal_obj);
+    CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 1);
+    deallocate(test_obj);
+    //TODO:
+    //CU_ASSERT_EQUAL(rc(test_obj->internal_obj), 0);
 }
 
-void test_array_allocate_destructor() {
-    obj* obj_arr1 = allocate_array(5, sizeof(int), destructor());
-    CU_ASSERT_EQUAL(rc(obj_arr1), 0);
-    destructor(obj_arr1); 
-    deallocate(obj_arr1);
-
-    obj* obj_arr2 = allocate_array(0, sizeof(int), destructor()); 
-    CU_ASSERT_EQUAL(rc(obj_arr2), 0);
-    destructor(obj_arr2); 
-    deallocate(obj_arr2);
+void test_string_destructor() {
+    char *my_string = allocate(sizeof(char) * 255, *string_destructor);
+    *my_string = "testingtesting123";
+    retain(my_string);
+    release(my_string);
+    shutdown();
 }
 
-void test_default_destructor() {
-    obj* obj1 = allocate(sizeof(int), NULL);
-    obj* obj_arr = allocate_array(0, sizeof(int), NULL);
-
-    CU_ASSERT_EQUAL(rc(obj1), 0);
-    CU_ASSERT_EQUAL(rc(obj_arr), 0);
-
-    default_destructor(obj1);
-    default_destructor(obj_arr);
-
-    deallocate(obj1);
-    deallocate(obj_arr);
+void test_int_destructor() {
+    int *my_int = allocate(sizeof(int), int_destructor);
+    *my_int = 2;
+    retain(my_int);
+    release(my_int);
+    shutdown();
 }
+
 
 int main()
 {
     if (CU_initialize_registry() != CUE_SUCCESS)
         return CU_get_error();
 
-    CU_pSuite my_test_suite = CU_add_suite("Tests for destructors", init_suite, clean_suite);
+    CU_pSuite my_test_suite = CU_add_suite("Tests for destructors in refmem.c", init_suite, clean_suite);
     if (my_test_suite == NULL)
     {
         CU_cleanup_registry();
@@ -83,12 +73,9 @@ int main()
     }
 
     if (
-        (CU_add_test(my_test_suite, "a simple allocate destructor test", test_allocate_destructor) == NULL ||
-        CU_add_test(my_test_suite, "a simple allocate array destructor test", test_array_allocate_destructor) == NULL ||
-        CU_add_test(my_test_suite, "a simple default destructor test", test_default_destructor) == NULL 
-
-
-
+        (CU_add_test(my_test_suite, "Test default destructor", test_default_destructor) == NULL ||
+        CU_add_test(my_test_suite, "Test for string destructor", test_string_destructor) == NULL ||
+        CU_add_test(my_test_suite, "Test for int destructor", test_int_destructor) == NULL
         )
     )
 

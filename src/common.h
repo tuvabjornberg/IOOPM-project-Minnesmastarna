@@ -16,20 +16,20 @@
  *
  * It is assumed that a suitable hash_function (hash_fun) and equality function
  * is implemented to fit the elem_t type (eq_fun).
- */
+*/
 
 typedef union elem elem_t;
 
 union elem
 {
-    int integer;
-    unsigned int unsigned_integer;
-    bool boolean;
-    float float_number;
-    char *string;
-    void *void_ptr;
+  int integer;
+  unsigned int unsigned_integer;
+  bool boolean;
+  float float_number;
+  char *string;
+  void *void_ptr;
 };
 
-typedef bool(*ioopm_eq_function)(elem_t a, elem_t b);
+typedef bool(*eq_function)(elem_t a, elem_t b);
 
-typedef unsigned int(*ioopm_hash_function)(elem_t key);
+typedef unsigned int(*hash_function)(elem_t key);

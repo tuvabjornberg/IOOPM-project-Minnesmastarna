@@ -1,12 +1,10 @@
 #include <stdlib.h>
-#include "linked_list.h"
-#include "iterator.h"
+#include "list.h"
 #include "common.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
-#include "../../../src/refmem.h"
 
 typedef struct link link_t;
 
@@ -15,59 +13,48 @@ struct link
     elem_t value;
     struct link *next;
 };
-
 struct list
 {
     link_t *first;
     link_t *last;
     size_t size;
-    ioopm_eq_function eq_fun;
+    eq_function eq_fun;
 };
 
 struct iter
 {
     link_t *current;
-    ioopm_list_t *list;
+    list_t *list;
 };
 
-static void linked_list_destructor(obj *obj_ptr)
+list_t *linked_list_create(eq_function eq_fun)
 {
-    ioopm_list_t *list = (ioopm_list_t*)obj_ptr;
-    if (!ioopm_linked_list_is_empty(list))
-    {
-        release(list->first);
-    }
-}
-
-ioopm_list_t *ioopm_linked_list_create(ioopm_eq_function eq_fun)
-{
-    ioopm_list_t *list = allocate(sizeof(struct list), linked_list_destructor);
-    retain(list);
-
+    list_t *list = calloc(1, sizeof(struct list));
     list->eq_fun = eq_fun;
     list->size = 0;
-    list->first = NULL;
-    list->last = NULL;
-
     return list;
 }
 
-void ioopm_linked_list_destroy(ioopm_list_t *list)
+void linked_list_destroy(list_t *list)
 {
-    release(list);
+    if (list != NULL) {
+        if (!linked_list_is_empty(list))
+        {
+            linked_list_clear(list);
+        }
+    }
+    free(list);
 }
 
 static link_t *link_create(elem_t value, link_t *next)
 {
-    link_t *new_link = allocate(sizeof(link_t), NULL);
-    retain(new_link);
-
+    link_t *new_link = calloc(1, sizeof(link_t));
     new_link->value = value;
     new_link->next = next;
     return new_link;
 }
 
-void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)
+void linked_list_append(list_t *list, elem_t value)
 {
     link_t *new_link = link_create(value, NULL);
 
@@ -83,12 +70,13 @@ void ioopm_linked_list_append(ioopm_list_t *list, elem_t value)
             // if non-empty list
             list->last->next = new_link;
         }
+
         list->last = new_link;
         list->size++;
     }
 }
 
-void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value)
+void linked_list_prepend(list_t *list, elem_t value)
 {
     link_t *new_link = link_create(value, list->first);
 
@@ -101,31 +89,32 @@ void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value)
             // if empty list
             list->last = new_link;
         }
+
         list->size++;
     }
 }
 
-void ioopm_linked_list_insert(ioopm_list_t *list, int index, elem_t value)
+void linked_list_insert(list_t *list, int index, elem_t value)
 {
     link_t *current = list->first;
     int counter = 0;
-    size_t linked_list_size = ioopm_linked_list_size(list);
+    size_t ll_size = linked_list_size(list);
 
-    if (index < 0 || index > linked_list_size)
+    if (index < 0 || index > ll_size)
     {
         return;
     }
     else if (index == 0)
     {
-        ioopm_linked_list_prepend(list, value);
+        linked_list_prepend(list, value);
     }
-    else if (index == linked_list_size)
+    else if (index == ll_size)
     {
-        ioopm_linked_list_append(list, value);
+        linked_list_append(list, value);
     }
     else
     {
-        while (index > 0 && index < linked_list_size - 1 && counter < index)
+        while (index > 0 && index < ll_size - 1 && counter < index)
         {
             if (counter == index - 1)
             {
@@ -141,16 +130,16 @@ void ioopm_linked_list_insert(ioopm_list_t *list, int index, elem_t value)
     }
 }
 
-elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
+elem_t linked_list_remove(list_t *list, int index)
 {
     link_t *current = list->first;
     int counter = 0;
-    size_t linked_list_size = ioopm_linked_list_size(list);
+    size_t ll_size = linked_list_size(list);
     elem_t value = {.void_ptr = NULL};
 
     if (list != NULL)
     {
-        if (index < 0 || index >= linked_list_size)
+        if (index < 0 || index >= ll_size)
         {
             return (elem_t){.void_ptr = NULL};
         }
@@ -159,27 +148,21 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
         {
             value = list->first->value;
             link_t *tmp = list->first->next;
-            release(list->first);
+            free(list->first);
             list->first = tmp;
-            retain(list->first);
             list->size--;
         }
         else
         {
-            while (index > 0 && index < linked_list_size && counter < index)
+            while (index > 0 && index < ll_size && counter < index)
             {
                 // middle and last index
                 if (counter == index - 1)
                 {
                     value = current->next->value;
                     link_t *tmp = current->next->next;
-                    release(current->next);
+                    free(current->next);
                     current->next = tmp;
-                    if (tmp != NULL)
-                    {
-                        retain(current->next);
-                    }
-
                     list->size--;
                 }
 
@@ -191,13 +174,50 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
     return value;
 }
 
-elem_t ioopm_linked_list_get(ioopm_list_t *list, int index)
+void linked_list_remove_object(list_t *list, obj *obj_ptr)
+{
+    //elem_t value = {.void_ptr = NULL};
+    if (list == NULL || obj_ptr == NULL)
+    {
+        return; // value;
+    }
+
+    link_t *current = list->first;
+    link_t *prev = NULL;
+
+    while (current != NULL)
+    {
+        if (current->value.void_ptr == obj_ptr)
+        {
+            //value = current->value;
+            if (prev == NULL)
+            {
+                list->first = current->next;
+            }
+            else
+            {
+                prev->next = current->next;
+            }
+
+            free(current);
+            list->size--;
+            return; // value;
+        }
+
+        prev = current;
+        current = current->next;
+    }
+
+    return; // value;
+}
+
+
+elem_t linked_list_get(list_t *list, int index)
 {
     link_t *current = list->first;
     int counter = 0;
-
     // if correct index input
-    if (index >= 0 && index < ioopm_linked_list_size(list))
+    if (index >= 0 && index < linked_list_size(list))
     {
         while (counter != index)
         {
@@ -213,7 +233,7 @@ elem_t ioopm_linked_list_get(ioopm_list_t *list, int index)
     }
 }
 
-bool ioopm_linked_list_contains(ioopm_list_t *list, elem_t element)
+bool linked_list_contains(list_t *list, elem_t element)
 {
     link_t *current = list->first;
 
@@ -230,28 +250,30 @@ bool ioopm_linked_list_contains(ioopm_list_t *list, elem_t element)
     return false;
 }
 
-size_t ioopm_linked_list_size(ioopm_list_t *list)
+size_t linked_list_size(list_t *list)
 {
     return list->size;
 }
 
-bool ioopm_linked_list_is_empty(ioopm_list_t *list)
+bool linked_list_is_empty(list_t *list)
 {
     return list->size == 0;
 }
 
-void ioopm_linked_list_clear(ioopm_list_t *list)
+void linked_list_clear(list_t *list)
 {
     link_t *current = list->first;
 
-    release(current);
-
-    list->first = NULL;
-    list->last = NULL;
-    list->size = 0;
+    while (current != NULL)
+    {
+        link_t *next = current->next;
+        free(current);
+        current = next;
+        list->size--;
+    }
 }
 
-bool ioopm_linked_list_all(ioopm_list_t *list, ioopm_int_predicate prop, void *extra)
+bool linked_list_all(list_t *list, int_predicate prop, void *extra)
 {
     link_t *current = list->first;
 
@@ -268,7 +290,7 @@ bool ioopm_linked_list_all(ioopm_list_t *list, ioopm_int_predicate prop, void *e
     return true;
 }
 
-bool ioopm_linked_list_any(ioopm_list_t *list, ioopm_int_predicate prop, void *extra)
+bool linked_list_any(list_t *list, int_predicate prop, void *extra)
 {
     link_t *current = list->first;
 
@@ -285,7 +307,7 @@ bool ioopm_linked_list_any(ioopm_list_t *list, ioopm_int_predicate prop, void *e
     return false;
 }
 
-void ioopm_linked_list_apply_to_all(ioopm_list_t *list, ioopm_apply_int_function fun, void *extra)
+void linked_list_apply_to_all(list_t *list, apply_int_function fun, void *extra)
 {
     link_t *current = list->first;
 
@@ -296,12 +318,9 @@ void ioopm_linked_list_apply_to_all(ioopm_list_t *list, ioopm_apply_int_function
     }
 }
 
-static void iterator_destructor(obj *obj_ptr) {}
-
-ioopm_list_iterator_t *ioopm_list_iterator(ioopm_list_t *list)
+list_iterator_t *list_iterator(list_t *list)
 {
-    ioopm_list_iterator_t *iter = allocate(sizeof(ioopm_list_iterator_t), iterator_destructor);
-    retain(iter);
+    list_iterator_t *iter = calloc(1, sizeof(list_iterator_t));
 
     iter->list = list;
     iter->current = list->first;
@@ -309,7 +328,7 @@ ioopm_list_iterator_t *ioopm_list_iterator(ioopm_list_t *list)
     return iter;
 }
 
-bool ioopm_iterator_has_next(ioopm_list_iterator_t *iter)
+bool iterator_has_next(list_iterator_t *iter)
 {
     if (iter->current != NULL)
     {
@@ -321,9 +340,9 @@ bool ioopm_iterator_has_next(ioopm_list_iterator_t *iter)
     }
 }
 
-elem_t ioopm_iterator_next(ioopm_list_iterator_t *iter)
+elem_t iterator_next(list_iterator_t *iter)
 {
-    if (!ioopm_iterator_has_next(iter))
+    if (!iterator_has_next(iter))
     {
 
         return (elem_t){.void_ptr = NULL};
@@ -333,7 +352,7 @@ elem_t ioopm_iterator_next(ioopm_list_iterator_t *iter)
     return iter->current->value;
 }
 
-void ioopm_iterator_reset(ioopm_list_iterator_t *iter)
+void iterator_reset(list_iterator_t *iter)
 {
     if (iter->current != NULL)
     {
@@ -345,7 +364,7 @@ void ioopm_iterator_reset(ioopm_list_iterator_t *iter)
     }
 }
 
-elem_t ioopm_iterator_current(ioopm_list_iterator_t *iter)
+elem_t iterator_current(list_iterator_t *iter)
 {
     if (iter->current != NULL)
     {
@@ -356,13 +375,7 @@ elem_t ioopm_iterator_current(ioopm_list_iterator_t *iter)
         return (elem_t){.void_ptr = NULL};
     }
 }
-
-void ioopm_iterator_destroy(ioopm_list_iterator_t *iter)
+void iterator_destroy(list_iterator_t *iter)
 {
-    release(iter);
-}
-
-ioopm_eq_function get_list_eq_fun(ioopm_list_t *list)
-{
-    return list->eq_fun;
+    free(iter);
 }

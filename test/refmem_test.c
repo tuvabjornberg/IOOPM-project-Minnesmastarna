@@ -22,6 +22,8 @@ void test_allocate_deallocate()
     CU_ASSERT_PTR_NOT_NULL(obj);
     CU_ASSERT_EQUAL(rc(obj), 0);
     deallocate(obj);
+
+    shutdown();
 }
 
 void test_retain()
@@ -37,11 +39,12 @@ void test_retain()
     CU_ASSERT_EQUAL(rc(obj1), 101);
 
     deallocate(obj1);
+
+    shutdown();
 }
 
 void test_release()
 {
-    set_queue_to_null(); 
     obj* obj1 = allocate(sizeof(int), NULL);
 
     retain(obj1);
@@ -63,8 +66,7 @@ void test_release()
 
     deallocate(obj1);
 
-    shutdown(); 
-    set_queue_to_null();  
+    shutdown();
 }
 
 void test_allocate_deallocate_array()
@@ -73,9 +75,13 @@ void test_allocate_deallocate_array()
     CU_ASSERT_EQUAL(rc(obj_arr1), 0);
     deallocate(obj_arr1);
 
+    shutdown();
+
     obj* obj_arr2 = allocate_array(0, sizeof(int), NULL);
     CU_ASSERT_EQUAL(rc(obj_arr2), 0);
     deallocate(obj_arr2);
+
+    shutdown();
 }
 
 void test_retain_array()
@@ -91,6 +97,8 @@ void test_retain_array()
     CU_ASSERT_EQUAL(rc(obj_arr), 101);
 
     deallocate(obj_arr);
+
+    shutdown();
 }
 
 void test_release_array()
@@ -116,8 +124,7 @@ void test_release_array()
 
     deallocate(obj_arr);
 
-    shutdown(); 
-    set_queue_to_null(); 
+    shutdown();
 }
 
 void set_get_cascade_limit()
@@ -144,17 +151,16 @@ void integration_cleanup_test()
     release(obj2);
 
     obj* obj3 = allocate(sizeof(int), NULL);
-    retain(obj3); 
+    retain(obj3);
     release(obj3);
-    
+
     obj* obj4 = allocate(sizeof(int), NULL);
-    retain(obj4); 
+    retain(obj4);
     release(obj4);
 
     cleanup();
 
     shutdown();
-    set_queue_to_null(); 
     puts("Integration test complete");
 }
 
@@ -166,13 +172,13 @@ void test_rc_overflow()
         retain(obj);
     }
     // Reference count overflow should lead to the object being destroyed
+    shutdown();
 }
 
 void test_shutdown()
 {
     obj* obj1 = allocate(sizeof(int), NULL);
     obj* obj2 = allocate(sizeof(int), NULL);
-
 
     retain(obj1);
     release(obj1);

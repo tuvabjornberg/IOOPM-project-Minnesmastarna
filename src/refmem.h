@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 /**
  * @file refmem.h
@@ -10,9 +11,6 @@
 */
 typedef void obj;
 typedef void(*function1_t)(obj *);
-
-/// @brief Sets the static queue to null
-void set_queue_to_null(); 
 
 /// @brief Allocates a memory block of a given byte size to create an object
 /// @param bytes the number of bytes of the allocated memory block
@@ -44,6 +42,11 @@ unsigned short rc(obj *obj_ptr);
 /// @return the object created
 obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor);
 
+/// @brief makes a copy of a string
+/// @param str the string to be copied
+/// @return the copy of the given string
+char *duplicate_string(char *str);
+
 /// @brief Sets an upper limit of the number of frees allowed to be done consecutively,
 /// @param limit the given limit of consecutive frees
 void set_cascade_limit(size_t limit);
@@ -52,7 +55,7 @@ void set_cascade_limit(size_t limit);
 /// @param the object to destroy
 size_t get_cascade_limit();
 
-/// @brief Frees all objects with a reference count of zero, regardless of cascade limit
+/// @brief Deallocates all pointers left in the queue
 void cleanup();
 
 /// @brief Removes all allocated memory from the program
