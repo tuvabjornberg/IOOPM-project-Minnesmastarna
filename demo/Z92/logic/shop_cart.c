@@ -69,6 +69,7 @@ int ioopm_item_in_cart_amount(ioopm_carts_t *storage_carts, int id, char *merch_
 
 void ioopm_cart_add(ioopm_carts_t *storage_carts, int id, char *merch_name, int amount)
 { 
+    //retain(merch_name); 
     ioopm_hash_table_t *cart_items = ioopm_items_in_cart_get(storage_carts, id); 
     option_t *item_in_cart = ioopm_hash_table_lookup(cart_items, str_elem(merch_name)); 
 
@@ -79,9 +80,10 @@ void ioopm_cart_add(ioopm_carts_t *storage_carts, int id, char *merch_name, int 
         ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(existing_amount)); 
     }
     else
-    {  
-        ioopm_hash_table_insert(cart_items, str_elem(duplicate_string(merch_name)), int_elem(amount)); 
+    {      
+        ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(amount)); 
     }
+    retain(merch_name);
     release(item_in_cart); 
 }
 
@@ -95,11 +97,13 @@ void ioopm_cart_remove(ioopm_hash_table_t *cart_items, char *merch_name, int amo
         if (existing_amount > amount)
         {
             existing_amount -= amount;
+            retain(merch_name); 
             ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(existing_amount));
         }
         else
         {
-            ioopm_hash_table_remove(cart_items, str_elem(merch_name));
+            //release(merch_name); 
+            ioopm_hash_table_remove(cart_items, str_elem(merch_name));  
         }
     }
     release(item_in_cart); 
