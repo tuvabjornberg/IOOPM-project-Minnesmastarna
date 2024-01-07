@@ -19,17 +19,17 @@ int main(void)
     assert(rc(c) == 0);
     retain(c);
     assert(rc(c) == 1);
-  
+
     c->cell = allocate(sizeof(struct cell), cell_destructor);
     assert(rc(c->cell) == 0);
     retain(c->cell);
     assert(rc(c->cell) == 1);
-  
+
     c->cell->cell = NULL;
-  
+
     release(c);
 
-    shutdown(); 
-  
+    shutdown();
+
     return 0;
 }

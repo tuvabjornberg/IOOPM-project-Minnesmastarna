@@ -46,11 +46,11 @@ Before we started with the actual coding we set up a strategy for code review an
 The main process has been an author pushing their code into a branch (not the main branch) and creating a pull request. When announcing this to the rest of the group someone will review and test their code. The goal being it's reviewed as soon as possible. A reviewer can usually be found if the author just asks a person in the group directly, asks volunteers at meetings or through our group communication channel.
 
 
-Some of the most efficient reviews were done with the author in discussion with the person(s) reviewing and changes made accordingly as fast as possible. This dynamic has contributed to some of our best and most efficent reviewes. 
+Some of the most efficient reviews were done with the author in discussion with the person(s) reviewing and changes made accordingly as fast as possible. This dynamic has contributed to some of our best and most efficent reviewes.
 An efficent review is especially valuable if the code reviewed is important for the project to move forward.
 
 
-In some cases we tried to have two reviewers on the same code, in order to have several inputs on the code. 
+In some cases we tried to have two reviewers on the same code, in order to have several inputs on the code.
 
 
 ## How did we review our code?
@@ -86,7 +86,7 @@ This became an issue in cases where a review took time. For example, when we had
 Using pull requests did serve a good purpose. It made sure at least two people were on the same page about changes to the code. Easy mistakes were caught and formatting of the code could quickly be fixed. It was more work compared to how we have been working previously in the course, with the assignments, where in most cases reviews weren't made to this extent. In a group project with six people we have found it easier to use this system to avoid confusion and broken code, when used correctly. What is similar with the code reviews from the assignment is the use of a code review protocol. Though we have not used it to the same extent for this project, it has served a good purpose.
 
 
-## GitHub tools - TODO: 
+## GitHub tools - TODO:
 Whether GitHub's built- in functions helped with reviewing the code is an individual opinion. <-- TODO:
 
 

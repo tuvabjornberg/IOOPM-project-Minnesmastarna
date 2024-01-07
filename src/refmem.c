@@ -219,7 +219,7 @@ obj *allocate_array(size_t elements, size_t elem_size, function1_t destructor)
 
 char *duplicate_string(char *str)
 {
-    char *duplicate = allocate_array(strlen(str) + 1, sizeof(char), NULL);
+    char *duplicate = allocate_array(strlen(str) + 1, sizeof(char) * 8, NULL);
     strcpy(duplicate, str);
     retain(duplicate);
     return duplicate;

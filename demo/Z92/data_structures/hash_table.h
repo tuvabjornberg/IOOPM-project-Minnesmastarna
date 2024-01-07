@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 #include "common.h"
-#include <stdlib.h> 
+#include <stdlib.h>
 #include "linked_list.h"
 
 #define No_Buckets 17 //set only for debugging purposes
@@ -19,18 +19,18 @@
  * @brief Simple hash table that maps integer keys to string values.
  *
  * The hash table is implemented using dynamically allocated buckets
- * and separate chaining to handle collisions. The program includes functions 
- * to create and destroy a hash table, insert and lookup key-value pairs, remove 
- * entries, retrieve the size, check if empty, and more. 
- * 
- * The hash table assumes a suitable hash_function (hash_fun) and equality function 
- * to fit the ioopm_eq_function in common.h 
- * 
- * It is assumed that the user ensures proper memory management when using the hash 
+ * and separate chaining to handle collisions. The program includes functions
+ * to create and destroy a hash table, insert and lookup key-value pairs, remove
+ * entries, retrieve the size, check if empty, and more.
+ *
+ * The hash table assumes a suitable hash_function (hash_fun) and equality function
+ * to fit the ioopm_eq_function in common.h
+ *
+ * It is assumed that the user ensures proper memory management when using the hash
  * table, including freeing the memory allocated for keys and values.
- * 
- * In certain edge-cases functions will return void pointer to NULL if either imput-value is invalid or 
- * have reach a NULL element. Which functions with this behavior is mentioned below. 
+ *
+ * In certain edge-cases functions will return void pointer to NULL if either imput-value is invalid or
+ * have reach a NULL element. Which functions with this behavior is mentioned below.
  */
 
 typedef bool(ioopm_predicate)(elem_t key, elem_t value, void *extra);
@@ -48,7 +48,7 @@ struct option
 /// @brief retrieves the hashtables current capacity
 /// @param ht hash table operated upon
 /// @return a capacity size
-size_t ioopm_get_ht_capacity(ioopm_hash_table_t *ht); 
+size_t ioopm_get_ht_capacity(ioopm_hash_table_t *ht);
 
 /// @brief create a new hash table, with a hash-function
 /// @param hash_fun a hash function

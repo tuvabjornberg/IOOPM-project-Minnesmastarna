@@ -1,24 +1,24 @@
-# Dependencies 
+# Dependencies
 1.  `hash_table` comes from Tuva’s Assignment 1
-2.  `linked_list` and `iterator` comes from Tuva’s Assignment 1 
+2.  `linked_list` and `iterator` comes from Tuva’s Assignment 1
 3.  `utils` comes from Marcus' bootstrap labs
 4.  `common` comes from Tuva's Assignment 1
 
 
 # Make commands
-#### Remember to run make clean before any make commands: 
+#### Remember to run make clean before any make commands:
 ```
 $ make clean
 ```
 
-   #### Build and run the webstore: 
+   #### Build and run the webstore:
    ```
    $ make ui.out
    $ ./ui.out
    ```
    #### Run tests:
    ```
-   for hash_table and linked_list: 
+   for hash_table and linked_list:
    $ make ds_tests
 
    for merch_storage and shop_cart:
@@ -32,10 +32,10 @@ $ make clean
    ```
    for hash_table.c and linked_list.c
    $ make ds_memtests
-   
+
    for merch_storage and shop_cart:
    $ make logic_memtests
-   
+
    for ui without input file:
    $ make ui_memtests
 
@@ -71,19 +71,19 @@ $ make clean
     Calls executed:100.00% of 130\
     Lines executed:100.00% of 295
 
-   
+
    #### Performace tests:
    ```
-   for ui_tests.txt 
+   for ui_tests.txt
    $ make prof
 
-   for other .txt files: 
+   for other .txt files:
    $ make ui_prof.out
    $ ./ui_prof.out < filename.txt
    $ gprof ui_prof.out gmon.out > output
    ```
 
-   #### Time: 
+   #### Time:
    ```
    $ make ui.out
    $ command time --verbose ./ui.out < filename.txt
@@ -92,5 +92,5 @@ $ make clean
 
  # Notes and error handling
 
-  - Errors and edge-cases are handled, in some cases, by returning a NULL. merch_storage.c and shop_cart.c are mostly dependent on the error handeling in ui.c. Errors such as empty hashtables and invalid user inputs are handled with return messages to the user to retry their menu choice or choose another input.  
-  - ui.c also ensures proper memory management when using the allocated memory from hash_table, linked_list and iterator, (through merch_table and shop_cart) including freeing the allocated for keys, values, lists, iterators and options after use. 
+  - Errors and edge-cases are handled, in some cases, by returning a NULL. merch_storage.c and shop_cart.c are mostly dependent on the error handeling in ui.c. Errors such as empty hashtables and invalid user inputs are handled with return messages to the user to retry their menu choice or choose another input.
+  - ui.c also ensures proper memory management when using the allocated memory from hash_table, linked_list and iterator, (through merch_table and shop_cart) including freeing the allocated for keys, values, lists, iterators and options after use.

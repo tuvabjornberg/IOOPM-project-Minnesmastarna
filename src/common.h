@@ -11,10 +11,10 @@
  * @date 29/09-2023
  * @brief Provides a set of common utilities and data types
  *
- * It includes a flexible elem_t union to represent various data 
+ * It includes a flexible elem_t union to represent various data
  * types and definitions for equality and hash functions.
- * 
- * It is assumed that a suitable hash_function (hash_fun) and equality function 
+ *
+ * It is assumed that a suitable hash_function (hash_fun) and equality function
  * is implemented to fit the elem_t type (eq_fun).
 */
 

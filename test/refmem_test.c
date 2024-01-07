@@ -23,7 +23,7 @@ void test_allocate_deallocate()
     CU_ASSERT_EQUAL(rc(obj), 0);
     deallocate(obj);
 
-    shutdown(); 
+    shutdown();
 }
 
 void test_retain()
@@ -40,7 +40,7 @@ void test_retain()
 
     deallocate(obj1);
 
-    shutdown(); 
+    shutdown();
 }
 
 void test_release()
@@ -66,7 +66,7 @@ void test_release()
 
     deallocate(obj1);
 
-    shutdown(); 
+    shutdown();
 }
 
 void test_allocate_deallocate_array()
@@ -75,13 +75,13 @@ void test_allocate_deallocate_array()
     CU_ASSERT_EQUAL(rc(obj_arr1), 0);
     deallocate(obj_arr1);
 
-    shutdown(); 
+    shutdown();
 
     obj* obj_arr2 = allocate_array(0, sizeof(int), NULL);
     CU_ASSERT_EQUAL(rc(obj_arr2), 0);
     deallocate(obj_arr2);
 
-    shutdown(); 
+    shutdown();
 }
 
 void test_retain_array()
@@ -98,7 +98,7 @@ void test_retain_array()
 
     deallocate(obj_arr);
 
-    shutdown(); 
+    shutdown();
 }
 
 void test_release_array()
@@ -124,7 +124,7 @@ void test_release_array()
 
     deallocate(obj_arr);
 
-    shutdown(); 
+    shutdown();
 }
 
 void set_get_cascade_limit()
@@ -141,24 +141,24 @@ void integration_cleanup_test()
 {
     cleanup();
 
-    obj* obj1 = allocate(sizeof(int), NULL); 
-    obj* obj2 = allocate(sizeof(int), NULL); 
+    obj* obj1 = allocate(sizeof(int), NULL);
+    obj* obj2 = allocate(sizeof(int), NULL);
 
-    retain(obj1); 
-    retain(obj2); 
+    retain(obj1);
+    retain(obj2);
 
-    release(obj1); 
-    release(obj2); 
+    release(obj1);
+    release(obj2);
 
     obj* obj3 = allocate(sizeof(int), NULL);
-    retain(obj3); 
+    retain(obj3);
     release(obj3);
-    
+
     obj* obj4 = allocate(sizeof(int), NULL);
-    retain(obj4); 
+    retain(obj4);
     release(obj4);
 
-    cleanup(); 
+    cleanup();
 
     shutdown();
     puts("Integration test complete");
@@ -172,7 +172,7 @@ void test_rc_overflow()
         retain(obj);
     }
     // Reference count overflow should lead to the object being destroyed
-    shutdown(); 
+    shutdown();
 }
 
 void test_shutdown()
@@ -210,7 +210,7 @@ int main()
         CU_add_test(my_test_suite, "release test for array", test_release_array) == NULL ||
         CU_add_test(my_test_suite, "set and get cascade limit", set_get_cascade_limit) == NULL ||
         CU_add_test(my_test_suite, "cleanup test", integration_cleanup_test) == NULL ||
-        CU_add_test(my_test_suite, "reference count overflow test", test_rc_overflow) == NULL || 
+        CU_add_test(my_test_suite, "reference count overflow test", test_rc_overflow) == NULL ||
         CU_add_test(my_test_suite, "shutdown test", test_shutdown) == NULL
         )
     )

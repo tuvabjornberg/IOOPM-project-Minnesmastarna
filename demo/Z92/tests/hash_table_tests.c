@@ -393,7 +393,7 @@ static void add_version_value(elem_t key_ignored, elem_t *value, void *arg)
     char *original_value = value->string;
 
     // allocate memory for the new value, since new value has more characters than the original
-    char *new_value = allocate(strlen(version) + strlen(original_value) + 1, NULL); // +1 for null-terminator
+    char *new_value = allocate_array(strlen(version) + 1, strlen(original_value) * 8, NULL); // +1 for null-terminator
 
     strcpy(new_value, version);
     strcat(new_value, original_value);

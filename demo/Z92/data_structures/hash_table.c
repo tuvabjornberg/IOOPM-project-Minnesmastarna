@@ -89,13 +89,12 @@ void ioopm_hash_table_clear(ioopm_hash_table_t *ht)
 static entry_t *entry_create(elem_t key, elem_t value, entry_t *next)
 {
     entry_t *new_entry = allocate(sizeof(entry_t), NULL);
-    retain(new_entry);
 
     new_entry->key = key;
     new_entry->value = value;
     new_entry->next = next;
-    //retain(next);
 
+    retain(new_entry);
     return new_entry;
 }
 
@@ -172,11 +171,14 @@ void ioopm_hash_table_insert(ioopm_hash_table_t *ht, elem_t key, elem_t value)
     }
 }
 
+static void lookup_destructor(obj *obj_ptr) {}
+
 option_t *ioopm_hash_table_lookup(ioopm_hash_table_t *ht, elem_t key)
 {
     unsigned bucket_index = get_bucket_index(ht, ht->hash_fun, key);
 
-    option_t *lookup_result = allocate(sizeof(option_t), NULL);
+    //option_t *lookup_result = allocate(sizeof(option_t), NULL);
+    option_t *lookup_result = allocate(sizeof(option_t), lookup_destructor);
     retain(lookup_result);
     entry_t *prev = find_previous_entry_for_key(&ht->buckets[bucket_index], key, ht->eq_fun);
     entry_t *current = prev->next;

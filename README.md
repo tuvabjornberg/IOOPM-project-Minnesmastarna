@@ -1,16 +1,16 @@
 # Minnesmästarna
 
 ## Make commands
-#### Remember to run make clean before any make commands: 
+#### Remember to run make clean before any make commands:
 ```
 $ make clean
 ```
 
-   #### Build refmem: 
+   #### Build refmem:
    ```
    $ make
    ```
-   #### Build and run Demo: 
+   #### Build and run Demo:
    ```
    $ make demo
    ```
@@ -39,15 +39,15 @@ $ make clean
     Branches executed:      \
     Taken at least once:    \
     Calls executed:         \
-    Lines executed:         
+    Lines executed:
 
-   
+
    #### Performace tests:
    ```
    $ make prof
    ```
 
-   #### Time: 
+   #### Time:
    ```
 
    ```
