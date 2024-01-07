@@ -102,8 +102,12 @@ ui_sanitize: ui_san.out
 merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c refmem.c queue.c list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
-merchsan: merchsan.out
+shopsan.out: shop_cart_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c refmem.c queue.c list.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
+
+logic_sanitize: merchsan.out shopsan.out
 	./merchsan.out
+#./shopsan.out
 
 clean:
 	rm -f *.o *.out *.profiling *.gcno *gcda *.gcov ui merch_storage_tests shop_cart_tests ui_sanitize
