@@ -41,8 +41,8 @@ ioopm_merch_t *ioopm_merch_create(char *name, char *description, int price, ioop
 
     new_merch->name = duplicate_string(name);
     release(name);
-    //new_merch->name = name; 
     //retain(name); 
+    //new_merch->name = name; 
 
     new_merch->description = duplicate_string(description);
     release(description);
@@ -124,11 +124,12 @@ static void names_remove(ioopm_store_t *store, int index)
 
 void ioopm_store_add(ioopm_store_t *store, ioopm_merch_t *merch)
 {
-  ioopm_hash_table_insert(store->merch_details, str_elem(merch->name), (elem_t){.void_ptr = merch});
-  int index = store->merch_count == 0 ? 0 : names_index_of(store, merch->name);
+    retain(merch->name); 
+    ioopm_hash_table_insert(store->merch_details, str_elem(merch->name), (elem_t){.void_ptr = merch});
+    int index = store->merch_count == 0 ? 0 : names_index_of(store, merch->name);
 
-  names_insert(store, index, merch->name);
-  store->merch_count++;
+    names_insert(store, index, merch->name);
+    store->merch_count++;
 }
 
 static void location_destructor(obj *obj_ptr)
@@ -355,6 +356,7 @@ static void search_carts(elem_t key, elem_t *value, void *old_name, void *new_na
 {
     option_t *lookup_result = ioopm_hash_table_lookup((ioopm_hash_table_t *) value->void_ptr, str_elem(old_name));
 
+    retain(new_name); 
     ioopm_hash_table_insert((ioopm_hash_table_t *) value->void_ptr, str_elem(new_name), lookup_result->value);
     ioopm_hash_table_remove((ioopm_hash_table_t *) value->void_ptr, str_elem(old_name));
 
@@ -398,9 +400,11 @@ void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_na
 void ioopm_description_set(ioopm_merch_t *merch, char *new_description)
 {
     char *old_description = description_get(merch);
-    merch->description = duplicate_string(new_description);
+    //merch->description = duplicate_string(new_description);
+    merch->description = new_description; 
+
     release(old_description);
-    release(new_description);
+    //release(new_description);
 }
 
 void ioopm_price_set(ioopm_merch_t *merch, int new_price)

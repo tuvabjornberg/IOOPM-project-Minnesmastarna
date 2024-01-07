@@ -230,9 +230,9 @@ int main()
          CU_add_test(my_test_suite, "Remove from cart test", remove_from_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Empty carts in store test", empty_cart_test) == NULL ||
          CU_add_test(my_test_suite, "Has merch in cart test", has_merch_in_cart_test) == NULL ||
-         CU_add_test(my_test_suite, "Calculate total in cart", cost_calculate_test) == NULL //||
-         //CU_add_test(my_test_suite, "Checkout cart test", checkout_cart_test) == NULL ||
-         //CU_add_test(my_test_suite, "Test for removing a cart with items", remove_cart_test) == NULL
+         CU_add_test(my_test_suite, "Calculate total in cart", cost_calculate_test) == NULL ||
+         CU_add_test(my_test_suite, "Checkout cart test", checkout_cart_test) == NULL ||
+         CU_add_test(my_test_suite, "Test for removing a cart with items", remove_cart_test) == NULL
         )
     )
     
