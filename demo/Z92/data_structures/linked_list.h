@@ -10,21 +10,21 @@
  * @file linked_list.h
  * @author Tuva Björnberg & Gustav Fridén
  * @date 29/09-2023, edited by Martin Ek and Tuva Björnberg 1/1-2024
- * @brief The program includes functions to create and destroy a linked list, perform various operations. 
+ * @brief The program includes functions to create and destroy a linked list, perform various operations.
  *
- * The linked list is implemented using a singly linked structure (`link_t`) with a `list_t` 
- * structure holding the first and last links, the size, and an equality function. 
- * 
- * The linked list assumes a suitable equality function to fit the ioopm_eq_function in common.h 
- * 
- * It is also assumed that the user ensures proper memory management when using the 
+ * The linked list is implemented using a singly linked structure (`link_t`) with a `list_t`
+ * structure holding the first and last links, the size, and an equality function.
+ *
+ * The linked list assumes a suitable equality function to fit the ioopm_eq_function in common.h
+ *
+ * It is also assumed that the user ensures proper memory management when using the
  * linked list, including freeing the memory allocated for elements.
- * 
- * In certain edge-cases functions will return void pointer to NULL if either imput-value is invalid or 
- * have reach a NULL element. Which functions with this behavior is mentioned below. 
+ *
+ * In certain edge-cases functions will return void pointer to NULL if either imput-value is invalid or
+ * have reach a NULL element. Which functions with this behavior is mentioned below.
  */
 
-typedef struct list ioopm_list_t; 
+typedef struct list ioopm_list_t;
 typedef struct iter ioopm_list_iterator_t;
 
 typedef bool(*ioopm_int_predicate)(elem_t value, void *extra);
@@ -55,7 +55,7 @@ void ioopm_linked_list_prepend(ioopm_list_t *list, elem_t value);
 /// the last element.
 /// @param list the linked list that will be extended
 /// @param index the position in the list
-/// @param value the value to be inserted 
+/// @param value the value to be inserted
 void ioopm_linked_list_insert(ioopm_list_t *list, int index, elem_t value);
 
 /// @brief Remove an element from a linked list in O(n) time.

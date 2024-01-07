@@ -1,14 +1,14 @@
 #pragma once
 #include <stdbool.h>
-#include "refmem.h" 
+#include "refmem.h"
 
-typedef struct Node 
+typedef struct Node
 {
     obj **data;
     struct Node* next;
 } Node;
 
-typedef struct 
+typedef struct
 {
     Node* front;
     Node* rear;

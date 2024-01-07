@@ -448,7 +448,7 @@ int main()
             CU_add_test(my_test_suite, "test for merch existing", merch_exists_test) == NULL ||
             CU_add_test(my_test_suite, "test for the store size", store_size_test) == NULL ||
             CU_add_test(my_test_suite, "getting merch from store", get_merch_test) == NULL ||
-            CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL || 
+            CU_add_test(my_test_suite, "test for editing name of merch", set_name_test) == NULL ||
             CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
             CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
             CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||

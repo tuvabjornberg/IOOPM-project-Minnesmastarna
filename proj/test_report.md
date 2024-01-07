@@ -3,9 +3,9 @@ Explain how you are testing your project on three levels:
     Unit testing
     Integration testing
     Regression testing
-Also explain how you have automated these things. 
+Also explain how you have automated these things.
 
-Include a graphical overview of the code coverage (100% coverabe). 
+Include a graphical overview of the code coverage (100% coverabe).
 
 You do not need to have tests of the demo code. It is presumed to have been properly tested in assignment 2. (But if you do find new bugs in the demo code, you should mention that.)
 

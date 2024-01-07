@@ -12,7 +12,7 @@ VPATH		   = user_interface : data_structures : utils : tests : logic  : ../../sr
 
 ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
-
+  
 
 merch_storage_tests.out: merch_storage_tests.o merch_storage.o shop_cart.o hash_table.o linked_list.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
@@ -94,7 +94,7 @@ prof: ui_prof.out merch_storage_prof.out shop_cart_prof.out shop_cart_prof.out
 	gprof shop_cart_prof.out gmon.out > shop_cart_prof.profiling
 
 ui_san.out: ui.c hash_table.c linked_list.c utils.c merch_storage.c shop_cart.c hash_fun.c refmem.c list.c queue.c
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ 
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@
 
 ui_sanitize: ui_san.out
 	./ui_san.out < tests/ui_tests.txt
@@ -112,4 +112,4 @@ logic_sanitize: merchsan.out shopsan.out
 clean:
 	rm -f *.o *.out *.profiling *.gcno *gcda *.gcov ui merch_storage_tests shop_cart_tests ui_sanitize
 
-.PHONY: ui_sanitize tests ui_tests cov prof clean mem_tests mem_ui mem_ui_arg merchsan ds_memtests ds_tests
+.PHONY: logic_tests logic_memtests ui_tests ui_memtests ui_arg_memtests ds_tests ds_memtests ds_sanitize cov prof ui_sanitize logic_sanitize clean
