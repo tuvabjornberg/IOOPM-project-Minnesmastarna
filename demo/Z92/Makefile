@@ -11,8 +11,8 @@ VPATH		   = user_interface : data_structures : utils : tests : logic  : ../../sr
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
 ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash_fun.o refmem.o queue.o list.o
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@
-
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
+  
 
 merch_storage_tests.out: merch_storage_tests.o merch_storage.o shop_cart.o hash_table.o linked_list.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
@@ -22,11 +22,11 @@ shop_cart_tests.out: shop_cart_tests.o shop_cart.o hash_table.o linked_list.o me
 
 logic_tests: merch_storage_tests.out shop_cart_tests.out
 	./merch_storage_tests.out
-#	./shop_cart_tests.out
+	./shop_cart_tests.out
 
 logic_memtests: merch_storage_tests.out shop_cart_tests.out
-#	valgrind --leak-check=full ./shop_cart_tests.out
 	valgrind --leak-check=full ./merch_storage_tests.out
+	valgrind --leak-check=full ./shop_cart_tests.out
 
 ui_tests: ui.out
 	./ui.out < tests/ui_tests.txt
@@ -102,14 +102,14 @@ ui_sanitize: ui_san.out
 merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c refmem.c queue.c list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
-shopsan.out: shop_cart_tests.c merch_storage.c hash_table.c linked_list.c utils.c shop_cart.c hash_fun.c refmem.c queue.c list.c
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
+shopsan.out: shop_cart_tests.c merch_storage.c shop_cart.c hash_table.c linked_list.c utils.c hash_fun.c refmem.c queue.c list.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
 
 logic_sanitize: merchsan.out shopsan.out
 	./merchsan.out
-#./shopsan.out
+	./shopsan.out
 
 clean:
 	rm -f *.o *.out *.profiling *.gcno *gcda *.gcov ui merch_storage_tests shop_cart_tests ui_sanitize
 
-.PHONY: ui_sanitize tests ui_tests cov prof clean mem_tests mem_ui mem_ui_arg merchsan ds_memtests ds_tests
+.PHONY: logic_tests logic_memtests ui_tests ui_memtests ui_arg_memtests ds_tests ds_memtests ds_sanitize cov prof ui_sanitize logic_sanitize clean

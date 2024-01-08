@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include "../../../src/refmem.h"
 
 static bool not_empty(char *str)
 {
@@ -58,12 +59,13 @@ static int read_string(char *buf, int buf_size)
 
 static answer_t ask_question(char *question, check_func check, convert_func convert)
 {
-    //TODO: allocate
-    char *answer = malloc(BUF_SIZE);
-
+    char *answer = allocate(BUF_SIZE, NULL);
+  
     puts(question);
     read_string(answer, BUF_SIZE);
 
+    retain(answer); 
+    
     while(!check(answer))
     {
         puts("Invalid input");
@@ -73,10 +75,10 @@ static answer_t ask_question(char *question, check_func check, convert_func conv
     if (convert)
     {
         answer_t result = convert(answer);
-        //TODO: deallocate
-        free(answer);
+        release(answer);
         return result;
     }
+    
     return (answer_t){.string_value = answer};
 }
 

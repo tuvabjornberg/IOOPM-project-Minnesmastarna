@@ -7,6 +7,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include "../../../src/refmem.h"
 
 #define PRINT_AT_A_TIME 20
 
@@ -23,20 +24,18 @@ static char *merch_does_exist_check(ioopm_store_t *store, bool should_exist)
 
         if (toupper(*new_alt) == 'Y' && strlen(new_alt) == 1)
         {
-
-            //TODO: deallocate
-            free(input_name);
+            release(input_name);
             input_name = ioopm_ask_question_string("\nWrite the name of the merch: ");
         }
         else
         {
-            //TODO: deallocate
-            free(new_alt);
-            free(input_name);
+            release(new_alt);
+            release(input_name);
             return NULL;
         }
-        free(new_alt);
+        release(new_alt);
     }
+    retain(input_name); 
     return input_name;
 }
 
@@ -67,11 +66,10 @@ static int merch_quantity_check(ioopm_store_t *store, char *merch_name, int curr
         }
         else
         {
-            //TODO: deallocate
-            free(new_alt);
+            release(new_alt);
             return -1;
         }
-        free(new_alt);
+        release(new_alt); 
     }
     return input_amount;
 }
@@ -90,11 +88,10 @@ static int cart_exists_check(ioopm_carts_t *storage_carts)
         }
         else
         {
-            //TODO: deallocate
-            free(new_alt);
+            release(new_alt);
             return -1;
         }
-        free(new_alt);
+        release(new_alt); 
     }
     return input_id;
 }
@@ -108,19 +105,19 @@ static char *merch_in_cart_check(ioopm_hash_table_t *cart_items)
 
         if (toupper(*new_alt) == 'Y'  && strlen(new_alt) == 1)
         {
-            //TODO: deallocate
-            free(input_name);
-            input_name = ioopm_ask_question_string("\nWrite the merch to remove items from: ");
+            release(input_name); 
+            input_name = ioopm_ask_question_string("\nWrite the merch to remove items from: "); 
         }
         else
         {
-            free(new_alt);
-            free(input_name);
-            return NULL;
+            release(new_alt);
+            release(input_name); 
+            return NULL; 
         }
-        free(new_alt);
+        release(new_alt);  
     }
-    return input_name;
+    retain(input_name); 
+    return input_name; 
 }
 
 static int cart_quantity_check(ioopm_carts_t *storage_carts, int input_id, char *input_name)
@@ -141,11 +138,10 @@ static int cart_quantity_check(ioopm_carts_t *storage_carts, int input_id, char 
         }
         else
         {
-            //TODO: deallocate
-            free(new_alt);
+            release(new_alt);
             return -1;
         }
-        free(new_alt);
+        release(new_alt);  
     }
     return input_quantity;
 }
@@ -160,20 +156,19 @@ static char *shelf_exists_check(ioopm_store_t *store, ioopm_merch_t *merch)
 
         if (toupper(*new_alt) == 'Y'  && strlen(new_alt) == 1)
         {
-            //TODO: deallocate
-            free(input_shelf);
-            input_shelf = ioopm_ask_question_string("\nEnter a shelf to add stock to: ");
+            release(input_shelf); 
+            input_shelf = ioopm_ask_question_string("\nEnter a shelf to add stock to: "); 
         }
         else
         {
-            //TODO: deallocate
-            free(input_shelf);
-            free(new_alt);
+            release(input_shelf); 
+            release(new_alt);
             return NULL;
         }
-        free(new_alt);
+        release(new_alt); 
     }
-    return input_shelf;
+    retain(input_shelf); 
+    return input_shelf; 
 }
 
 static ioopm_merch_t *merch_input(char *name)
@@ -222,15 +217,13 @@ void merch_list(ioopm_store_t *store)
 
 	        if (toupper(decision[0]) == 'N' && strlen(decision) == 1)
             {
-                //TODO: deallocate
-	            free(decision);
+	            release(decision);
                 return;
 	        }
-            rotations++;
-            free(decision);
-        }
-    } while (printed_items < total_items);
-
+            rotations++; 
+            release(decision); 
+        }  
+    } while (printed_items < total_items);  
     printf("\nNo more items to display\n");
 }
 
@@ -245,15 +238,14 @@ void merch_remove(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     char *input_name = merch_does_exist_check(store, true);
     if (input_name == NULL) return;
 
-    char *conf_remove = ioopm_ask_question_string("\nAre you sure you want to remove this merch? (y/n)");
-    if (toupper(*conf_remove) == 'Y'  && strlen(conf_remove) == 1)
+    char *conf_remove = ioopm_ask_question_string("\nAre you sure you want to remove this merch? (y/n)"); 
+    if (toupper(*conf_remove) == 'Y' && strlen(conf_remove) == 1)
     {
         ioopm_store_remove(store, storage_carts->carts, input_name);
     }
 
-    //TODO: deallocate
-    free(conf_remove);
-    free(input_name);
+    release(conf_remove);
+    release(input_name); 
 }
 
 void merch_edit(ioopm_store_t *store, ioopm_carts_t *storage_carts)
@@ -276,24 +268,23 @@ void merch_edit(ioopm_store_t *store, ioopm_carts_t *storage_carts)
 
     char *conf_edit = ioopm_ask_question_string("\nAre you sure you want to edit this merch? (y/n)");
     if (!(toupper(*conf_edit) == 'Y') && strlen(conf_edit) == 1)
-    {
-        //TODO: deallocate
-        free(input_name);
-        free(conf_edit);
-	    free(new_name);
-        free(new_description);
-        return;
+    { 
+        release(input_name); 
+        release(conf_edit);	
+	      release(new_name);
+        release(new_description); 
+        return; 
     }
-    free(conf_edit);
-
+    release(conf_edit); 
+  
     ioopm_description_set(merch, new_description);
     ioopm_price_set(merch, new_price);
 
     printf("\nYou have edited %s to %s\n", input_name, new_name);
 
     ioopm_name_set(store, merch, new_name, storage_carts->carts);
-
-    free(input_name);
+  
+    release(input_name); 
 }
 
 void stock_list(ioopm_store_t *store)
@@ -311,8 +302,7 @@ void stock_list(ioopm_store_t *store)
 
     ioopm_stock_print(merch);
 
-    //TODO: deallocate
-    free(input_name);
+    release(input_name); 
 }
 
 void stock_replenish(ioopm_store_t *store)
@@ -326,9 +316,8 @@ void stock_replenish(ioopm_store_t *store)
     char *input_name = merch_does_exist_check(store, true);
     if (input_name == NULL) return;
 
-    ioopm_merch_t *merch = ioopm_merch_get(store, input_name);
-    //TODO: deallocate
-    free(input_name);
+    ioopm_merch_t *merch = ioopm_merch_get(store, input_name); 
+    release(input_name); 
 
     printf("\nYou selected this merch:");
     ioopm_merch_print(merch);
@@ -367,11 +356,10 @@ void cart_destroy(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     char *conf_remove = ioopm_ask_question_string("\nAre you sure you want to remove this cart? (y/n)");
     if (!(toupper(*conf_remove) == 'Y') && strlen(conf_remove) == 1)
     {
-        //TODO: deallocate
-        free(conf_remove);
-        return;
+        release(conf_remove);  
+        return; 
     }
-    free(conf_remove);
+    release(conf_remove);
 
     printf("You have removed cart: %d", input_id + 1);
     ioopm_cart_destroy(storage_carts, input_id);
@@ -395,9 +383,8 @@ void cart_add(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     int input_quantity = merch_quantity_check(store, input_name, merch_cart_amount);
     if (input_quantity == -1)
     {
-        //TODO: deallocate
-        free(input_name);
-        return;
+        release(input_name); 
+        return; 
     }
 
     ioopm_merch_t *merch = ioopm_merch_get(store, input_name);
@@ -405,9 +392,8 @@ void cart_add(ioopm_store_t *store, ioopm_carts_t *storage_carts)
 
     ioopm_cart_add(storage_carts, input_id, merch->name, input_quantity);
 
-    printf("\nYou have added %d of %s to cart: %d\n", input_quantity, input_name, input_id + 1);
-    //TODO: deallocate
-    free(input_name);
+    printf("\nYou have added %d of %s to cart: %d\n", input_quantity, input_name, input_id + 1); 
+    release(input_name); 
 }
 
 void cart_remove(ioopm_store_t *store, ioopm_carts_t *storage_carts)
@@ -429,9 +415,8 @@ void cart_remove(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     int input_quantity = cart_quantity_check(storage_carts, input_id, input_name);
     if (input_quantity == -1)
     {
-        //TODO: deallocate
-        free(input_name);
-        return;
+        release(input_name); 
+        return; 
     }
 
     ioopm_merch_t *merch = ioopm_merch_get(store, input_name);
@@ -440,8 +425,7 @@ void cart_remove(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     ioopm_cart_remove(cart_items, input_name, input_quantity);
 
     printf("Removed %d %s from cart %d.\n", input_quantity, input_name, input_id + 1);
-    //TODO: deallocate
-    free(input_name);
+    release(input_name); 
 }
 
 void cart_cost_calculate(ioopm_store_t *store, ioopm_carts_t *storage_carts)
@@ -532,13 +516,12 @@ void event_loop(ioopm_store_t *store, ioopm_carts_t *storage_carts)
 
                     if (toupper(*quit_confirmation) == 'Y' && strlen(quit_confirmation) == 1)
                     {
-                        running = false;
-                        ioopm_cart_storage_destroy(storage_carts);
-                        ioopm_store_destroy(store);
-                    }
-                    //TODO: deallocate
-                    free(quit_confirmation);
-                    break;
+                        running = false; 
+                        release(storage_carts); 
+                        release(store); 
+                    } 
+                    release(quit_confirmation); 
+                    break; 
                 default:
                     puts("\nTry again with a valid input");
             }
@@ -547,9 +530,8 @@ void event_loop(ioopm_store_t *store, ioopm_carts_t *storage_carts)
         {
             puts("\nTry again with a valid input");
         }
-        //TODO: deallocate
-        free(menu_choice);
-    } while (running);
+        release(menu_choice); 
+    } while (running); 
 }
 
 int main() {

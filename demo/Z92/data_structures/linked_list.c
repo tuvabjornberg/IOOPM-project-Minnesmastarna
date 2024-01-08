@@ -35,7 +35,7 @@ static void linked_list_destructor(obj *obj_ptr)
     ioopm_list_t *list = (ioopm_list_t*)obj_ptr;
     if (!ioopm_linked_list_is_empty(list))
     {
-        release(list->first);
+        release(list->first); 
     }
 }
 
@@ -179,7 +179,6 @@ elem_t ioopm_linked_list_remove(ioopm_list_t *list, int index)
                     {
                         retain(current->next);
                     }
-
                     list->size--;
                 }
 
@@ -244,7 +243,7 @@ void ioopm_linked_list_clear(ioopm_list_t *list)
 {
     link_t *current = list->first;
 
-    release(current);
+    release(current); 
 
     list->first = NULL;
     list->last = NULL;
