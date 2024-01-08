@@ -5,20 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-    
-static void store_destructor(obj *obj_ptr)
-{
-    ioopm_store_t *store = (ioopm_store_t *)obj_ptr;
-    release(store->merch_details);
-    release(store->merch_names);
-}
-
-
-void ioopm_store_destroy(ioopm_store_t *store)
-{
-    release(store);
-}
-
 
 static void store_destructor(obj *obj_ptr)
 {
@@ -27,12 +13,10 @@ static void store_destructor(obj *obj_ptr)
     release(store->merch_names);
 }
 
-
 void ioopm_store_destroy(ioopm_store_t *store)
 {
     release(store);
 }
-
 
 ioopm_store_t *ioopm_store_create()
 {
@@ -144,12 +128,6 @@ void ioopm_store_add(ioopm_store_t *store, ioopm_merch_t *merch)
 
     names_insert(store, index, merch->name);
     store->merch_count++;
-}
-
-static void location_destructor(obj *obj_ptr)
-{
-    location_t *location = (location_t *)obj_ptr;
-    release(location->shelf);
 }
 
 static void location_destructor(obj *obj_ptr)
