@@ -127,8 +127,11 @@ static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity)
     {
         entry_t *current = ht->buckets[i].next;
 
-        retain(current); 
-
+        if (current != NULL)
+        {
+            retain(current); 
+        }
+        
         while (current != NULL)
         {
             retain(current->value.string); 
