@@ -1,39 +1,4 @@
 # Code Review Report
-Explain how you have used pull requests (PRs) and continuous reviewing of code that goes into "master".
-
-Ute i arbetslivet gör man detta av flera anledningar:
-    Kvalitetssäkring
-    Utvecklare blir modigare när man delar ansvar för korrekthet
-    När man vet att någon måste läsa koden skriver man ofta bättre kod
-    Man sprider kunskap om vad som händer i projektet till fler
-
-
-Redovisa i projektrapporten hur denna typ av kodgranskning har fungerat och relatera till den typ som gjordes under tidigare faser, som var mindre disciplinerad och inte rörde er egen kod.
-
-
-Några saker att fundera på:
-    What were the consequences of using code reviews before commiting?
-            (Started, down below)
-    Was it only extra work or did it serve any purpose?
-            (Started, down below)
-    Did you use a checklist or other formalised procedure for the code reviews? How did that work out?
-            (Started, down below)
-    How did the colourful diffs on GitHub work as support for seeing what had changed?
-            (Started, down below)
-    How often was a Pull Request pushed back for changes (or similar) before it was merged into master?
-            (Not started yet)
-    How many Pull Request did you make?
-            (Not started. Check right before handing in, update with correct number)
-    Were they open for a long time on average?
-            (Not started. Check this, some took longer time than others.)
-    Did every coder work in the same manner using Pull Request?
-            (Not started. Personal reflection, do as discussion)
-    If you were to restart the project tomorrow, what would you keep and what would you do differently?
-            (Not started. Do together as discussion)
-
-Together with the actual pull request log on GitHub, this file should convince the examiner that you pass Y66.
-
-
 
 # Code reviews and pull requests
 During the course of the project we used pull requests and continuous reviewing of the code that goes into our main branch. The goal being to verify code as well as make sure we only push working code (as far as we know) into the master branch. The reason being that we wanted to make sure everybody has a good base code when starting on something new. If we were to push into main before anything has been reviewed or tested properly someone could be building something based on bad or broken code, which in itself can lead to more issues down the line.
@@ -66,10 +31,7 @@ After a couple of weeks the procedure of reviewing without a protocol was adjust
 This process helped the entire team to work in somewhat the same manner regarding pull requests. Since we set up guidelines for everyone to follow there were rarely any confusion regarding the entire process and make it more effective in order to spend more time on writing new code.
 
 
-TODO:
-* How often was a Pull Request pushed back for changes (or similar) before it was merged into master?
-* How many Pull requests did you make?
-* Were they open for a long time on average?
+We didn't push many Pull Requests back. If this was the case, the author at hand was informed of this and knew what they had to change for the Pull Request to go through. Out of all our Pull Requests, this happened to about 4-5, and these problems were solved fairly quickly. We had made a total of 38 Pull Requests at the time this was written, and our final total came out at about 40. They were also not open for that long, an average length of an open request was less than a day. There were some that took time, but we also communicated to the rest of the team when there was something to be reviewed.
 
 
 ## Consequences of code reviews in GitHub
@@ -88,9 +50,7 @@ This became an issue in cases where a review took time. For example, when we had
 Using pull requests did serve a good purpose. It made sure at least two people were on the same page about changes to the code. Easy mistakes were caught and formatting of the code could quickly be fixed. It was more work compared to how we have been working previously in the course, with the assignments, where in most cases reviews weren't made to this extent. In a group project with six people we have found it easier to use this system to avoid confusion and broken code, when used correctly. What is similar with the code reviews from the assignment is the use of a code review protocol. Though we have not used it to the same extent for this project, it has served a good purpose.
 
 
-## GitHub tools - TODO:
-Whether GitHub's built- in functions helped with reviewing the code <-- TODO: needs more!
-
+## GitHub tools
 
 The color difference on GitHub helped to distinguish old and new code. If a change were made to existing code the reviewer could see what changes were made, instead of manually trying to see what was removed or not by comparing the old with the new file. The color difference also helped to narrow down to only new code. It helped the reviewer only see relevant code. Furthermore, if the new code needed to be put into a context the reviewer simply could extend the file to see code already existing in the main branch.
 
