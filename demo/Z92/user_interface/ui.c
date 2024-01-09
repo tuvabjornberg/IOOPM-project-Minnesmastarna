@@ -35,7 +35,6 @@ static char *merch_does_exist_check(ioopm_store_t *store, bool should_exist)
         }
         release(new_alt);
     }
-    retain(input_name); 
     return input_name;
 }
 
@@ -116,7 +115,6 @@ static char *merch_in_cart_check(ioopm_hash_table_t *cart_items)
         }
         release(new_alt);  
     }
-    retain(input_name); 
     return input_name; 
 }
 
@@ -167,7 +165,6 @@ static char *shelf_exists_check(ioopm_store_t *store, ioopm_merch_t *merch)
         }
         release(new_alt); 
     }
-    retain(input_shelf); 
     return input_shelf; 
 }
 
@@ -271,7 +268,7 @@ void merch_edit(ioopm_store_t *store, ioopm_carts_t *storage_carts)
     { 
         release(input_name); 
         release(conf_edit);	
-	      release(new_name);
+	    release(new_name);
         release(new_description); 
         return; 
     }
@@ -538,5 +535,6 @@ int main() {
     ioopm_store_t *store = ioopm_store_create();
     ioopm_carts_t *storage_carts = ioopm_cart_storage_create();
     event_loop(store, storage_carts);
+    shutdown(); 
     return 0;
 }

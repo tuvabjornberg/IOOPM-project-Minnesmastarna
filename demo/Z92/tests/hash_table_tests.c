@@ -454,13 +454,18 @@ void boundary_test()
 
     for (int i = 0; i < 1000; i++)
     {
-        ioopm_hash_table_insert(ht, int_elem(1), str_elem("value1"));
+        ioopm_hash_table_insert(ht, int_elem(i), str_elem("value1"));
     }
+
+    CU_ASSERT_EQUAL(ioopm_hash_table_size(ht), 1000); 
 
     for (int i = 0; i < 1000; i++)
     {
-        ioopm_hash_table_remove(ht, int_elem(1));
+        ioopm_hash_table_remove(ht, int_elem(i));
     }
+
+    CU_ASSERT_EQUAL(ioopm_hash_table_size(ht), 0); 
+
     release(ht);
     shutdown();
 }
