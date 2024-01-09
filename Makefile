@@ -29,19 +29,6 @@ cov:
 prof:
 	$(MAKE) -C $(TEST) prof
 
-testdemo: 
-	$(MAKE) -C $(DEMO) test_demo
-	$(MAKE) -C $(DEMO) test_demo_ui
-
-memdemo: 
-	$(MAKE) -C $(DEMO) mem_demo
-	$(MAKE) -C $(DEMO) mem_demo_ui_arg
-	$(MAKE) -C $(DEMO) mem_demo_ui	
-
-sandemo:
-	$(MAKE) -C $(DEMO) san_demo
-	$(MAKE) -C $(DEMO) san_demo_ui
-
 example:
 	$(MAKE) -C $(DEMO) memexample
   
@@ -51,4 +38,4 @@ clean:
 	$(MAKE) -C $(TEST) clean
 	$(MAKE) -C $(DEMO) clean
 
-.PHONY: all src test memtest cov prof testdemo memdemo sandemo example clean 
+.PHONY: all src test memtest cov prof example clean 
