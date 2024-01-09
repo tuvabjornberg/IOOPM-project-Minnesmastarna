@@ -85,15 +85,25 @@ static int names_index_of(ioopm_store_t *store, char *name)
     return start - store->merch_names;
 }
 
-// Inserts name in the names array at the given index.
-// Doubles memory allocation of the array if overflow.
 static void names_insert(ioopm_store_t *store, int index, char *name)
 {
     int last = store->merch_count;
     if (last >= store->capacity)
     {
         store->capacity *= 2;
-        store->merch_names = realloc(store->merch_names, store->capacity * sizeof(char*)); //TODO: ??
+
+        char **new_merch_names = allocate_array(store->capacity, sizeof(char *), NULL);
+        retain(new_merch_names);
+
+        for (int i = 0; i < last; ++i)
+        {
+            retain(store->merch_names[i]);
+        }   
+
+        release(store->merch_names);
+
+        memcpy(new_merch_names, store->merch_names, last * sizeof(char *));
+        store->merch_names = new_merch_names;
     }
 
     for (int i = last; i > index; i--)

@@ -449,12 +449,12 @@ void test_ht_apply_to_all()
 }
 
 void boundary_test()
-{
+{   
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
 
     for (int i = 0; i < 1000; i++)
     {
-        ioopm_hash_table_insert(ht, int_elem(i), str_elem("value1"));
+        ioopm_hash_table_insert(ht, int_elem(i), str_elem(duplicate_string("value1")));
     }
 
     CU_ASSERT_EQUAL(ioopm_hash_table_size(ht), 1000); 
