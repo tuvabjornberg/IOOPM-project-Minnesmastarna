@@ -14,6 +14,12 @@ all: refmem.o
 src:
 	$(MAKE) -C $@
 
+demo: src
+	$(MAKE) -C $(DEMO) demons
+
+demotxt:
+	$(MAKE) -C $(DEMO) demo_txt
+
 test: src
 	$(MAKE) -C $(TEST) test
 	$(MAKE) -C $(DEMO) test_demo
