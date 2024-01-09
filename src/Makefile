@@ -3,7 +3,7 @@ C_OPTIONS       = -Wall -pedantic -g
 
 
 
-clean: 
+clean:
 	rm -f *.o *.out
 
 .PHONY: all

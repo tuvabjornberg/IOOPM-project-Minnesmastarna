@@ -5,9 +5,9 @@ C_LINK_OPTIONS  = -lm
 CUNIT_LINK      = -lcunit
 C_PROF          = -pg
 C_GCOV          = -fprofile-arcs -ftest-coverage
-VPATH           = ../src 
+VPATH           = ../src
 
-%.o:  %.c 
+%.o:  %.c
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
 refmem_test.out: refmem_test.o refmem.o queue.o list.o
@@ -36,7 +36,7 @@ refmem_test_san.out: refmem_test.c refmem.c queue.c list.c
 queue_test_san.out: queue_test.c queue.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
-destructor_san.out: destructor_test.c refmem.c queue.c list.c 
+destructor_san.out: destructor_test.c refmem.c queue.c list.c
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 test_sanitize: refmem_test_san.out queue_test_san.out destructor_san.out
@@ -62,13 +62,13 @@ cov: refmem_test_coverage.out queue_test_coverage.out destructor_test_coverage.o
 	gcov -b -c destructor_test_coverage.out-refmem.c
 
 refmem_prof.out: refmem_test.c refmem.c queue.c
-	$(C_COMPILER) $(C_OPTIONS) $^ -o $@ $(C_PROF) $(CUNIT_LINK) 
+	$(C_COMPILER) $(C_OPTIONS) $^ -o $@ $(C_PROF) $(CUNIT_LINK)
 
-prof: refmem_prof.out 
-	./refmem_prof.out 
+prof: refmem_prof.out
+	./refmem_prof.out
 	gprof refmem_prof.out gmon.out > refmem_prof.profiling
 
-clean: 
+clean:
 	rm -f *.o *.out *.gcda *.gcno *.gcov *.profiling
 
 .PHONY: test memtest test_sanitize cov prof

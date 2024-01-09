@@ -4,32 +4,32 @@
 #include "refmem.h"
 #include "queue.h"
 
-Queue* create_queue() 
+queue* create_queue()
 {
-    Queue* new_queue = (Queue*)calloc(1, sizeof(Queue));
+    queue* new_queue = (queue*)calloc(1, sizeof(queue));
 
     new_queue->front = new_queue->rear = NULL;
 
     return new_queue;
 }
 
-bool is_empty(Queue* queue) 
+bool is_empty(queue* queue)
 {
     return ( queue->size == 0 );
 }
 
-void enqueue(Queue* queue, obj *data) 
+void enqueue(queue* queue, obj *data)
 {
-    Node* new_node = (Node*)calloc(1, sizeof(Node));
+    node* new_node = (node*)calloc(1, sizeof(node));
 
     new_node->data = data;
     new_node->next = NULL;
 
-    if (is_empty(queue)) 
+    if (is_empty(queue))
     {
         queue->front = queue->rear = new_node;
-    } 
-    else 
+    }
+    else
     {
         queue->rear->next = new_node;
         queue->rear = new_node;
@@ -38,21 +38,21 @@ void enqueue(Queue* queue, obj *data)
     queue->size++;
 }
 
-obj *dequeue(Queue* queue) 
+obj *dequeue(queue* queue)
 {
-    if (is_empty(queue)) 
+    if (is_empty(queue))
     {
         fprintf(stderr, "Error: Cannot dequeue from an empty queue.\n");
         exit(EXIT_FAILURE);
     }
 
-    Node* temp = queue->front;
+    node* temp = queue->front;
     obj *data = temp->data;
 
-    if (queue->front == queue->rear) 
+    if (queue->front == queue->rear)
     {
         queue->front = queue->rear = NULL;
-    } 
+    }
     else
     {
         queue->front = temp->next;
@@ -63,11 +63,11 @@ obj *dequeue(Queue* queue)
     return data;
 }
 
-void destroy_queue(Queue* queue) 
+void destroy_queue(queue* queue)
 {
     if (queue != NULL)
     {
-        while (!is_empty(queue)) 
+        while (!is_empty(queue))
         {
             dequeue(queue);
         }

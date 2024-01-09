@@ -81,4 +81,3 @@ https://github.com/IOOPM-UU/Minnesmastarna/issues/27
 
 ### Bug 6
 https://github.com/IOOPM-UU/Minnesmastarna/issues/29
-

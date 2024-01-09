@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include "../src/queue.h" 
+#include "../src/queue.h"
 #include "../src/refmem.h"
 
 int init_suite(void)
@@ -17,41 +17,41 @@ int clean_suite(void)
 }
 
 
-void create_destroy_test() 
+void create_destroy_test()
 {
-    Queue *q = create_queue(); 
-    CU_ASSERT_PTR_NOT_NULL(q); 
-    destroy_queue(q); 
+    queue *q = create_queue();
+    CU_ASSERT_PTR_NOT_NULL(q);
+    destroy_queue(q);
 }
 
-void enqueue_test() 
+void enqueue_test()
 {
-    Queue *q = create_queue(); 
-    CU_ASSERT_TRUE(is_empty(q)); 
+    queue *q = create_queue();
+    CU_ASSERT_TRUE(is_empty(q));
 
-    obj* obj = NULL; 
-    enqueue(q, obj); 
-    CU_ASSERT_FALSE(is_empty(q)); 
+    obj* obj = NULL;
+    enqueue(q, obj);
+    CU_ASSERT_FALSE(is_empty(q));
 
-    enqueue(q, obj); 
-    CU_ASSERT_FALSE(is_empty(q)); 
+    enqueue(q, obj);
+    CU_ASSERT_FALSE(is_empty(q));
 
-    destroy_queue(q); 
+    destroy_queue(q);
 }
 
-void dequeue_test() 
+void dequeue_test()
 {
-    Queue *q = create_queue(); 
-    //dequeue(q); 
+    queue *q = create_queue();
+    //dequeue(q);
 
-    obj* obj = NULL; 
-    enqueue(q, obj); 
+    obj* obj = NULL;
+    enqueue(q, obj);
 
-    CU_ASSERT_FALSE(is_empty(q)); 
-    CU_ASSERT_PTR_NULL(dequeue(q)); 
-    CU_ASSERT_TRUE(is_empty(q)); 
-    
-    destroy_queue(q); 
+    CU_ASSERT_FALSE(is_empty(q));
+    CU_ASSERT_PTR_NULL(dequeue(q));
+    CU_ASSERT_TRUE(is_empty(q));
+
+    destroy_queue(q);
 }
 
 

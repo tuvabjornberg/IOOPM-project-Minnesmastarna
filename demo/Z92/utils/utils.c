@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include "../../../src/refmem.h"
 
 static bool not_empty(char *str)
 {
@@ -16,7 +17,7 @@ static bool is_number(char *str)
 
     if (!(isdigit(str[0]) || str[0] == '-'))
     {
-       return false; 
+       return false;
     }
 
     for (int i = 1; i < length; i++)
@@ -27,12 +28,12 @@ static bool is_number(char *str)
     return true;
 }
 
-static bool check_shelf(char *shelf) 
+static bool check_shelf(char *shelf)
 {
     if (isalpha(shelf[0]) && !islower(shelf[0]) && (strlen(shelf) > 1) && is_number(++shelf)) {
-        return true; 
+        return true;
     }
-    else 
+    else
     {
         return false;
     }
@@ -52,18 +53,19 @@ static int read_string(char *buf, int buf_size)
     }
 
     buf[strcspn(buf, "\n")] = '\0';
-  
+
     return strlen(buf);
 }
 
 static answer_t ask_question(char *question, check_func check, convert_func convert)
 {
-    //TODO: allocate
-    char *answer = malloc(BUF_SIZE);
+    char *answer = allocate(BUF_SIZE, NULL);
   
     puts(question);
-    read_string(answer, BUF_SIZE);      
+    read_string(answer, BUF_SIZE);
 
+    retain(answer); 
+    
     while(!check(answer))
     {
         puts("Invalid input");
@@ -73,10 +75,10 @@ static answer_t ask_question(char *question, check_func check, convert_func conv
     if (convert)
     {
         answer_t result = convert(answer);
-        //TODO: deallocate
-        free(answer);
+        release(answer);
         return result;
     }
+    
     return (answer_t){.string_value = answer};
 }
 
@@ -91,5 +93,5 @@ int ioopm_ask_question_int(char *question)
 }
 
 char *ioopm_ask_question_shelf(char *question) {
-    return ask_question(question, check_shelf, NULL).string_value; 
+    return ask_question(question, check_shelf, NULL).string_value;
 }
