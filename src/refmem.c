@@ -14,7 +14,7 @@
 #define MAX_ALLOCATED_OBJECTS 1000
 
 static size_t cascade_limit = 5;
-static Queue *to_be_freed = NULL;
+static queue *to_be_freed = NULL;
 list_t *allocated_pointers = NULL;
 
 typedef struct

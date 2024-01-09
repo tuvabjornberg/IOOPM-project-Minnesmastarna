@@ -15,7 +15,7 @@
 /**
  * @file hash_table.h
  * @author Tuva Björnberg & Gustav Fridén
- * @date 29/09-2023, edited by Tuva Björnberg 13/12-2023
+ * @date 29/09-2023, edited by Tuva Björnberg adn Hektor Einarsson 9/1-2024
  * @brief Simple hash table that maps integer keys to string values.
  *
  * The hash table is implemented using dynamically allocated buckets

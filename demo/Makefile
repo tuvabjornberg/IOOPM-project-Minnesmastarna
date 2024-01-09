@@ -3,7 +3,7 @@ C_OPTIONS       = -Wall -pedantic -g
 C_LINK_OPTIONS = -lm
 CUNIT_LINK     = -lcunit
 C_SANITIZE	   = -fsanitize=address
-VPATH           = ../src : Z92 : Z92/tests : Z92/data_structures : Z92/logic : Z92/utils
+VPATH           = ../src : Z92 
 
 Z92 = Z92
 
@@ -15,19 +15,19 @@ example.out: example.o refmem.o queue.o list.o
 
 memexample: example.out
 	valgrind --leak-check=full ./example.out
-  
-test_demo:
+
+testdemo:
 	$(MAKE) -C $(Z92) ds_tests
 	$(MAKE) -C $(Z92) logic_tests
 	$(MAKE) -C $(Z92) ui_tests
 
-mem_demo:
+memdemo:
 	$(MAKE) -C $(Z92) ds_memtests
 	$(MAKE) -C $(Z92) logic_memtests
 	$(MAKE) -C $(Z92) ui_arg_memtests
 	$(MAKE) -C $(Z92) ui_memtests
 
-san_demo:
+sandemo:
 	$(MAKE) -C $(Z92) ds_sanitize
 	$(MAKE) -C $(Z92) logic_sanitize
 	$(MAKE) -C $(Z92) ui_sanitize
@@ -36,4 +36,4 @@ clean:
 	rm -f *.o *.out
 	$(MAKE) -C $(Z92) clean
 
-.PHONY: memexample sanexample test_demo mem_demo san_demo clean
+.PHONY: memexample demo testdemo memdemo sandemo clean
