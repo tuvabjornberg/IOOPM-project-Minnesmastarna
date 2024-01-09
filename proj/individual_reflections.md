@@ -33,6 +33,18 @@ My biggest fail during this project were the bad time estimates for when differe
 ## Hektor Einarsson
 
 ## Martin Ek
+When it comes to working in a team, I tend to be pretty adaptable in terms of working on different areas, wether it be coding, report-writing etc. To put a light on my strengths and weaknesses, I feel like I am pretty descriptive in terms of writing detailed issue logs, or giving a solid code review on pull requests. Weaknesses tend to be not really having a clear view on the tasks at hand.
+I feel like I should try in future projects to not fall back on the group leader for being assigned tasks, because I tend to sometimes not really know what to do after I am done with something. Therefore I need to be more active and really take on certain task, and just actively ask and keep check on what needs to be done in order to avoid this. Usually I like working by myself, but this project has really given me a new perspective on working together, since it is the first time we have worked this many in one group. It feels good to have people with many different sets of skills, because that way you can always turn to someone if you need any help.
+
+What motivates me is of course getting implementations to work, but also feeling like I actually contribute. This naturally leads to me being demotivated by feeling like I have not done enough compared to others, because I do not want to be the person in the group that did the least and still passed. So this brings me back to just being more active and "on it" with the project, and using communication more to actually keep myself updated with all aspects of it.
+
+Estimating how long a certain task will take to complete really boils down to how familiar I am with it. If I know what to do, or at least have a pretty clear starting point, it will unexpectedly not take as long as trying to get to terms with something completely out of my ballpark. So the estimation will most likely be reasonable no matter how much knowledge I have, and if I realize it will take longer I have the group to lean back on for advice. Essentially if I have not figured the solution out within my estimated time, a fresh perspective of it from someone else will most likely help a lot.
+
+In terms of what I have learned in the project compared to the course in general, it is for the most part working together with people which can be difficult when the project is not clearly divided in multiple tasks that can be assigned and worked on by different people. Other than that I definitely have improved in using github, since I have not used it too much before this.
+
+Tracking time has been going reasonably well, I am new to the concept, but it feels good to do it. It really gives you a clear view of how much time is spent on different parts, and the quality also becomes more distinct when logging like this.
+
+Biggest fail was probably sitting way too long trying to get the linked list integration to work, when I should just have published an issue and let others take a look at it instead. As I mentioned earlier, getting a fresh perspective on the problem when you have been staring at the code for hours usually works better. My biggest win might be getting the ```refmem.c```-file to actually work with the object-scanner and default destructor at an earlier stage of the project, but of course changes were made later, but it was something we struggled with a lot in the beginning.
 
 ## Tove Frænell
 
