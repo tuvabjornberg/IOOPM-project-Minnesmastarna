@@ -5,7 +5,7 @@ Explain how you are testing your project on three levels:
     Regression testing
 Also explain how you have automated these things. 
 
-Include a graphical overview of the code coverage (100% coverabe). 
+Include a graphical overview of the code coverage (100% coverage). 
 
 You do not need to have tests of the demo code. It is presumed to have been properly tested in assignment 2. (But if you do find new bugs in the demo code, you should mention that.)
 
@@ -64,19 +64,20 @@ https://github.com/IOOPM-UU/Minnesmastarna/issues
 
 ## Our most nasty bugs
 ### Bug 1
-TODO: Add link
+https://github.com/IOOPM-UU/Minnesmastarna/issues/6
 
 ### Bug 2
-TODO: Add link
+https://github.com/IOOPM-UU/Minnesmastarna/issues/9
 
 ### Bug 3
-TODO: Add link
+https://github.com/IOOPM-UU/Minnesmastarna/issues/11
 
 ### Bug 4
-TODO: Add link
+https://github.com/IOOPM-UU/Minnesmastarna/issues/23
 
 ### Bug 5
-TODO: Add link
+https://github.com/IOOPM-UU/Minnesmastarna/issues/27
 
 ### Bug 6
-TODO: Add link
+https://github.com/IOOPM-UU/Minnesmastarna/issues/29
+
