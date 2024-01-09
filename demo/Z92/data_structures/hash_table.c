@@ -271,13 +271,12 @@ ioopm_list_t *ioopm_hash_table_keys(ioopm_hash_table_t *ht)
     for (int i = 0; i < ht->ht_capacity; i++)
     {
         entry_t *current = (&ht->buckets[i])->next;
-        //retain(current);
 
         while (current != NULL)
         {
             ioopm_linked_list_append(list, current->key);
+            //retain(current); 
             current = current->next;
-            //retain(current);
         }
     }
   return list;
@@ -291,13 +290,12 @@ ioopm_list_t *ioopm_hash_table_values(ioopm_hash_table_t *ht)
     for (int i = 0; i < ht->ht_capacity; i++)
     {
         entry_t *current = (&ht->buckets[i])->next;
-        //retain(current);
 
         while (current != NULL)
         {
             ioopm_linked_list_append(list, current->value);
-            current = current->next;
             //retain(current);
+            current = current->next;
         }
     }
   return list;

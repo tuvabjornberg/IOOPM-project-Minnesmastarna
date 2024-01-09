@@ -60,8 +60,10 @@ During the beginning stages of the project, most reviews were done as a quick do
 Everyone was taught how to create their own branches, commit like normal and create pull requests when done with their part. We had some learning experiences in the beginning with the first pull requests but eventually got the hang of it. A part of the process was trying to make sure everyone will try to review everyone's code at some point. While this was harder to put into practice we tried to ask different people in the group to review one's code, to avoid the same pair writing and reviewing code over and over.
 
 
-TODO:
-After **** The procedure of reviewing without a protocol was adjusted to have more structured reviews and to better keep track of our work. We started using the code review protocol from the course (used for the P-achievements) as a baseline guide. We did not use the protocol as a rule to follow, more as a guide to get started and to give examples on what to look a bit extra on. We could use it as a crutch to fall back on if we didn't know what to look for when reviewing.
+After a couple of weeks the procedure of reviewing without a protocol was adjusted to have more structured reviews and to better keep track of our work. We started using the code review protocol from the course (used for the P-achievements) as a baseline guide. We did not use the protocol as a rule to follow, more as a guide to get started and to give examples on what to look a bit extra on. We could use it as a crutch to fall back on if we didn't know what to look for when reviewing.
+
+
+This process helped the entire team to work in somewhat the same manner regarding pull requests. Since we set up guidelines for everyone to follow there were rarely any confusion regarding the entire process and make it more effective in order to spend more time on writing new code.
 
 
 TODO:
@@ -87,17 +89,29 @@ Using pull requests did serve a good purpose. It made sure at least two people w
 
 
 ## GitHub tools - TODO:
-Whether GitHub's built- in functions helped with reviewing the code is an individual opinion. <-- TODO:
+Whether GitHub's built- in functions helped with reviewing the code <-- TODO: needs more!
 
 
 The color difference on GitHub helped to distinguish old and new code. If a change were made to existing code the reviewer could see what changes were made, instead of manually trying to see what was removed or not by comparing the old with the new file. The color difference also helped to narrow down to only new code. It helped the reviewer only see relevant code. Furthermore, if the new code needed to be put into a context the reviewer simply could extend the file to see code already existing in the main branch.
 
 
+Reviewing pull requests, solving merge conflicts and suggesting improvements were made easier because the interface is simple and straightforward.
+
+
 ## Redos and future use
-###  Did every coder work in the same manner using Pull Request?
-### If you were to restart the project tomorrow, what would you keep and what would you do differently?
+If the project were to restart there are parts we would have done differently in means of using pull requests and reviewing the code.
 
 
+The first improvement would be that the author would write a more detailed description of what has been done and comment on any special design choices or parts. This would help the reviewer understand the code faster and better instead of using energy to understand what has been changed. Changes that seem obvious to the author might not be to someone else, even though we all work on the same project and use the same code standards. With this change we could spend less time trying to understand what and why something has been changed and more time on why it works and what improvements could be made.
+
+
+Another improvement we would do is to have more organized branches. For this project most of the team were new to making branches and using pull requests which led to a steep learning curve and everyone managing what was easier for them to understand. Our repository has quite a lot of branches and the commits and merges we feel are a bit messy. Though we have achieved the goal we feel like it could have been done in a more clean way. Now that the team has more experience with branches and pull requests we would do a better job at managing the repository.
+
+
+There are plenty of parts we will keep and one of the most important ones would be our guidelines. We feel that because we all discussed how we together should manage the reviews everyone has had something to fall back on when in doubt. The process of communication when pull requests needs to be reviewed and the review protocol helps give structure.
+
+
+Another part we would keep if we were to restart the project is the dynamic of changing reviewers. This helped the entire team to stay in the loop of what is going on and not just have two people circle around the code. It helped us get a new perspective for each implementation because each individual views the code in a different way. It also helped not to get stuck on a single implementation.
 
 
 # Link to GitHub pull requests

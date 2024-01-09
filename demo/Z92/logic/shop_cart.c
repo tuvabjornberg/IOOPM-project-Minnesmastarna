@@ -3,11 +3,20 @@
 #include "merch_storage.h"
 #include <string.h>
 #include <stdbool.h>
+#include "../../../src/refmem.h"
+
+static void shop_cart_destructor(obj *obj_ptr) 
+{
+    ioopm_carts_t *storage_carts = (ioopm_carts_t *)obj_ptr; 
+    release(storage_carts->carts); 
+}
 
 ioopm_carts_t *ioopm_cart_storage_create()
 {
-    ioopm_carts_t *new_carts = calloc(1, sizeof(ioopm_carts_t)); //TODO: allocate_array
-    new_carts->carts = ioopm_hash_table_create(ioopm_hash_fun_key_int, ioopm_int_eq);
+    ioopm_carts_t *new_carts = allocate(sizeof(ioopm_carts_t), shop_cart_destructor); 
+    retain(new_carts); 
+
+    new_carts->carts = ioopm_hash_table_create(ioopm_hash_fun_key_int, ioopm_int_eq); 
     new_carts->total_carts = 0;
 
     return new_carts;
@@ -22,9 +31,9 @@ void ioopm_cart_create(ioopm_carts_t *storage_carts)
 
 ioopm_hash_table_t *ioopm_items_in_cart_get(ioopm_carts_t *storage_carts, int id)
 {
-    option_t *lookup_cart = ioopm_hash_table_lookup(storage_carts->carts, int_elem(id));
-    ioopm_hash_table_t *cart_items = lookup_cart->value.void_ptr;
-    free(lookup_cart); //TODO: deallocate
+    option_t *lookup_cart = ioopm_hash_table_lookup(storage_carts->carts, int_elem(id)); 
+    ioopm_hash_table_t *cart_items = lookup_cart->value.void_ptr; 
+    release(lookup_cart); 
 
     return cart_items;
 }
@@ -51,10 +60,10 @@ int ioopm_item_in_cart_amount(ioopm_carts_t *storage_carts, int id, char *merch_
     if (item_in_cart->success)
     {
         current_amount = item_in_cart->value.integer;
-    }
-    free(item_in_cart); //TODO: deallocate
-
-    return current_amount;
+    } 
+    release(item_in_cart); 
+    
+    return current_amount; 
 }
 
 void ioopm_cart_add(ioopm_carts_t *storage_carts, int id, char *merch_name, int amount)
@@ -69,10 +78,11 @@ void ioopm_cart_add(ioopm_carts_t *storage_carts, int id, char *merch_name, int 
         ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(existing_amount));
     }
     else
-    {
-        ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(amount));
+    {      
+        retain(merch_name); 
+        ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(amount)); 
     }
-    free(item_in_cart); //TODO: deallocate
+    release(item_in_cart); 
 }
 
 void ioopm_cart_remove(ioopm_hash_table_t *cart_items, char *merch_name, int amount)
@@ -89,18 +99,18 @@ void ioopm_cart_remove(ioopm_hash_table_t *cart_items, char *merch_name, int amo
         }
         else
         {
-            ioopm_hash_table_remove(cart_items, str_elem(merch_name));
+            ioopm_hash_table_remove(cart_items, str_elem(merch_name));  
         }
     }
-    free(item_in_cart); //TODO: deallocate
+    release(item_in_cart); 
 }
 
 int ioopm_cost_calculate(ioopm_store_t *store, ioopm_carts_t *storage_carts, int id)
 {
     int total_cost = 0;
     ioopm_hash_table_t *cart_items = ioopm_items_in_cart_get(storage_carts, id);
-
     ioopm_list_t *keys = ioopm_hash_table_keys(cart_items);
+
     for (int i = 0; i < ioopm_linked_list_size(keys); ++i)
     {
         elem_t key = ioopm_linked_list_get(keys, i);
@@ -109,11 +119,11 @@ int ioopm_cost_calculate(ioopm_store_t *store, ioopm_carts_t *storage_carts, int
         if (value->success)
         {
 	        total_cost += value->value.integer * ioopm_price_get(ioopm_merch_get(store, key.string));
-        }
-        free(value); //TODO: deallocate
+        }  
+        release(value);
     }
-    ioopm_linked_list_destroy(keys);
-
+    release(keys);
+    
     return total_cost;
 }
 
@@ -127,20 +137,19 @@ static void stock_update(elem_t name, elem_t *amount, void *store)
 
   for (int i = ioopm_linked_list_size(stock) - 1; i >= 0; i--)
   {
-    location_t *shelf = ioopm_linked_list_get(stock, i).void_ptr;
-
-    if (amount->integer > shelf->quantity)
+    location_t *location = ioopm_linked_list_get(stock, i).void_ptr;
+    
+    if (amount->integer > location->quantity) 
     {
-      amount->integer -= shelf->quantity;
+        amount->integer -= location->quantity;
 
-      free(shelf->shelf); //TODO: deallocate
-      free(shelf); //TODO: deallocate
-      ioopm_linked_list_remove(stock, i);
-    }
-    else
+        release(location); 
+        ioopm_linked_list_remove(stock, i);
+    } 
+    else 
     {
-      shelf->quantity -= amount->integer;
-      return;
+        location->quantity -= amount->integer;
+        return;
     }
   }
 }
@@ -154,11 +163,6 @@ void ioopm_cart_checkout(ioopm_store_t *store, ioopm_carts_t *storage_carts, int
   ioopm_hash_table_remove(storage_carts->carts, int_elem(id));
 }
 
-static void items_in_cart_destroy(elem_t key, elem_t *value, void *arg)
-{
-    ioopm_hash_table_destroy((ioopm_hash_table_t *) value->void_ptr);
-}
-
 void ioopm_cart_destroy(ioopm_carts_t *storage_carts, int id)
 {
     ioopm_hash_table_t *cart_items = ioopm_items_in_cart_get(storage_carts, id);
@@ -169,7 +173,5 @@ void ioopm_cart_destroy(ioopm_carts_t *storage_carts, int id)
 
 void ioopm_cart_storage_destroy(ioopm_carts_t *storage_carts)
 {
-    ioopm_hash_table_apply_to_all(storage_carts->carts, items_in_cart_destroy, NULL);
-    ioopm_hash_table_destroy(storage_carts->carts);
-    free(storage_carts); //TODO: deallocate
+    release(storage_carts); 
 }

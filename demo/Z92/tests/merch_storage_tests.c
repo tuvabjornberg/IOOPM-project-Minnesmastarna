@@ -49,7 +49,7 @@ void create_destroy_merch_test()
 {
     ioopm_store_t *store = ioopm_store_create();
     CU_ASSERT_PTR_NOT_NULL(store);
-    release(store);
+    release(store); 
     shutdown();
 }
 
@@ -76,7 +76,7 @@ void store_add_remove_test()
     CU_ASSERT_FALSE(ioopm_merch_exists(store, name));
     CU_ASSERT_EQUAL(ioopm_merch_get(store, name), NULL);
 
-    release(store);
+    release(store); 
     shutdown();
 }
 
@@ -120,7 +120,7 @@ void stock_add_remove_test()
     CU_ASSERT_EQUAL(location->quantity, 3);
     CU_ASSERT_STRING_EQUAL(location->shelf, "B3");
 
-    release(store);
+    release(store); 
     shutdown();
 }
 
@@ -156,7 +156,7 @@ void merch_exists_test()
     ioopm_store_remove(store, carts, name);
     CU_ASSERT_FALSE(ioopm_merch_exists(store, name));
 
-    release(store);
+    release(store); 
     shutdown();
 }
 
@@ -453,8 +453,8 @@ int main()
             CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
             CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
             //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL //|| TODO: needs impl of realloc
-            //CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL || //TODO: needs impl of storage_carts
-            CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL
+            CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL ||
+            CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL 
             )
         )
 

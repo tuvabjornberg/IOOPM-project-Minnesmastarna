@@ -1,8 +1,9 @@
 C_COMPILER      = gcc
 C_OPTIONS       = -Wall -pedantic -g
 C_LINK_OPTIONS = -lm
+CUNIT_LINK     = -lcunit
 C_SANITIZE	   = -fsanitize=address
-VPATH           = ../src : Z92
+VPATH           = ../src : Z92 : Z92/tests : Z92/data_structures : Z92/logic : Z92/utils
 
 Z92 = Z92
 
@@ -14,13 +15,7 @@ example.out: example.o refmem.o queue.o list.o
 
 memexample: example.out
 	valgrind --leak-check=full ./example.out
-
-examplesan.out: example.c refmem.c queue.c list.c
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
-
-sanexample: examplesan.out
-	./examplesan.out
-
+  
 test_demo:
 	$(MAKE) -C $(Z92) ds_tests
 	$(MAKE) -C $(Z92) logic_tests
@@ -49,4 +44,4 @@ clean:
 	rm -f *.o *.out
 	$(MAKE) -C $(Z92) clean
 
-.PHONY: memexample sanexample test_demo_ds mem_demo_ds san_demo_ds test_demo_ui mem_demo_ui mem_demo_ui_arg san_demo_ui clean
+.PHONY: memexample sanexample test_demo mem_demo san_demo test_demo_ui mem_demo_ui mem_demo_ui_arg san_demo_ui clean

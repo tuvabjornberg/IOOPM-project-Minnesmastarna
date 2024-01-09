@@ -23,20 +23,17 @@ memtest:
 	$(MAKE) -C $(DEMO) memexample
 	$(MAKE) -C $(DEMO) mem_demo
 
-test_sanitize:
-	$(MAKE) -C $(TEST) test_sanitize
-
 cov:
 	$(MAKE) -C $(TEST) cov
 
 prof:
 	$(MAKE) -C $(TEST) prof
 
-testdemo:
+testdemo: 
 	$(MAKE) -C $(DEMO) test_demo
 #$(MAKE) -C $(DEMO) test_demo_ui
 
-memdemo:
+memdemo: 
 	$(MAKE) -C $(DEMO) mem_demo
 #$(MAKE) -C $(DEMO) mem_demo_ui_arg
 #$(MAKE) -C $(DEMO) mem_demo_ui	
@@ -47,11 +44,11 @@ sandemo:
 
 example:
 	$(MAKE) -C $(DEMO) memexample
-
+  
 clean:
 	rm -f *.o
 	$(MAKE) -C $(SRC) clean
 	$(MAKE) -C $(TEST) clean
 	$(MAKE) -C $(DEMO) clean
 
-.PHONY: all src test memtest test_sanitize cov prof demo clean
+.PHONY: all src test memtest cov prof testdemo memdemo sandemo example clean 
