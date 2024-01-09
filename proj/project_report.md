@@ -13,41 +13,40 @@
 |Theo Karlsson      |theocarlsson@gmail.com                 |28/11-2023   --             |    
 
 ## Quantification
-Project start date: 28/11-2023 \
-Project end date:    /1-2024 \
+Project start date:  28/11-2023
+Project end date:    10/1-2024
+
 Number of sprints, their start and end dates:    
 1. 1/12 -  12/12
 2. 12/12 - 19/12
 3. 19/12 - 2/1
-4. 2/1 - 8/1
+4. 2/1 - 10/1
 
 
-TODO: Update
-
-Total number of new lines of C code written excluding tests and preexisting code:     \
-Total number of lines of test code:   \
-Total number of lines of “script code” (e.g., make files, Python scripts for generating test data, etc.):     \
-Total number of hours worked by the team:    \
-Total number of git commits:      \
-Total number of pull requests:    \
-Total number of GitHub issues:    \
+Total number of new lines of C code written excluding tests and preexisting code: 334
+Total number of lines of test code: 413
+Total number of lines of “script code” (e.g., make files, Python scripts for generating test data, etc.): 142
+Total number of hours worked by the team: 365 h
+Total number of git commits: 200
+Total number of pull requests: 38
+Total number of GitHub issues: 14
 
 ## Process
-3.1 Inception
-### How we implemented the process
+### Inception
+#### How we implemented the process
 We decided to use the Scrum process. We decided this because it was something that we were familiar with, and had worked with before. The main gist of Scrum is to create sprints to follow, which was something that we planned very early on in the project. We did alter the way Scrum wants us to work, as we didn't have many daily scrums. This was due to us mostly working with the project at different times and different places, but we did let the group know if something major had been done that would affect everyone else.
 
 Our meetings at the end of the sprints were a mix of a sprint review, retrospective, as well as some touches to sprint planning. We would at these meetings go over what had been done in the sprint, and make sure that everyone knew what had happened at that sprint. This was also a time where we decided what the next sprint should focus on, and what each person should tackle in the next sprint.
 
 We made sure to have a few meetings during the sprints, these were happening frequently, and had structural similarities to a daily scrum. They were longer than a daily scrum should be, but the content was similar to what a daily scrum had.
 
-### Learning the process
+#### Learning the process
 Because this was something that we were slightly used to, we didn't have to spend any time learning the process. This made it so that we could focus more on working with the project instead of learning a process. This was also useful as we could implement how we had previously worked in the course as a means to this project, instead of completely separating the work we'd made for the rest of the course.
 
 Something we could have changed with our chosen process was that we could have implemented the daily scrum better. This could have been especially useful in the beginning, as it would have lead to everyone knowing what had been done for each day, and could be more integrated into the project. This was something we lacked in the end, where some didn't really know what they could do, and some had a better understanding of the final product compared to others.
 
 
-3.2 Implementation
+### Implementation
 In the current implementation of the reference counter, each allocation results in additional bytes being allocated in front of the bytes requested by the users as metadata. The meta is stored as a struct with a counter, a size variable, and a pointer to a destructor function. In an attempt to make the most of the least amount of bytes, the counter and the size variable are unsigned shorts. The reasoning behind the choice of an unsigned data type is that neither the counter nor the size should ever have a negative value. An unsigned short in C consists of 2 bytes and has a range of  [0, 65,535]. In the current implementation, if an object’s counter reaches the upper limit of the interval, the object is deallocated. The size of a pointer is dependent on whether the program is running on a 32 or 64-bit machine. For the sake of this analysis, we will assume that the program is running on a 64-bit machine which is the more common out of the two, which would mean that the pointer is 8 bytes in size. 
 Because the metadata is stored as a struct, there is an additional overhead, which is due to structure padding. Structure padding is when additional bytes are added to memory to make the data word-aligned. For a 64-bit architecture, a word is 64 bits or 8 bytes. In the reference counter, this results in an additional four bytes being added to word-align the metadata, and as a result, the metadata is two words or 16 bytes. 
  
@@ -57,10 +56,7 @@ Although it is not initially allocated, for each allocation made with the refere
  
 The total overhead of each allocation totals 48 bytes, which is a considerable overhead. There are several possible ways to lower the overhead. Depending on which program the reference counter is used with, being able to handle over 65 000 pointers to the same object might seem excessive, and a smaller data type could be chosen over the unsigned short for the counter and size components in the metadata to reduce the number of bytes in memory. However, for a smaller data type to make a difference, structure padding would have to be disabled within the struct or the metadata would have to be allocated piece by piece and not as a part of a struct. The latter was attempted during the project but was replaced by the current implementation due to data alignment and invalid read issues. 
 
-
-
-TODO: Continue
-
+Most of our implementation choices can be read about in the design report.
 
 ## Use of Tools
 
@@ -148,15 +144,9 @@ The load balance was also split depending on what task each person was working o
 
 There was some problems with estimating how much time each part would take. We made a small estimation at the beginning of the program when we created our sprints. This mainly consisted of how much time we thought each part of the process would take. The problem arose when we realised that some parts of our written code didn't work as intended, and needed to be reworked. At the same time, the work that we were supposed to work on became a slight problem as well. This led to us needing to put more effort into making sure we fixed the code, but at the same time not falling behind in our initial schedule. This didn't work as we wanted though, as we had planned to finish our implementation around the first days of the new year, but it was something that we had to constantly work on until a few days before presenting.
 
+### Burndown Chart
+We have created a burndown chart to show how our work went. This had two curves, one where out initial plan is shown, and a second one which shows our actualy work progress. It shows us that our progress started off strong, and we were under the planned curve for a while. This did change quite early, as we had some bigger parts to finish later that took longer time than expected. Our burndown chart can be found in a png-file in the same folder as the project report.
 
-
-
-TODO: Burndown Chart, visualization of how the work went?
-
-Also, visualise:
-
-    using a burndown chart for the sprints, how your time planning compared with reality.
-    using a pie chart, how the time you spent was distributed across different activities. (Refer to the main project task description for activities.) 
 
 ## Reflection
 ### Are we confident with our product
