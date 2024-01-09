@@ -1,6 +1,4 @@
 # Code Review Report
-
-# Code reviews and pull requests
 During the course of the project we used pull requests and continuous reviewing of the code that goes into our main branch. The goal being to verify code as well as make sure we only push working code (as far as we know) into the master branch. The reason being that we wanted to make sure everybody has a good base code when starting on something new. If we were to push into main before anything has been reviewed or tested properly someone could be building something based on bad or broken code, which in itself can lead to more issues down the line.
 
 
