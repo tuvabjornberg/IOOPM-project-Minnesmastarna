@@ -38,5 +38,14 @@ My biggest loss during the project was probably the way I handled studying for t
 ## Martin Ek   
 
 ## Tove Frænell  
+I think I work fairly well in a team. I like to be an all-around person, and play an adaptive role in the process. This means that I want to be able to do many different things, a but still have some main focus area to work in. This meant that I took parts that were left unattended to, and had very varying parts of the work. I could adapt my way of working in a team by taking on a more solid role, and grabbing work more "forcefully", especially in the beginning when I felt as if I wasn't doing as much work.
+
+I get motivated by seeing the final product working. This means that I usually do a lot of my work more "behind-the-scenes" until it's working. This is maybe not the best thing, as people don't really know what stage my work is in, especially if they're waiting for it to work. This is something that I need to work on, though, as I could easily push up code that might not work as well into a separate branch and someone else could use parts of what I've done.
+
+I actually think it's a good thing to work in a group, although I think a smaller group is better. That is because I like to discuss what I'm doing with someone else, and I feel like when I do that, it's easier for me to understand what I've done. I think that I've learned more throughout the course, instead of only the project. This is because I learn by adapting what I've learned in a lecture to something more physical, which we did with the Z-goals.
+
+It went good to log time for me. I decided to manually log time, which worked well for me. For each session, I wrote down the time when I started and the time when I finished that day. If I took a longer pause, I marked it down as well. This might have been one of my bigger fails though, as it meant that I had to keep track on where I logged, which I initally lost due to some technical struggles. Because of these struggles, I had to estimate how much time I spent at the beginning of the project, which meant that some of the time I had logged for the project got lost.
+
+My biggest win of the project was that I, because I hadn't done a project like this before, learned to take a leading role over parts of the final product. This was very fun for me, as I felt normally step back in decision making, and usually just accept what's going on with the code. For me, this was a very new responsibility, that I think was very educational for me.
 
 ## Theo Karlsson 
