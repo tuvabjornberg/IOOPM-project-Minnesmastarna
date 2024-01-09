@@ -47,16 +47,11 @@ README-files can be found in the starting directory, as well as in ```/demo/Z92`
 
 
 ## What does it mean to have good code
-Having good code can mean a lot of things, but it usually boils down to being something multiple people with different end-goals can comprehend. There are of course multiple attributes that is connected to this.
-
-Efficiency and performance in the code is part of this because you of course want
+Having good code can mean a lot of things, but it usually boils down to being something multiple people with different end-goals can comprehend. There are of course multiple attributes that is connected to this, like maintainability, reliability, testability and efficiency to name a few. Writing optimized, well-structured code that functions reliably under various scenarios, and is easy to test and maintain is also a major factor in writing good code. A solid combination of these will reinforce a project like this one, and keep things looking clean.
 
 
 ## What code standard have we used, how is it good?
-Our decision to adopt the GNU coding standard was a democratic choice made within the group. Several factors related to this coding standard align with our set goals for this project.
-
-An important reason is of course the consistency it brings to the table, which improves collaboration within the group by maintaining readability and general understanding.
-
+Our decision to adopt the GNU coding standard was a democratic choice made within the group, valuing its emphasis on consistency, readability, and collaboration. This code standard was a straight forward way to incorporate solid and good practices while coding, and has worked out that way throughout the course of the project.
 
 
 # LINK TO GITHUB ISSUE LOG
