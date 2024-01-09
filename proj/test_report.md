@@ -56,8 +56,9 @@ One problem that arose while testing happened while testing the boundaries of th
 
 
 ## Graphical overview of code coverage
-TODO: Add text here. This will be done after all code is written.
+The refmem_tests and destructor_tests does have 100% coverage. Since we've wanted to strive for a fairly good coverage for these files, this is a very good result to see. This meant that all the new code which we have written is tested fully, and works as we want it to.
 
+Since we've only adapted the previous code, and have only adapted the Z92-files, the coverage won't have changed that much. This means that the coverage will be fairly similar to the old coverage, which was 100%. If this has been changed, it is due to us testing those lines in the refmem tests instead.
 
 # Link to GitHub Issue Log (GENERAL)
 https://github.com/IOOPM-UU/Minnesmastarna/issues
