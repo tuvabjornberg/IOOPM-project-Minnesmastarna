@@ -39,13 +39,9 @@ ioopm_merch_t *ioopm_merch_create(char *name, char *description, int price, ioop
 
     new_merch->name = duplicate_string(name);
     release(name);
-    //retain(name); 
-    //new_merch->name = name; 
 
     new_merch->description = duplicate_string(description);
     release(description);
-    //retain(description);
-    //new_merch->description = description;
 
     new_merch->price = price;
     new_merch->stock = stock;
@@ -153,8 +149,6 @@ static location_t *location_create(char *shelf, int amount)
 
     location->shelf = duplicate_string(shelf);
     release(shelf);
-    //location->shelf = shelf;
-    //retain(shelf);
 
     location->quantity = amount;
   
@@ -408,11 +402,9 @@ void ioopm_name_set(ioopm_store_t *store, ioopm_merch_t *old_merch, char *new_na
 void ioopm_description_set(ioopm_merch_t *merch, char *new_description)
 {
     char *old_description = description_get(merch);
-    //merch->description = duplicate_string(new_description);
     merch->description = new_description; 
 
     release(old_description);
-    //release(new_description);
 }
 
 void ioopm_price_set(ioopm_merch_t *merch, int new_price)

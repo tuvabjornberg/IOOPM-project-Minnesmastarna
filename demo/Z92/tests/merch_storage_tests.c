@@ -29,7 +29,6 @@ ioopm_store_t *store_with_inputs()
     int price = 10;
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);
@@ -452,7 +451,7 @@ int main()
             CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
             CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
             CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
-            //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL //|| TODO: needs impl of realloc
+            //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL //|| Test that doesn't work
             CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL ||
             CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL 
             )
