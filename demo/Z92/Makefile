@@ -61,14 +61,22 @@ ds_sanitize: hash_san.out list_san.out
 	./hash_san.out
 	./list_san.out
 
-merch_test_coverage.out: merch_storage_tests.o merch_storage.c shop_cart.o hash_table.o linked_list.o hash_fun.o
+hash_test_coverage.out: hash_table_tests.o hash_table.c linked_list.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
-shop_test_coverage.out: shop_cart_tests.o shop_cart.c hash_table.o linked_list.o merch_storage.o hash_fun.o
+list_test_coverage.out: linked_list.c linked_list_tests.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
-ui_test_coverage.out: ui.c shop_cart.o hash_table.o linked_list.o merch_storage.o hash_fun.o utils.o
+merch_test_coverage.out: merch_storage_tests.o merch_storage.c shop_cart.o hash_table.o linked_list.o hash_fun.o refmem.o queue.o list.o
+	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
+shop_test_coverage.out: shop_cart_tests.o shop_cart.c hash_table.o linked_list.o merch_storage.o hash_fun.o refmem.o queue.o list.o
+	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
+ui_test_coverage.out: ui.c shop_cart.o hash_table.o linked_list.o merch_storage.o hash_fun.o utils.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $^ -o $@ $(CUNIT_LINK) $(C_GCOV)
 
-cov: merch_test_coverage.out shop_test_coverage.out ui_test_coverage.out
+cov: hash_test_coverage.out list_test_coverage.out merch_test_coverage.out shop_test_coverage.out ui_test_coverage.out
+	./hash_test_coverage.out
+	gcov -b -c hash_test_coverage.out-hash_table.c
+	./list_test_coverage.out
+	gcov -b -c list_test_coverage.out-linked_list.c
 	./ui_test_coverage.out < tests/ui_tests.txt
 	gcov -b -c ui_test_coverage.out-ui.c
 	./merch_test_coverage.out
