@@ -33,9 +33,7 @@ A lot of the files which were used for the integration was tested beforehand. Th
 ### Integration testing
 There weren't many integration tests created for the project. Due to the integration code already being tested beforehand, the tests were mainly changed to pass when implementing the old code with the refmem file. As these tests made sure that all the code worked properly beforehand, this wasn't really something we had to rewrite when did the project.
 
-We had some trouble with the input.txt file when testing after the integration with refmemhad happened. As these problems arose, we instead tested parts of this manually. This made it so that we couldn't really test the UI-functions with the same cases automatically, but had to instead remember what we wrote when testing. Because of this, we couldn't really know if the integration was working completely all the time, but had to trust that our manual tests were good enough.
-
-TODO: Continue
+We had some trouble with the input.txt file when testing after the integration with refmemhad happened. As these problems arose, we instead tested parts of this manually. This made it so that we couldn't really test the UI-functions with the same cases automatically, but had to instead remember what we wrote when testing. Because of this, we couldn't really know if the integration was working completely all the time, but had to trust that our manual tests were good enough. later, we learned that the txt file problems were only happening to one computer, which could mean that the problem happened on a system level, instead of having the program malfunctioning.
 
 
 ### Regression testing
@@ -43,12 +41,18 @@ Since we created unit tests when creating the functions, these became our regres
 
 The tests that previously were a part of the Z92 weren't initially regression tests when they were first adapted, but became once we started implementation. Once we had figured out how the tests had to be changed in order to suit the project, these tests were mostly left untouched. An exception to this is some of the logic tests, that during the integration part had to be adapted to work without certain elements. These had the correct lines commented out, so that once the expected code worked, the tests would go back to the way they were.
 
-TODO: Continue
-
-
 
 ## How have we automated the testing 
-We have automated the tests with the use of CUnit and Makefiles. This type of automation has made it easier during the programming process, where we could almost always test any code which has been changed. The main Makefile was made so that the tests could be run from the outer file, and thus only had one Makefile which was used to run the program accordingly. This meant that once we started the integration phase of the code, the Makefile was updated so that it could run those tests from the same Makefile.
+We have automated the tests with the use of CUnit and Makefiles. This type of automation has made it easier during the programming process, where we could almost always test any code which has been changed. The main Makefile was made so that the tests could be run from the outer file, and thus only had one Makefile which was used to run the program accordingly. This meant that once we started the integration phase of the code, the Makefile was updated so that it could run those tests from the same Makefile.'
+
+We also automated it so that if you were to write "make test" in the termainal, all tests were run. This became the way regression tests were run, as it was an easy command to make sure that everything was working as it should. Automation with Valgrind was run through "make memtest", which ran all tests, as well as the example file that was given in the instructions. This was especially useful to see that if the code that could pass the tests didn't have any memory problems, and was good enough to push up into the main branch.
+
+While integration, we made sure that the demo files could be run throgh their own command in the Makefile. This was done through "make testdemo" and "make memdemo", which ran the tests normally, and through Valgrind respectively. This was good to have when we weren't doing any changes to the refmem code, and instead were just testing that our integration was working.
+
+
+## Problems that arose during testing
+One problem that arose while testing happened while testing the boundaries of the hash table. We created a test that added 1000 entries into a hash table, and later removed those entries. During this test, we realised that although there are no memory leakage, we have more frees than allocations. We realised that for 80 inserts, the frees and allocations are the same, but once we have 81 or more entries, the number isn't balanced. We decided to keep this, as the tests still work and 
+
 
 
 ## Graphical overview of code coverage
