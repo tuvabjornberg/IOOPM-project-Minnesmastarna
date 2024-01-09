@@ -41,7 +41,7 @@ void enqueue_test()
 
 void dequeue_test()
 {
-    Queue *q = create_queue();
+    queue *q = create_queue();
 
     obj* obj = NULL;
     enqueue(q, obj);

@@ -451,7 +451,7 @@ int main()
             CU_add_test(my_test_suite, "test for editing description of merch", set_description_test) == NULL ||
             CU_add_test(my_test_suite, "test for editing price of merch", set_price_test) == NULL ||
             CU_add_test(my_test_suite, "test if store is empty", store_is_empty_test) == NULL ||
-            //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL //|| Test that doesn't work
+            //CU_add_test(my_test_suite, "test some boundary cases", boundary_cases_test) == NULL || Test that doesn't work
             CU_add_test(my_test_suite, "testing cart operations in merch_storage", merch_storage_cart_functions_test) == NULL ||
             CU_add_test(my_test_suite, "test for a merch's stock", shelves_exists_test) == NULL 
             )
