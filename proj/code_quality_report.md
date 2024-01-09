@@ -10,9 +10,6 @@ Under kursens gång har kodkvalitet beaktats åtskilliga gånger. Under projekte
 This file, together with the GitHub issue log, should convince the examiner that you pass Y65.
 
 
-
-# ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
-
 ## Why is code quality important
 Coding is a very free practice, that can be approached through many different courses of action. Solving problems and actually writing working code can be done very differently, so to actually allow people to efficiently work together in a project like this one, certain conditions need to be set. These conditions are typically made to keep people in line with their work, to allow a wider understanding for the people around them, wether that be group members or reviewers. Following these to uphold quality and familiarity is a great practice that benefits everyone in the end.
 
@@ -36,7 +33,6 @@ All functions have documentation in their interface files for a more general und
 
 
 ## Helpful to reviewer
-* For specifics, look in the instruction above.
 To facilitate reviewing, we have of course done the usual work of functional breakdowns and clear modularity, where we consistently have followed the coding standard. To give a high-level overview of how the project structure is built up, we basically have the ```src```-folder that contains the memory management and related files to support it, and the ```demo```-folder that has the integration of it.
 
 Diving a little bit deeper into ```demo``` and further into ```Z92```, we have made a logical division of files with separate purpose and functionality. ```data_structures```is essentially what it says, with the hash table structure and linked listed structure completely integrated. ```logic``` instead includes the actual "assignment 2" files for the warehouse, that are of course also integrated.
