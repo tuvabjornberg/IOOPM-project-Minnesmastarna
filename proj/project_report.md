@@ -27,8 +27,8 @@ Total number of new lines of C code written excluding tests and preexisting code
 Total number of lines of test code: 413
 Total number of lines of “script code” (e.g., make files, Python scripts for generating test data, etc.): 142
 Total number of hours worked by the team: 365 h
-Total number of git commits: 200
-Total number of pull requests: 38
+Total number of git commits: 202
+Total number of pull requests: 40
 Total number of GitHub issues: 14
 
 ## Process
