@@ -33,6 +33,21 @@ Total number of GitHub issues:    \
 TODO
 3.1 Inception
 In this section, discuss choice of process, how you went about learning the process, how you went about implementing the process.
+* SCRUM
+### How we implemented the process
+We decided to use the Scrum process. We decided this because it was something that we were familiar with, and had worked with before. The main gist of Scrum is to create sprints to follow, which was something that we planned very early on in the project. We did alter the way Scrum wants us to work, as we didn't have many daily scrums. This was due to us mostly working with the project at different times and different places, but we did let the group know if something major had been done that would affect everyone else.
+
+Our meetings at the end of the sprints were a mix of a sprint review, retrospective, as well as some touches to sprint planning. We would at these meetings go over what had been done in the sprint, and make sure that everyone knew what had happened at that sprint. This was also a time where we decided what the next sprint should focus on, and what each person should tackle in the next sprint.
+
+We made sure to have a few meetings during the sprints, these were happening frequently, and had structural similarities to a daily scrum. They were longer than a daily scrum should be, but the content was similar to what a daily scrum had.
+
+### Learning the process
+Because this was something that we were slightly used to, we didn't have to spend any time learning the process.
+
+
+
+
+
 
 3.2 Implementation
 In the current implementation of the reference counter, each allocation results in additional bytes being allocated in front of the bytes requested by the users as metadata. The meta is stored as a struct with a counter, a size variable, and a pointer to a destructor function. In an attempt to make the most of the least amount of bytes, the counter and the size variable are unsigned shorts. The reasoning behind the choice of an unsigned data type is that neither the counter nor the size should ever have a negative value. An unsigned short in C consists of 2 bytes and has a range of  [0, 65,535]. In the current implementation, if an object’s counter reaches the upper limit of the interval, the object is deallocated. The size of a pointer is dependent on whether the program is running on a 32 or 64-bit machine. For the sake of this analysis, we will assume that the program is running on a 64-bit machine which is the more common out of the two, which would mean that the pointer is 8 bytes in size. 
@@ -70,11 +85,7 @@ We also did a few meetings over Zoom. This happened during the holidays, where i
 ### Did we lack/dislike any tools
 One thing that we would change if we redid the project was that we'd use GitHub in a better way from the start. Since most of us were new to this, we didn't fully use GitHub to it's fullest potential at the start. Had we known this, we could have spent less time learning how to efficiently use it, and instead focused our time to make sure we had finished everything earlier.
 
-
-
-TODO: Tools that were lacking and tool we'd rather not use in the future.
-* Discuss?
-
+Another tool that could have been slightly better for us was Valgrind. There were times where some code wouldn't run through tests normally but it worked through Valgrind, and vice versa. This was especially annoying when working on the finishing stages, when we were trying to make sure that all the code properly worked. But although this was a struggle, it was still a very useful resource for us as we could see both if and where the program was leaking memory. 
 
 
 ## Communication, Cooperation and Coordination
@@ -96,15 +107,17 @@ While some people worked together and some opted to work by themselves, it remai
 ### Demotivated/angry team members
 There were no structural way for us to deal with demotivated or stressed members. We all knew that there we were going to have an exam a few days prior, and that some might want to put less time to work on the project at this time. Since a lot could come up that led to not being able to do what you had planned initially, we made sure that if some parts started falling behind, someone else could take a better look at that part, and the person who originally was supposed to work on it did something else when they had time.
 
-*TODO: Maybe discuss this, did anyone feel like they were overly stressed at times, and could things have been done differently to help them?
 
 ### How did it go during the holidays
 During the break, we knew that some people maybe had more plans than others, but we decided to divide the work as evenly as we could. This was so that everyone had their own part to work with. At this time, we also made sure to update the discord if we needed help, or if someone could check out a pull request that had been made. This made it so that event though some wanted to spend time with family or focus on our other course, there was still something that could be done. We also made sure to have one meeting where we checked how the work was going, and what we had left. This was also where we decided mainly who should work mainly on each report, as they could be done if someone were to travel for a longer time, or had some spare time to write as their part of the integration was done.
 
 
 ### Lessons learned
-TODO: Write, discussion?
+A big lesson that we had to learn was how to work in a bigger group. Since we previously had worked in either pairs or smaller group, it was a challenge for us to work with more people, and because of this, communication became especially important. This was also a bigger challenge in the beginning, where we had to see how far each person had come with the rest of the course. It was hard to synchronize with the rest of the group at this time, because some were finishing up the rest of the course while others still had a lot left to work on.
 
+The problems with synchronization also lead to the work being unevenly divided at the beginning. Those who still had other parts of the course left were splitting their efforts between the project and the Z-goals, while those who were basically fininshed could put all their effort into the project much easier. During this time as well, we amde sure to have frequent meetings, to make sure that everyone was up-to-date with the project, even though they didn't want to put their full effort into it just yet.
+
+Time management also became a problem, and something that we had to work with. Since we mainly met the rest of the group during scheduled meetings, most of the coding happened at time we had scheduled ourselves. This meant that some could be working earlier in the day, while others worked more at night. This meant that if you needed help, sometimes there were no other people who had time to do so. This became harder during the break, as people also wanted to spend time with family, and had to plan their work for when they had time. Something that we could have done was plan for more time where we solely worked on the project at the same place beforehand, when we knew that mostly everyone could come and work together.
 
 ## Work Breakdown Structure
 
@@ -143,16 +156,18 @@ Also, visualise:
     using a pie chart, how the time you spent was distributed across different activities. (Refer to the main project task description for activities.) 
 
 ## Reflection
+### Are we confident with our product
+We feel fairly confident that we had implemented the right thing. Our feelings for this is because we have created a working program that could be implemented to a Z92, and it worked as we wanted it to. There were some things that, because of our implementation, kind of skipped over. One of these happened with how we handled strdup, where we created a function to duplicate the string, instead of purely reference counting, which would have been the dream.
 
-TODO: Discuss
-* DO THIS TOGETHER, A REFLECTION OF HOW THE WORK WENT.
+TODO: Was there something about the reference counting which we skipped over?
+## Rating 1-7
+Our satisfaction with our process comes in to about a five. This was something that we didn't really think much about, but we feel as if we worked hard on the project, and did manage to finish the work. 
 
-In this section, discuss briefly:
+Our satisfaction with the delivered project is also about a five. We're happy with what we had created, and it's working as intended, but this number is not higher due to us not having time. The time for the project was very limited, and if we had more time, we would most likely be happier with our delivered product.
 
-    How confident you are that have actually implemented the right thing (why, how, etc.)
-    On a scale 1–7 (7 is best), rate your satisfaction with your process and provide justification for that number
-    On a scale 1–7 (7 is best), rate your satisfaction with your delivered product and provide justification for that number
-    On a scale 1–7 (7 is best), rate your satisfaction with your quality assurance and provide justification for that number
-    what does the team consider its biggest win?
-    what does the team consider its biggest fail?
+One thing we are more satisfied with is the quality of the code. A main part was that we tried to make sure that good code went into the main branch, and this happened through detailed code reviews with pull requests. Since we wanted to make sure that the code had good quality from the beginning, this was also something that we spent a lot of time doing, and making sure that it held up to the code that already had been pushed into main.
 
+### Biggest wins and fails as a team
+One of our big wins is that we have a working project. Even though it might seem like a very small thing, and something we had working from the start, we also had to spend a lot of time making sure that there were no memory leakage, and that the code we had could be ran without problems. A later win was that we got the txt file to work as intended, as it had trouble working for some people and would give off an infinite loop instead of running smoothly through the program.
+
+We don't think that there were any big fails as a team. There were a few small problems, as there always is, but no big ones that could critically damage our work or team.
