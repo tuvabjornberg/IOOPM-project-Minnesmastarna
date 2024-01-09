@@ -41,5 +41,5 @@ Having good code can mean a lot of things, but it usually boils down to being so
 Our decision to adopt the GNU coding standard was a democratic choice made within the group, valuing its emphasis on consistency, readability, and collaboration. This code standard was a straight forward way to incorporate solid and good practices while coding, and has worked out that way throughout the course of the project.
 
 
-# LINK TO GITHUB ISSUE LOG
+# Link to GitHub Issue Log
 https://github.com/IOOPM-UU/Minnesmastarna/issues
