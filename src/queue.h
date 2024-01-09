@@ -2,38 +2,38 @@
 #include <stdbool.h>
 #include "refmem.h"
 
-typedef struct Node
+typedef struct node
 {
     obj **data;
-    struct Node* next;
-} Node;
+    struct node* next;
+} node;
 
 typedef struct
 {
-    Node* front;
-    Node* rear;
+    node* front;
+    node* rear;
     int size;
-} Queue;
+} queue;
 
 /// @brief Creates a new empty queue.
-/// @return A pointer to the newly created Queue.
-Queue* create_queue();
+/// @return A pointer to the newly created queue.
+queue* create_queue();
 
 /// @brief Checks if a queue is empty.
-/// @param queue A pointer to the Queue.
+/// @param queue A pointer to the queue.
 /// @return true if the queue is empty, false otherwise.
-bool is_empty(Queue* queue);
+bool is_empty(queue* queue);
 
 /// @brief Enqueues a data element into the queue.
-/// @param queue A pointer to the Queue.
+/// @param queue A pointer to the queue.
 /// @param data A pointer to the data element to be enqueued.
-void enqueue(Queue* queue, obj *data);
+void enqueue(queue* queue, obj *data);
 
 /// @brief Dequeues a data element from the queue.
-/// @param queue A pointer to the Queue.
+/// @param queue A pointer to the queue.
 /// @return A pointer to the dequeued data element.
-obj *dequeue(Queue* queue);
+obj *dequeue(queue* queue);
 
 /// @brief Destroys the queue, freeing all allocated memory.
-/// @param queue A pointer to the Queue.
-void destroy_queue(Queue* queue);
+/// @param queue A pointer to the queue.
+void destroy_queue(queue* queue);
