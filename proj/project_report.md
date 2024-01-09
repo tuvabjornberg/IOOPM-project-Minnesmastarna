@@ -21,6 +21,9 @@ Number of sprints, their start and end dates:
 3. 19/12 - 2/1
 4. 2/1 - 8/1
 
+
+TODO: Update
+
 Total number of new lines of C code written excluding tests and preexisting code:     \
 Total number of lines of test code:   \
 Total number of lines of “script code” (e.g., make files, Python scripts for generating test data, etc.):     \
@@ -30,10 +33,7 @@ Total number of pull requests:    \
 Total number of GitHub issues:    \
 
 ## Process
-TODO
 3.1 Inception
-In this section, discuss choice of process, how you went about learning the process, how you went about implementing the process.
-* SCRUM
 ### How we implemented the process
 We decided to use the Scrum process. We decided this because it was something that we were familiar with, and had worked with before. The main gist of Scrum is to create sprints to follow, which was something that we planned very early on in the project. We did alter the way Scrum wants us to work, as we didn't have many daily scrums. This was due to us mostly working with the project at different times and different places, but we did let the group know if something major had been done that would affect everyone else.
 
@@ -42,11 +42,9 @@ Our meetings at the end of the sprints were a mix of a sprint review, retrospect
 We made sure to have a few meetings during the sprints, these were happening frequently, and had structural similarities to a daily scrum. They were longer than a daily scrum should be, but the content was similar to what a daily scrum had.
 
 ### Learning the process
-Because this was something that we were slightly used to, we didn't have to spend any time learning the process.
+Because this was something that we were slightly used to, we didn't have to spend any time learning the process. This made it so that we could focus more on working with the project instead of learning a process. This was also useful as we could implement how we had previously worked in the course as a means to this project, instead of completely separating the work we'd made for the rest of the course.
 
-
-
-
+Something we could have changed with our chosen process was that we could have implemented the daily scrum better. This could have been especially useful in the beginning, as it would have lead to everyone knowing what had been done for each day, and could be more integrated into the project. This was something we lacked in the end, where some didn't really know what they could do, and some had a better understanding of the final product compared to others.
 
 
 3.2 Implementation
@@ -58,6 +56,8 @@ In addition to the metadata for each object, pointers to all allocated objects a
 Although it is not initially allocated, for each allocation made with the reference counter, an entry in a queue will be allocated to keep track of what allocations to deallocate. Because this is a consequence of the reference counter, it should be accounted for in the analysis. Just as the link struct, an entry in the queue is a struct consisting of a value, which is a pointer as well as a pointer to the next pointer, and because this struct holds two word-size pointers it will, like the link, have a size of 16 bytes.
  
 The total overhead of each allocation totals 48 bytes, which is a considerable overhead. There are several possible ways to lower the overhead. Depending on which program the reference counter is used with, being able to handle over 65 000 pointers to the same object might seem excessive, and a smaller data type could be chosen over the unsigned short for the counter and size components in the metadata to reduce the number of bytes in memory. However, for a smaller data type to make a difference, structure padding would have to be disabled within the struct or the metadata would have to be allocated piece by piece and not as a part of a struct. The latter was attempted during the project but was replaced by the current implementation due to data alignment and invalid read issues. 
+
+
 
 TODO: Continue
 
@@ -148,6 +148,9 @@ The load balance was also split depending on what task each person was working o
 
 There was some problems with estimating how much time each part would take. We made a small estimation at the beginning of the program when we created our sprints. This mainly consisted of how much time we thought each part of the process would take. The problem arose when we realised that some parts of our written code didn't work as intended, and needed to be reworked. At the same time, the work that we were supposed to work on became a slight problem as well. This led to us needing to put more effort into making sure we fixed the code, but at the same time not falling behind in our initial schedule. This didn't work as we wanted though, as we had planned to finish our implementation around the first days of the new year, but it was something that we had to constantly work on until a few days before presenting.
 
+
+
+
 TODO: Burndown Chart, visualization of how the work went?
 
 Also, visualise:
@@ -159,7 +162,6 @@ Also, visualise:
 ### Are we confident with our product
 We feel fairly confident that we had implemented the right thing. Our feelings for this is because we have created a working program that could be implemented to a Z92, and it worked as we wanted it to. There were some things that, because of our implementation, kind of skipped over. One of these happened with how we handled strdup, where we created a function to duplicate the string, instead of purely reference counting, which would have been the dream.
 
-TODO: Was there something about the reference counting which we skipped over?
 ## Rating 1-7
 Our satisfaction with our process comes in to about a five. This was something that we didn't really think much about, but we feel as if we worked hard on the project, and did manage to finish the work. 
 
