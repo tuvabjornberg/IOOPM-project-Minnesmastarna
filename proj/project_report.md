@@ -5,18 +5,18 @@
 ### Participant list
 |Name               |Email                                  |Active Dates|
 |----               |-----                                  |------------|
-|Liam Anderberg     |liam.anderberg.7761@student.uu.se      |28/11-2023   -- 10/1-2024            |    
-|Tuva Björnberg     |tuva.bjornberg.5452@student.uu.se      |28/11-2023   -- 10/1-2024            |
-|Hektor Einarsson   |     |28/11-2023   -- 10/1-2024                 |
-|Martin Ek          |martin.ek.7764@student.uu.se           |28/11-2023   -- 10/1-2024            |
-|Tove Frænell       |tove.fraenell.3054@student.uu.se       |28/11-2023   -- 10/1-2024            |
-|Theo Karlsson      |theocarlsson@gmail.com                 |28/11-2023   -- 10/1-2024            |    
+|Liam Anderberg     |liam.anderberg.7761@student.uu.se      |28/11-2023   --   10/1-2024|
+|Tuva Björnberg     |tuva.bjornberg.5452@student.uu.se      |28/11-2023   --   10/1-2024|
+|Hektor Einarsson   |hektor.einarsson.9964@student.uu.se    |28/11-2023   --   10/1-2024|
+|Martin Ek          |martin.ek.7764@student.uu.se           |28/11-2023   --   10/1-2024|
+|Tove Frænell       |tove.fraenell.3054@student.uu.se       |28/11-2023   --   10/1-2024|
+|Theo Karlsson      |theo.karlsson.8289@student.uu.se       |28/11-2023   --   10/1-2024|
 
 ## Quantification
 Project start date:  28/11-2023
 Project end date:    10/1-2024
 
-Number of sprints, their start and end dates:    
+Number of sprints, their start and end dates:
 1. 1/12 -  12/12
 2. 12/12 - 19/12
 3. 19/12 - 2/1
@@ -26,9 +26,9 @@ Number of sprints, their start and end dates:
 Total number of new lines of C code written excluding tests and preexisting code: 334
 Total number of lines of test code: 413
 Total number of lines of “script code” (e.g., make files, Python scripts for generating test data, etc.): 142
-Total number of hours worked by the team: 365 h
-Total number of git commits: 202
-Total number of pull requests: 40
+Total number of hours worked by the team: 370 h
+Total number of git commits: 238
+Total number of pull requests: 44
 Total number of GitHub issues: 14
 
 ## Process
@@ -47,21 +47,21 @@ Something we could have changed with our chosen process was that we could have i
 
 
 ### Implementation
-In the current implementation of the reference counter, each allocation results in additional bytes being allocated in front of the bytes requested by the users as metadata. The meta is stored as a struct with a counter, a size variable, and a pointer to a destructor function. In an attempt to make the most of the least amount of bytes, the counter and the size variable are unsigned shorts. The reasoning behind the choice of an unsigned data type is that neither the counter nor the size should ever have a negative value. An unsigned short in C consists of 2 bytes and has a range of  [0, 65,535]. In the current implementation, if an object’s counter reaches the upper limit of the interval, the object is deallocated. The size of a pointer is dependent on whether the program is running on a 32 or 64-bit machine. For the sake of this analysis, we will assume that the program is running on a 64-bit machine which is the more common out of the two, which would mean that the pointer is 8 bytes in size. 
-Because the metadata is stored as a struct, there is an additional overhead, which is due to structure padding. Structure padding is when additional bytes are added to memory to make the data word-aligned. For a 64-bit architecture, a word is 64 bits or 8 bytes. In the reference counter, this results in an additional four bytes being added to word-align the metadata, and as a result, the metadata is two words or 16 bytes. 
- 
-In addition to the metadata for each object, pointers to all allocated objects are added to a linked list to be used in the object scanner function. A link in the linked list consists of a value, which is a pointer, as well as a pointer to the next link. Although these links are structs, no padding is added since each pointer is one word and the struct is naturally word-aligned. Therefore, the allocation of a link struct adds a total of 16 bytes to each allocation. 
- 
+In the current implementation of the reference counter, each allocation results in additional bytes being allocated in front of the bytes requested by the users as metadata. The meta is stored as a struct with a counter, a size variable, and a pointer to a destructor function. In an attempt to make the most of the least amount of bytes, the counter and the size variable are unsigned shorts. The reasoning behind the choice of an unsigned data type is that neither the counter nor the size should ever have a negative value. An unsigned short in C consists of 2 bytes and has a range of  [0, 65,535]. In the current implementation, if an object’s counter reaches the upper limit of the interval, the object is deallocated. The size of a pointer is dependent on whether the program is running on a 32 or 64-bit machine. For the sake of this analysis, we will assume that the program is running on a 64-bit machine which is the more common out of the two, which would mean that the pointer is 8 bytes in size.
+Because the metadata is stored as a struct, there is an additional overhead, which is due to structure padding. Structure padding is when additional bytes are added to memory to make the data word-aligned. For a 64-bit architecture, a word is 64 bits or 8 bytes. In the reference counter, this results in an additional four bytes being added to word-align the metadata, and as a result, the metadata is two words or 16 bytes.
+
+In addition to the metadata for each object, pointers to all allocated objects are added to a linked list to be used in the object scanner function. A link in the linked list consists of a value, which is a pointer, as well as a pointer to the next link. Although these links are structs, no padding is added since each pointer is one word and the struct is naturally word-aligned. Therefore, the allocation of a link struct adds a total of 16 bytes to each allocation.
+
 Although it is not initially allocated, for each allocation made with the reference counter, an entry in a queue will be allocated to keep track of what allocations to deallocate. Because this is a consequence of the reference counter, it should be accounted for in the analysis. Just as the link struct, an entry in the queue is a struct consisting of a value, which is a pointer as well as a pointer to the next pointer, and because this struct holds two word-size pointers it will, like the link, have a size of 16 bytes.
- 
-The total overhead of each allocation totals 48 bytes, which is a considerable overhead. There are several possible ways to lower the overhead. Depending on which program the reference counter is used with, being able to handle over 65 000 pointers to the same object might seem excessive, and a smaller data type could be chosen over the unsigned short for the counter and size components in the metadata to reduce the number of bytes in memory. However, for a smaller data type to make a difference, structure padding would have to be disabled within the struct or the metadata would have to be allocated piece by piece and not as a part of a struct. The latter was attempted during the project but was replaced by the current implementation due to data alignment and invalid read issues. 
+
+The total overhead of each allocation totals 48 bytes, which is a considerable overhead. There are several possible ways to lower the overhead. Depending on which program the reference counter is used with, being able to handle over 65 000 pointers to the same object might seem excessive, and a smaller data type could be chosen over the unsigned short for the counter and size components in the metadata to reduce the number of bytes in memory. However, for a smaller data type to make a difference, structure padding would have to be disabled within the struct or the metadata would have to be allocated piece by piece and not as a part of a struct. The latter was attempted during the project but was replaced by the current implementation due to data alignment and invalid read issues.
 
 Most of our implementation choices can be read about in the design report.
 
 ## Use of Tools
 
 ### Tools to the code
-We haven't used a lot of different tools in the project. As far as external tools goes, it has mainly been Make. This is due to us learning to use it early in the coruse, which further led to us knowing how it worked and easly being able to compile and run the program we work on. Since we had multiple Makefiles, we had to change quite a few files in order to run different parts of the code. This was noticeable when integration started, as it became more important to run specific parts of the program. This led to us learning how to extend the Makfile further than earlier during the course. 
+We haven't used a lot of different tools in the project. As far as external tools goes, it has mainly been Make. This is due to us learning to use it early in the coruse, which further led to us knowing how it worked and easly being able to compile and run the program we work on. Since we had multiple Makefiles, we had to change quite a few files in order to run different parts of the code. This was noticeable when integration started, as it became more important to run specific parts of the program. This led to us learning how to extend the Makfile further than earlier during the course.
 
 A lot of internal tools in C has been used as well. Most of these were tools that we have learned about during the course, such as CUnit, gdb, and coverage checking, but also some that not all of us had previously used, such as sanitization. Since all of us were used to using CUnit from earlier in the course, it wasn't a problem to work with and adapt to the project. This meant that we could use those tools to a large extent, and rely on our knowledge that we knew how they worked.
 
@@ -81,7 +81,7 @@ We also did a few meetings over Zoom. This happened during the holidays, where i
 ### Improved use of tools
 One thing that we would change if we redid the project was that we'd use GitHub in a better way from the start. Since most of us were new to this, we didn't fully use GitHub to it's fullest potential at the start. Had we known this, we could have spent less time learning how to efficiently use it, and instead focused our time to make sure we had finished everything earlier.
 
-Another tool that could have been slightly better for us was Valgrind. There were times where some code wouldn't run through tests normally but it worked through Valgrind, and vice versa. This was especially annoying when working on the finishing stages, when we were trying to make sure that all the code properly worked. But although this was a struggle, it was still a very useful resource for us as we could see both if and where the program was leaking memory. 
+Another tool that could have been slightly better for us was Valgrind. There were times where some code wouldn't run through tests normally but it worked through Valgrind, and vice versa. This was especially annoying when working on the finishing stages, when we were trying to make sure that all the code properly worked. But although this was a struggle, it was still a very useful resource for us as we could see both if and where the program was leaking memory.
 
 
 ## Communication, Cooperation and Coordination
@@ -93,7 +93,7 @@ The communication between the coach and the team was through emails between the 
 
 
 ### Cooperation between team members
-A lot of cooperation between the team members were through helping each other when someone got stuck. This happened mostly if someone asked for help from the rest of the group, but also when people waited for code to continue, and decided to check what was happening that took time. When working on the same modules of the program, we relied on people sharing their findings with the rest of the group and commits as soon as changes had been made. This become more prevalent during the integration part of the project, as certain modules were dependant on others and a lot of people would work on solving the same issues. 
+A lot of cooperation between the team members were through helping each other when someone got stuck. This happened mostly if someone asked for help from the rest of the group, but also when people waited for code to continue, and decided to check what was happening that took time. When working on the same modules of the program, we relied on people sharing their findings with the rest of the group and commits as soon as changes had been made. This become more prevalent during the integration part of the project, as certain modules were dependant on others and a lot of people would work on solving the same issues.
 
 The cooperation between team members also became proficient when there was a large task which was crucial for the program to work as intended. This could be seen when we worked on the destructors, as two people worked on them together, while the rest tried to go forward as much as they could so we didn't get stuck on any one part of the code.
 
@@ -153,7 +153,7 @@ We have created a burndown chart to show how our work went. This had two curves,
 We feel fairly confident that we had implemented the right thing. Our feelings for this is because we have created a working program that could be implemented to a Z92, and it worked as we wanted it to. There were some things that, because of our implementation, kind of skipped over. One of these happened with how we handled strdup, where we created a function to duplicate the string, instead of purely reference counting, which would have been the dream.
 
 ## Rating 1-7
-Our satisfaction with our process comes in to about a five. This was something that we didn't really think much about, but we feel as if we worked hard on the project, and did manage to finish the work. 
+Our satisfaction with our process comes in to about a five. This was something that we didn't really think much about, but we feel as if we worked hard on the project, and did manage to finish the work.
 
 Our satisfaction with the delivered project is also about a five. We're happy with what we had created, and it's working as intended, but this number is not higher due to us not having time. The time for the project was very limited, and if we had more time, we would most likely be happier with our delivered product.
 
