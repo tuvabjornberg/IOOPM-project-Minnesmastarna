@@ -1,6 +1,5 @@
 # Test Report
 
-## How do we test the program 
 We have tested our program mainly through unit testing. This has been done through newly written tests. We have also had to change the tests from Z92 during the integration part of the project, so that they fit the mold of how the new code is written. The code from before can also be tested with a txt-file, to make sure that when using the user input, the program still won't have any memory leaks.
 
 ### Unit testing 
