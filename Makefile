@@ -1,47 +1,44 @@
 C_COMPILER      = gcc
 C_OPTIONS       = -Wall -pedantic -g
-VPATH           = src : test : demo
+C_LINK_OPTIONS = -lm
+VPATH           = src : test : demo 
 
 SRC = src
 TEST = test
 DEMO = demo
+UI = demo/Z92/user_interface
+DATA_STRUCTURES = demo/Z92/data_structures
+LOGIC = demo/Z92/logic
+UTILS = demo/Z92/utils
 
-all: refmem.o
+all: refmem.o 
 
 %.o:  %.c
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-src:
-	$(MAKE) -C $@
+demo: demo.out
 
-demo: src
-	$(MAKE) -C $(DEMO) demons
+demo.out: $(UI)/ui.c $(DATA_STRUCTURES)/hash_table.c $(DATA_STRUCTURES)/linked_list.c $(UTILS)/utils.c $(LOGIC)/merch_storage.c $(LOGIC)/shop_cart.c $(UTILS)/hash_fun.c $(SRC)/refmem.c $(SRC)/queue.c $(SRC)/list.c
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
 
-demotxt:
-	$(MAKE) -C $(DEMO) demo_txt
-
-test: src
+test: 
 	$(MAKE) -C $(TEST) test
-	$(MAKE) -C $(DEMO) test_demo
+	$(MAKE) -C $(DEMO) testdemo
 
 memtest:
 	$(MAKE) -C $(TEST) memtest
 	$(MAKE) -C $(DEMO) memexample
-	$(MAKE) -C $(DEMO) mem_demo
+	$(MAKE) -C $(DEMO) memdemo
 
 cov:
 	$(MAKE) -C $(TEST) cov
-
-prof:
-	$(MAKE) -C $(TEST) prof
 
 example:
 	$(MAKE) -C $(DEMO) memexample
   
 clean:
-	rm -f *.o
-	$(MAKE) -C $(SRC) clean
+	rm -f *.o *.out
 	$(MAKE) -C $(TEST) clean
 	$(MAKE) -C $(DEMO) clean
 
-.PHONY: all src test memtest cov prof example clean 
+.PHONY: all demo test memtest cov example clean 

@@ -4,7 +4,7 @@
 /**
  * @file shop_cart.h
  * @author Tuva Björnberg & Marcus Ray Sandersson
- * @date 2/10-2023
+ * @date 2/10-2023, edited by Tuva Björnberg and Tove Frænell 8/1-2024
  * @brief  A simple implementation of a shopping cart system.
  *
  * The code supports creating and managing shopping carts, adding and removing items,

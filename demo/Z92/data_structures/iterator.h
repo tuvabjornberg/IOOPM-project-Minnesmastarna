@@ -5,7 +5,7 @@
 /**
  * @file iterator.h
  * @author Tuva Björnberg & Gustav Fridén
- * @date 29/09-2023
+ * @date 29/09-2023, edited by Martin Ek and Tuva Björnberg 1/1-2024
  * @brief The iterator (`iter_t`) allows traversing a linked list.
  *
  * The iterator allows accessing elements in a linked list sequentially. The program
