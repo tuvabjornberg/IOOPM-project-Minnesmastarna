@@ -1,22 +1,4 @@
 # Individual Reflections
-Every project member shall write a short self reflection.
-About 1500–3000 characters, run $ wc -m induvidual_reflections.md to check (tips är att skriva i en egen fil först för att lättare räkna tecken)
-What are your strengths and weaknesses in a project? What traits should you enhance, and what do you need to improve?
-
-Fundera på:
-    How do I function in a team? Where are my strengths and weaknesses?
-    How should I try to adapt the way I work to work better in a team?
-    What motivates me? What demotivates me? How do I stay motivated in a project?
-    How good am I at estimating how long a task will take? What is the process that produce my estimations?
-    What role do I want to play in a team?
-    Hur fungerar du i ett team? Faller du in i ett särskilt mönster, eller tar du återkommande en särskild roll?
-    Får du ut något av att jobba i en grupp, eller jobbar du helst ensam?
-    Jämför hur mycket du lärt dig under projektarbetet kontra kursens övriga delar, och fundera över hur du bäst lär dig saker.
-    Hur har det gått att logga arbetstid?
-    “Biggest fail” och “biggest win”, dvs. det största problem som du stötte på och det smartaste eller bästa du gjorde.
-
-This file should convince the examiner that each team member passes Y67.
-
 ## Liam Anderberg
 In this project, I feel like I was good at communicating my ambitions to the group early. What I would improve from this project is my way of handling falling behind schedule. When we fell behind, I just kept working to try to catch up to the initial plan instead of readjusting to a new plan. Although it worked out in this project, it is all thanks to the good work of my group members which is something I cannot depend on in future projects. 
 
@@ -54,6 +36,13 @@ It went good to log time for me. I decided to manually log time, which worked we
 My biggest win of the project was that I, because I hadn't done a project like this before, learned to take a leading role over parts of the final product. This was very fun for me, as I felt normally step back in decision making, and usually just accept what's going on with the code. For me, this was a very new responsibility, that I think was very educational for me.
 
 ## Hektor Einarsson
+I like to work in a group,, because it makes it easier to focus and not get distracted, but I often end up working on my own anyway due to the convenience, despite it being less productive for me. So to work better in teams I could ask some of my teammates if they want to work together more often. Difficulty in asking for help and bad time management are my biggest shortcomings when working in groups after all. Speaking of which, estimating the time needed for tasks is something I really need to work on, as there were many times during this project’s I thought and maybe even said I would be able to complete a task that ended up taking way more time than expected. I basically just make uneducated guesses on how long things will take, and almost always low-ball it. At least I documented the time spent well.
+
+I really appreciated how many sprints and deadlines we had during this project, as motivation for me basically has to come from outside pressure such as deadlines or not dragging teammates down. This, alongside me learning best by doing, has made this project and the assignments the most educational parts of the course for me.
+
+For me the part that I most easily fill in a project is quality control; meticulously nitpicking other peoples’ code just comes easier to me than making it from scratch. My biggest wins therefore were my peer reviews, as well as fixing some structural git things, due to my greater familiarity with git relative to my peers. Despite that, the role I end up with varies wildly depending on the project, making me something of a jack of all trades.
+
+As a final note, I do feel a little disappointed in my contributions to this project. I was late to meetings on more than one occasion, I should have naked for help when I got stuck more frequently and quicker, and I could have put more time into it during last year, as I put in significantly more work after new years eve than before. Despite that, I’m overall happy with my performance, even with the negatives.
 
 ## Martin Ek
 When it comes to working in a team, I tend to be pretty adaptable in terms of working on different areas, wether it be coding, report-writing etc. To put a light on my strengths and weaknesses, I feel like I am pretty descriptive in terms of writing detailed issue logs, or giving a solid code review on pull requests. Weaknesses tend to be not really having a clear view on the tasks at hand.
@@ -70,3 +59,10 @@ Tracking time has been going reasonably well, I am new to the concept, but it fe
 Biggest fail was probably sitting way too long trying to get the linked list integration to work, when I should just have published an issue and let others take a look at it instead. As I mentioned earlier, getting a fresh perspective on the problem when you have been staring at the code for hours usually works better. My biggest win might be getting the ```refmem.c```-file to actually work with the object-scanner and default destructor at an earlier stage of the project, but of course changes were made later, but it was something we struggled with a lot in the beginning.
 
 ## Theo Karlsson
+I do think I work fine in a team but I work better when the team is together rather than working alone. I always prefer working in school together with everybody because then everything that needs to be done becomes much clearer to see and understand. 
+
+The way I should adapt to work better is to communicate better with my team on how I prefer to work on the project so that the time and effort I need to put in is the same as my team. I always feel it is better to work together because that makes asking questions and getting answers for all my questions easier and my team's questions too. A motivation for me is working together and understanding the assignment, and sometimes it takes longer for me to do so than others and that’s why the start of the assignment was hard for me. The solution is ofcourse communication with my team, and a demotivation is feeling that I don’t understand what we are doing and all the members of my team do understand it. 
+
+Estimation of how long a task will take is hard for me because when I first get an assignment I first have to count in the start of the project and usually it takes some time for me to get started with something, but when everything with a task is understood it goes much faster to finish the project. The role that I want to play in a team is usually right now not a leader role because I feel it’s difficult to know what needs to be done for the project. I like to know what to do or just have a clear path of what needs to be done, almost like we have done in Trello for this project. I like to work in a group but for this project specifically I feel that 6 people in the project is too many as the project is not a big task if you look past the reports that need to be written. I feel like working in such a big group hasn’t benefited me the best way and I prefer to work in pairs or in a group of 3 or 4 people. So I much preferred working during the Inluppar because then it felt more hands on and you worked closer with your team that you have. Logging the time I have put down has been easy and effective as I only have written up the date and time I started and time I finished. I also commented what part of the project I was working on during the time that I logged. 
+
+The biggest problem I encountered was when working with merch_storage. The file leaked and hade invalid reads which me and another team member worked on for two days straight without coming any closer, or so we thought. The biggest win was that I actually recognised the problem after debugging but didn’t know how to fix it, but I fixed parts of it after testing with different solutions.
