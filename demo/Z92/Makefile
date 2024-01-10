@@ -13,7 +13,6 @@ VPATH		   = user_interface : data_structures : utils : tests : logic  : ../../sr
 ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
   
-
 merch_storage_tests.out: merch_storage_tests.o merch_storage.o shop_cart.o hash_table.o linked_list.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
