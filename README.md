@@ -10,7 +10,7 @@ $ make clean
    ```
    $ make
    ```
-   #### Build and run Demo:
+   #### Build Demo:
    ```
    $ make demo
    ```
@@ -24,33 +24,6 @@ $ make clean
    $ make memtest
    ```
 
-   #### Run tests with f-sanitize:
-   ```
-   $ make test_sanitize
-   ```
-
-   #### Coverage tests:
-   ```
-   $ make cov
-   ```
-   _Coverage tests done with gcov_\
-   `refmem.c`:\
-    Lines executed:         \
-    Branches executed:      \
-    Taken at least once:    \
-    Calls executed:         \
-    Lines executed:
-
-
-   #### Performace tests:
-   ```
-   $ make prof
-   ```
-
-   #### Time:
-   ```
-
-   ```
 
 
  # Notes and error handling
