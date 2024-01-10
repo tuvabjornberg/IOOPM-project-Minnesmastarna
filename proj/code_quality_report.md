@@ -6,17 +6,17 @@ Coding is a very free practice, that can be approached through many different co
 
 
 ## Why have we written good code, why is our code good
-Our code consistently adheres to the GNU coding standard, which is important in a project that relies on several people working together. This approach ensures readability and maintainability, which is crucial when also using regular code reviewing to uphold quality. The project itself also provides an important factor in general code quality with the continuous streamlining of making a solid and efficient memory management system.
+Our code consistently adheres to the GNU coding standard, which is important in a project that relies on several people working together. This approach ensures readability and maintainability, which is crucial when also using regular code reviewing to uphold quality. The project itself also provides an important factor in general code quality with the continuous streamlining of making a solid and efficient memory management system. 
 
 The constant improvement that have been made to our original starting point, and the changes in direction we have made along the way is also something to mention that has contributed to a more efficient and reliable memory management system. Exploring different approaches to the implementation, like for example how we went back and forth with how we would store allocated objects in ```refmem.c```, gave us an insight into the pros and cons of either using a hash table storage or just keeping the meta data in a struct for instance. These obstacles force you to actually understand the code, and discussions about them also means that the whole group can get involved and actually take part.
 
-Another crucial aspect of code quality reassurance is consistently and rigorously testing the code and making sure everything actually works. We have always kept this factor close to our hearts by only ever allowing thoroughly verified and functioning code to be merged to our main branch, which is of course a good practice since we want to keep that branch stable and reliable.
+Another crucial aspect of code quality reassurance is consistently and rigorously testing the code and making sure everything actually works. We have always kept this factor close to our hearts by only ever allowing thoroughly verified and functioning code to be merged to our main branch, which is of course a good practice since we want to keep that branch stable and reliable. 
 
 So in conclusion we have always made sure to be careful with the code we write and the changes we make, to try and always avoid errors and bugs no matter how small.
 
 
 ## Is the code readable for everyone in the team
-Readability once again points to our chosen coding standard approach, where creating a familiar code environment for everyone facilitates working together with code reviews. This is also important in the way that everyone taking part in code reviews provides a better all around understanding in the group of what certain code does. This however is only a small part of readability.
+Readability once again points to our chosen coding standard approach, where creating a familiar code environment for everyone facilitates working together with code reviews. This is also important in the way that everyone taking part in code reviews provides a better all around understanding in the group of what certain code does. This however is only a small part of readability. 
 
 Clear modularization of the project files is also a part of maintaining readable code in the way of simplifying navigation, and this along with using properly abstracted functions within the modules provide a good and simple flow of the code, that is of course easier to understand. Abstracting properly has a lot to do with avoiding repetition of code, which is essential for making a code suitable for reviewing, since it saves time for the reviewer.
 

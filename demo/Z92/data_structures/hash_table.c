@@ -129,23 +129,23 @@ static void resize(ioopm_hash_table_t *ht, size_t new_ht_capacity)
 
         if (current != NULL)
         {
-            retain(current);
+            retain(current); 
         }
-
+        
         while (current != NULL)
         {
-            retain(current->value.string);
+            retain(current->value.string); 
 
             size_t new_index = ht->hash_fun(current->key) % new_ht_capacity;
 
             entry_t *new_entry = entry_create(current->key, current->value, new_buckets[new_index].next);
 
             entry_t *old_next = current->next;
-
+            
             if (old_next != NULL)
             {
-                retain(old_next);
-
+                retain(old_next); 
+                
             }
             release(current);
 
@@ -287,7 +287,7 @@ ioopm_list_t *ioopm_hash_table_keys(ioopm_hash_table_t *ht)
         while (current != NULL)
         {
             ioopm_linked_list_append(list, current->key);
-            //retain(current);
+            //retain(current); 
             current = current->next;
         }
     }

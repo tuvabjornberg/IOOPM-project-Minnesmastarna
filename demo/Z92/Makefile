@@ -11,8 +11,8 @@ VPATH		   = user_interface : data_structures : utils : tests : logic  : ../../sr
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
 ui.out: ui.o hash_table.o linked_list.o utils.o merch_storage.o shop_cart.o hash_fun.o refmem.o queue.o list.o
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@
-
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ 
+  
 merch_storage_tests.out: merch_storage_tests.o merch_storage.o shop_cart.o hash_table.o linked_list.o hash_fun.o refmem.o queue.o list.o
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $^ -o $@ $(CUNIT_LINK)
 
@@ -110,7 +110,7 @@ merchsan.out: merch_storage_tests.c merch_storage.c hash_table.c linked_list.c u
 	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
 
 shopsan.out: shop_cart_tests.c merch_storage.c shop_cart.c hash_table.c linked_list.c utils.c hash_fun.c refmem.c queue.c list.c
-	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK)
+	$(C_COMPILER) $(C_LINK_OPTIONS) $(C_OPTIONS) $(C_SANITIZE) $^ -o $@ $(CUNIT_LINK) 
 
 logic_sanitize: merchsan.out shopsan.out
 	./merchsan.out

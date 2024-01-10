@@ -5,18 +5,18 @@
 #include <stdbool.h>
 #include "../../../src/refmem.h"
 
-static void shop_cart_destructor(obj *obj_ptr)
+static void shop_cart_destructor(obj *obj_ptr) 
 {
-    ioopm_carts_t *storage_carts = (ioopm_carts_t *)obj_ptr;
-    release(storage_carts->carts);
+    ioopm_carts_t *storage_carts = (ioopm_carts_t *)obj_ptr; 
+    release(storage_carts->carts); 
 }
 
 ioopm_carts_t *ioopm_cart_storage_create()
 {
-    ioopm_carts_t *new_carts = allocate(sizeof(ioopm_carts_t), shop_cart_destructor);
-    retain(new_carts);
+    ioopm_carts_t *new_carts = allocate(sizeof(ioopm_carts_t), shop_cart_destructor); 
+    retain(new_carts); 
 
-    new_carts->carts = ioopm_hash_table_create(ioopm_hash_fun_key_int, ioopm_int_eq);
+    new_carts->carts = ioopm_hash_table_create(ioopm_hash_fun_key_int, ioopm_int_eq); 
     new_carts->total_carts = 0;
 
     return new_carts;
@@ -31,9 +31,9 @@ void ioopm_cart_create(ioopm_carts_t *storage_carts)
 
 ioopm_hash_table_t *ioopm_items_in_cart_get(ioopm_carts_t *storage_carts, int id)
 {
-    option_t *lookup_cart = ioopm_hash_table_lookup(storage_carts->carts, int_elem(id));
-    ioopm_hash_table_t *cart_items = lookup_cart->value.void_ptr;
-    release(lookup_cart);
+    option_t *lookup_cart = ioopm_hash_table_lookup(storage_carts->carts, int_elem(id)); 
+    ioopm_hash_table_t *cart_items = lookup_cart->value.void_ptr; 
+    release(lookup_cart); 
 
     return cart_items;
 }
@@ -60,10 +60,10 @@ int ioopm_item_in_cart_amount(ioopm_carts_t *storage_carts, int id, char *merch_
     if (item_in_cart->success)
     {
         current_amount = item_in_cart->value.integer;
-    }
-    release(item_in_cart);
-
-    return current_amount;
+    } 
+    release(item_in_cart); 
+    
+    return current_amount; 
 }
 
 void ioopm_cart_add(ioopm_carts_t *storage_carts, int id, char *merch_name, int amount)
@@ -78,11 +78,11 @@ void ioopm_cart_add(ioopm_carts_t *storage_carts, int id, char *merch_name, int 
         ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(existing_amount));
     }
     else
-    {
-        retain(merch_name);
-        ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(amount));
+    {      
+        retain(merch_name); 
+        ioopm_hash_table_insert(cart_items, str_elem(merch_name), int_elem(amount)); 
     }
-    release(item_in_cart);
+    release(item_in_cart); 
 }
 
 void ioopm_cart_remove(ioopm_hash_table_t *cart_items, char *merch_name, int amount)
@@ -99,10 +99,10 @@ void ioopm_cart_remove(ioopm_hash_table_t *cart_items, char *merch_name, int amo
         }
         else
         {
-            ioopm_hash_table_remove(cart_items, str_elem(merch_name));
+            ioopm_hash_table_remove(cart_items, str_elem(merch_name));  
         }
     }
-    release(item_in_cart);
+    release(item_in_cart); 
 }
 
 int ioopm_cost_calculate(ioopm_store_t *store, ioopm_carts_t *storage_carts, int id)
@@ -119,11 +119,11 @@ int ioopm_cost_calculate(ioopm_store_t *store, ioopm_carts_t *storage_carts, int
         if (value->success)
         {
 	        total_cost += value->value.integer * ioopm_price_get(ioopm_merch_get(store, key.string));
-        }
+        }  
         release(value);
     }
     release(keys);
-
+    
     return total_cost;
 }
 
@@ -138,15 +138,15 @@ static void stock_update(elem_t name, elem_t *amount, void *store)
   for (int i = ioopm_linked_list_size(stock) - 1; i >= 0; i--)
   {
     location_t *location = ioopm_linked_list_get(stock, i).void_ptr;
-
-    if (amount->integer > location->quantity)
+    
+    if (amount->integer > location->quantity) 
     {
         amount->integer -= location->quantity;
 
-        release(location);
+        release(location); 
         ioopm_linked_list_remove(stock, i);
-    }
-    else
+    } 
+    else 
     {
         location->quantity -= amount->integer;
         return;
@@ -173,5 +173,5 @@ void ioopm_cart_destroy(ioopm_carts_t *storage_carts, int id)
 
 void ioopm_cart_storage_destroy(ioopm_carts_t *storage_carts)
 {
-    release(storage_carts);
+    release(storage_carts); 
 }
