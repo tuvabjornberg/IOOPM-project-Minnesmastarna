@@ -2,7 +2,6 @@ C_COMPILER      = gcc
 C_OPTIONS       = -Wall -pedantic -g
 VPATH           = src : test : demo
 
-SRC = src
 TEST = test
 DEMO = demo
 
@@ -11,10 +10,7 @@ all: refmem.o
 %.o:  %.c
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
-src:
-	$(MAKE) -C $@
-
-test: src
+test: 
 	$(MAKE) -C $(TEST) test
 	$(MAKE) -C $(DEMO) test_demo
 
@@ -33,9 +29,8 @@ example:
 	$(MAKE) -C $(DEMO) memexample
   
 clean:
-	rm -f *.o
-	$(MAKE) -C $(SRC) clean
+	rm -f *.o .out
 	$(MAKE) -C $(TEST) clean
 	$(MAKE) -C $(DEMO) clean
 
-.PHONY: all src test memtest cov prof example clean 
+.PHONY: all test memtest cov prof example clean 
