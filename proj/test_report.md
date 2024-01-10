@@ -1,21 +1,4 @@
 # Test Report
-Explain how you are testing your project on three levels:
-    Unit testing
-    Integration testing
-    Regression testing
-Also explain how you have automated these things. 
-
-Include a graphical overview of the code coverage (100% coverage). 
-
-You do not need to have tests of the demo code. It is presumed to have been properly tested in assignment 2. (But if you do find new bugs in the demo code, you should mention that.)
-
-List your 6 most nasty bugs by linking to their issue pages on GitHub.
-
-This file, together with the GitHub issue log, should convince the examiner that you pass Y69.
-
-
-
-# ROUGH DRAFT, ADD POINTS BELOW THAT SHOULD BE IN REPORT
 
 ## How do we test the program 
 We have tested our program mainly through unit testing. This has been done through newly written tests. We have also had to change the tests from Z92 during the integration part of the project, so that they fit the mold of how the new code is written. The code from before can also be tested with a txt-file, to make sure that when using the user input, the program still won't have any memory leaks.
@@ -55,8 +38,8 @@ One problem that arose while testing happened while testing the boundaries of th
 
 
 
-## Graphical overview of code coverage
-The refmem_tests and destructor_tests does have 100% coverage. Since we've wanted to strive for a good coverage for these files, this is a very good result to see. This meant that all the new code which we have written is tested fully, and works as we want it to.
+## Overview of code coverage
+The refmem_tests and destructor_tests combined have 100%. Since we've wanted to strive for a good coverage for these files, this is a very good result to see. This meant that all the new code which we have written is tested fully, and works as we want it to. 
 
 Since we've only adapted the previous code, and have only adapted the Z92-files, the coverage won't have changed. This means that the coverage will be as the old coverage, which was 100%. 
 
