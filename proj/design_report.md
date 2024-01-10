@@ -12,4 +12,3 @@ We made the choice of having the size of the reference counter as an unsigned sh
 
 - How our system handles reference counter overflow
     * Common approaches include either preventing overflow by choosing a larger data type for the reference counter or implementing mechanisms to detect and handle overflow gracefully, such as by triggering garbage collection or other memory management strategies.
-

@@ -101,7 +101,6 @@ void test_lookup_empty()
     shutdown();
 }
 
-//TODO: Big memleak :(
 void test_remove_entry()
 {
     ioopm_hash_table_t *ht = ioopm_hash_table_create(hash_fun_key_int, bool_eq_fun);
