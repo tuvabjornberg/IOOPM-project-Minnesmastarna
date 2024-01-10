@@ -21,12 +21,6 @@ struct list
     eq_function eq_fun;
 };
 
-struct iter
-{
-    link_t *current;
-    list_t *list;
-};
-
 list_t *linked_list_create(eq_function eq_fun)
 {
     list_t *list = calloc(1, sizeof(struct list));
@@ -76,104 +70,6 @@ void linked_list_append(list_t *list, elem_t value)
     }
 }
 
-void linked_list_prepend(list_t *list, elem_t value)
-{
-    link_t *new_link = link_create(value, list->first);
-
-    if (new_link != NULL)
-    {
-        list->first = new_link;
-
-        if (list->last == NULL)
-        {
-            // if empty list
-            list->last = new_link;
-        }
-
-        list->size++;
-    }
-}
-
-void linked_list_insert(list_t *list, int index, elem_t value)
-{
-    link_t *current = list->first;
-    int counter = 0;
-    size_t ll_size = linked_list_size(list);
-
-    if (index < 0 || index > ll_size)
-    {
-        return;
-    }
-    else if (index == 0)
-    {
-        linked_list_prepend(list, value);
-    }
-    else if (index == ll_size)
-    {
-        linked_list_append(list, value);
-    }
-    else
-    {
-        while (index > 0 && index < ll_size - 1 && counter < index)
-        {
-            if (counter == index - 1)
-            {
-                link_t *new_link = link_create(value, NULL);
-                link_t *tmp = current->next;
-                current->next = new_link;
-                new_link->next = tmp;
-                list->size++;
-            }
-            counter++;
-            current = current->next;
-        }
-    }
-}
-
-elem_t linked_list_remove(list_t *list, int index)
-{
-    link_t *current = list->first;
-    int counter = 0;
-    size_t ll_size = linked_list_size(list);
-    elem_t value = {.void_ptr = NULL};
-
-    if (list != NULL)
-    {
-        if (index < 0 || index >= ll_size)
-        {
-            return (elem_t){.void_ptr = NULL};
-        }
-        // first index
-        else if (index == 0)
-        {
-            value = list->first->value;
-            link_t *tmp = list->first->next;
-            free(list->first);
-            list->first = tmp;
-            list->size--;
-        }
-        else
-        {
-            while (index > 0 && index < ll_size && counter < index)
-            {
-                // middle and last index
-                if (counter == index - 1)
-                {
-                    value = current->next->value;
-                    link_t *tmp = current->next->next;
-                    free(current->next);
-                    current->next = tmp;
-                    list->size--;
-                }
-
-                counter++;
-                current = current->next;
-            }
-        }
-    }
-    return value;
-}
-
 void linked_list_remove_object(list_t *list, obj *obj_ptr)
 {
     //elem_t value = {.void_ptr = NULL};
@@ -212,27 +108,6 @@ void linked_list_remove_object(list_t *list, obj *obj_ptr)
 }
 
 
-elem_t linked_list_get(list_t *list, int index)
-{
-    link_t *current = list->first;
-    int counter = 0;
-    // if correct index input
-    if (index >= 0 && index < linked_list_size(list))
-    {
-        while (counter != index)
-        {
-            current = current->next;
-            counter++;
-        }
-
-        return current->value;
-    }
-    else
-    {
-        return (elem_t){.void_ptr = NULL};
-    }
-}
-
 bool linked_list_contains(list_t *list, elem_t element)
 {
     link_t *current = list->first;
@@ -248,11 +123,6 @@ bool linked_list_contains(list_t *list, elem_t element)
     }
 
     return false;
-}
-
-size_t linked_list_size(list_t *list)
-{
-    return list->size;
 }
 
 bool linked_list_is_empty(list_t *list)
@@ -271,111 +141,4 @@ void linked_list_clear(list_t *list)
         current = next;
         list->size--;
     }
-}
-
-bool linked_list_all(list_t *list, int_predicate prop, void *extra)
-{
-    link_t *current = list->first;
-
-    while (current != NULL)
-    {
-        if (!prop(current->value, extra))
-        {
-            return false;
-        }
-
-        current = current->next;
-    }
-
-    return true;
-}
-
-bool linked_list_any(list_t *list, int_predicate prop, void *extra)
-{
-    link_t *current = list->first;
-
-    while (current != NULL)
-    {
-        if (prop(current->value, extra))
-        {
-            return true;
-        }
-
-        current = current->next;
-    }
-
-    return false;
-}
-
-void linked_list_apply_to_all(list_t *list, apply_int_function fun, void *extra)
-{
-    link_t *current = list->first;
-
-    while (current != NULL)
-    {
-        fun(&current->value, extra);
-        current = current->next;
-    }
-}
-
-list_iterator_t *list_iterator(list_t *list)
-{
-    list_iterator_t *iter = calloc(1, sizeof(list_iterator_t));
-
-    iter->list = list;
-    iter->current = list->first;
-
-    return iter;
-}
-
-bool iterator_has_next(list_iterator_t *iter)
-{
-    if (iter->current != NULL)
-    {
-        return iter->current->next != NULL;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-elem_t iterator_next(list_iterator_t *iter)
-{
-    if (!iterator_has_next(iter))
-    {
-
-        return (elem_t){.void_ptr = NULL};
-    }
-
-    iter->current = iter->current->next;
-    return iter->current->value;
-}
-
-void iterator_reset(list_iterator_t *iter)
-{
-    if (iter->current != NULL)
-    {
-        iter->current = iter->list->first;
-    }
-    else
-    {
-        iter->list->first = NULL;
-    }
-}
-
-elem_t iterator_current(list_iterator_t *iter)
-{
-    if (iter->current != NULL)
-    {
-        return iter->current->value;
-    }
-    else
-    {
-        return (elem_t){.void_ptr = NULL};
-    }
-}
-void iterator_destroy(list_iterator_t *iter)
-{
-    free(iter);
 }

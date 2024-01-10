@@ -8,7 +8,7 @@
 /**
  * @file merch_storage.h
  * @author Tuva Björnberg & Marcus Ray Sandersson
- * @date 2/10-2023
+ * @date 2/10-2023, edited by Tuva Björnberg and Hektor Einarsson 9/1-2024
  * @brief A simple implementation of a storage system for merchendise.
  *
  * The code supports creating and managing merch, adding them to the store, editing

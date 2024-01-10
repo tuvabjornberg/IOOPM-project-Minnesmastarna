@@ -2,6 +2,13 @@
 #include <stdbool.h>
 #include "refmem.h"
 
+/**
+ * @file queue.h
+ * @authors Liam Anderberg
+ * @date 8/12-2023
+ * @brief Defines a queue data structure with associated operations.
+*/
+
 typedef struct node
 {
     obj **data;
