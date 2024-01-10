@@ -19,14 +19,14 @@ int clean_suite(void)
 
 void create_destroy_test()
 {
-    Queue *q = create_queue();
+    queue *q = create_queue();
     CU_ASSERT_PTR_NOT_NULL(q);
     destroy_queue(q);
 }
 
 void enqueue_test()
 {
-    Queue *q = create_queue();
+    queue *q = create_queue();
     CU_ASSERT_TRUE(is_empty(q));
 
     obj* obj = NULL;
@@ -41,7 +41,7 @@ void enqueue_test()
 
 void dequeue_test()
 {
-    Queue *q = create_queue();
+    queue *q = create_queue();
     //dequeue(q);
 
     obj* obj = NULL;

@@ -16,6 +16,12 @@ example.out: example.o refmem.o queue.o list.o
 memexample: example.out
 	valgrind --leak-check=full ./example.out
   
+demons: 
+	$(MAKE) -C $(Z92) ui_memtests
+
+demo_txt:
+	$(MAKE) -C $(Z92) ui_arg_memtests
+
 test_demo:
 	$(MAKE) -C $(Z92) ds_tests
 	$(MAKE) -C $(Z92) logic_tests

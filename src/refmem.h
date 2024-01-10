@@ -5,8 +5,8 @@
 
 /**
  * @file refmem.h
- * @authors
- * @date
+ * @authors Liam Anderberg, Tuva Björnberg, Hektor Einarsson, Martin Ek, Tove Frænell, Theo Karlsson
+ * @date 9/1 2024
  * @brief Memory management which allocates and deallocates memory, using reference counters.
 */
 typedef void obj;

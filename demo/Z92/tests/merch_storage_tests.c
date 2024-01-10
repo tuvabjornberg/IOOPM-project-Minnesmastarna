@@ -29,7 +29,6 @@ ioopm_store_t *store_with_inputs()
     int price = 10;
     int stock_size = 0;
 
-    //TODO: retain?
     ioopm_merch_t *apple = ioopm_merch_create(duplicate_string(name), duplicate_string(description), price, ioopm_linked_list_create(ioopm_string_eq), stock_size);
 
     ioopm_store_add(store, apple);

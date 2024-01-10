@@ -10,6 +10,9 @@ all: refmem.o
 %.o:  %.c
 	$(C_COMPILER) $(C_OPTIONS) $^ -c
 
+demo:
+	$(MAKE) -C $(DEMO) demons
+
 test: 
 	$(MAKE) -C $(TEST) test
 	$(MAKE) -C $(DEMO) test_demo
