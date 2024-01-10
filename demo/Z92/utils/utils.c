@@ -60,12 +60,12 @@ static int read_string(char *buf, int buf_size)
 static answer_t ask_question(char *question, check_func check, convert_func convert)
 {
     char *answer = allocate(BUF_SIZE, NULL);
-
+  
     puts(question);
     read_string(answer, BUF_SIZE);
 
-    retain(answer);
-
+    retain(answer); 
+    
     while(!check(answer))
     {
         puts("Invalid input");
@@ -78,7 +78,7 @@ static answer_t ask_question(char *question, check_func check, convert_func conv
         release(answer);
         return result;
     }
-
+    
     return (answer_t){.string_value = answer};
 }
 
