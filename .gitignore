@@ -56,3 +56,4 @@ dkms.conf
 *.gcno
 *.gcov
 *.profiling
+.vscode
